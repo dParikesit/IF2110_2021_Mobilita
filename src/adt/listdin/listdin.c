@@ -78,15 +78,9 @@ boolean isFull(ListDin l){
 }
 
 /* ********** BACA dan TULIS dengan INPUT/OUTPUT device ********** */
-Item inputItemListDin() {
-  // Mengembalikan input Item dari user
-
-  // KAMUS
-  Item input;
-  
-  // ALGORITMA
-  scanf("%d", &input);
-  return input;
+Item inputItemListDin(){
+  Item it;
+  return it;
 }
 
 /* *** Mendefinisikan isi list dari pembacaan *** */
@@ -121,12 +115,7 @@ void readList(ListDin *l) {
   }
 }
 
-void printItem(Item el) {
-  // I.S. sembarang
-  // F.S. tertuliskan di layar elemen input tanpa enter
-
-  printf("%d", el);
-}
+void printItem(Item el){}
 
 void displayList(ListDin l) {
   /* Proses : Menuliskan isi list dengan traversal, list ditulis di antara kurung siku;
@@ -153,7 +142,10 @@ void displayList(ListDin l) {
   printf("]");
 }
 
-Item aritmeticOpsItem(Item i1, Item i2, boolean plus);
+Item aritmeticOpsItem(Item i1, Item i2, boolean plus){
+  Item it;
+  return it;
+}
 
 /* ********** OPERATOR ARITMATIKA ********** */
 /* *** Aritmatika list : Penjumlahan, pengurangan, perkalian, ... *** */
@@ -184,7 +176,7 @@ ListDin plusMinusList(ListDin l1, ListDin l2, boolean plus) {
   return l3;
 }
 
-boolean isItemSame(Item i1, Item i2);
+boolean isItemSame(Item i1, Item i2) { return true; }
 
 /* ********** OPERATOR RELASIONAL ********** */
 /* *** Operasi pembandingan list : < =, > *** */
@@ -211,8 +203,6 @@ boolean isListEqual(ListDin l1, ListDin l2) {
   return equal;
 }
 
-boolean isItemSame(Item it, Item val);
-
 /* ********** SEARCHING ********** */
 /* ***  Perhatian : list boleh kosong!! *** */
 IdxType indexOf(ListDin l, Item val){
@@ -238,7 +228,7 @@ IdxType indexOf(ListDin l, Item val){
   return i;
 }
 
-boolean isItemGreater(Item i1, Item i2);
+boolean isItemGreater(Item i1, Item i2){ return true; }
 
 /* ********** NILAI EKSTREM ********** */
 void extremes(ListDin l, Item *max, Item *min) {
@@ -280,7 +270,7 @@ void copyList(ListDin lIn, ListDin *lOut) {
   }
 }
 
-void resetItem(Item * it);
+void resetItem(Item * it){}
 
 Item sumList(ListDin l) {
   /* Menghasilkan hasil penjumlahan semua elemen l */
@@ -318,7 +308,7 @@ int countVal(ListDin l, Item val) {
   return count;
 }
 
-boolean isEven(Item it);
+boolean isEven(Item it){ return true; }
 
 boolean isAllEven(ListDin l) {
   /* Menghailkan true jika semua elemen l genap. l boleh kosong */
