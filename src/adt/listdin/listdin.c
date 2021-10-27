@@ -10,7 +10,7 @@ void CreateListDin(ListDin *l, int capacity) {
 
   // ALGORITMA
   LISTDIN_CAPACITY(*l) = capacity;
-  LISTDIN_BUFFER(*l) = (ElType*)malloc(capacity * sizeof(ElType));
+  LISTDIN_BUFFER(*l) = (Item*)malloc(capacity * sizeof(Item));
   LISTDIN_NEFF(*l) = 0;
 }
 
@@ -78,11 +78,11 @@ boolean isFull(ListDin l){
 }
 
 /* ********** BACA dan TULIS dengan INPUT/OUTPUT device ********** */
-ElType inputElTypeListDin() {
-  // Mengembalikan input ElType dari user
+Item inputItemListDin() {
+  // Mengembalikan input Item dari user
 
   // KAMUS
-  ElType input;
+  Item input;
   
   // ALGORITMA
   scanf("%d", &input);
@@ -104,7 +104,7 @@ void readList(ListDin *l) {
   // KAMUS
   int N;
   IdxType i;
-  // ElType input;
+  // Item input;
 
   // ALGORITMA
   do {
@@ -116,12 +116,12 @@ void readList(ListDin *l) {
     for (i=0;i<N;i++) {
       // scanf("%d",&input);
       // LISTDIN_ELMT(*l,i) = input;
-      LISTDIN_ELMT(*l, i) = inputElTypeListDin();
+      LISTDIN_ELMT(*l, i) = inputItemListDin();
     }
   }
 }
 
-void printElType(ElType el) {
+void printItem(Item el) {
   // I.S. sembarang
   // F.S. tertuliskan di layar elemen input tanpa enter
 
@@ -144,14 +144,16 @@ void displayList(ListDin l) {
   printf("[");
   if (LISTDIN_NEFF(l) != 0) {
     // printf("%d",LISTDIN_ELMT(l,0));
-    printElType(LISTDIN_ELMT(l,0));
+    printItem(LISTDIN_ELMT(l,0));
     for (i=1;i<LISTDIN_NEFF(l);i++) {
       printf(",");
-      printElType(LISTDIN_ELMT(l,i));
+      printItem(LISTDIN_ELMT(l,i));
     }
   }
   printf("]");
 }
+
+Item aritmeticOpsItem(Item i1, Item i2, boolean plus);
 
 /* ********** OPERATOR ARITMATIKA ********** */
 /* *** Aritmatika list : Penjumlahan, pengurangan, perkalian, ... *** */
@@ -170,15 +172,19 @@ ListDin plusMinusList(ListDin l1, ListDin l2, boolean plus) {
 
   if (plus) {
     for (i=0;i<LISTDIN_NEFF(l3);i++) {
-      LISTDIN_ELMT(l3,i) = LISTDIN_ELMT(l1,i) + LISTDIN_ELMT(l2,i);
+      // LISTDIN_ELMT(l3,i) = LISTDIN_ELMT(l1,i) + LISTDIN_ELMT(l2,i);
+      LISTDIN_ELMT(l3, i) = aritmeticOpsItem(LISTDIN_ELMT(l1,i), LISTDIN_ELMT(l2,i), true);
     }
   } else {
     for (i=0;i<LISTDIN_NEFF(l3);i++) {
-      LISTDIN_ELMT(l3,i) = LISTDIN_ELMT(l1,i) - LISTDIN_ELMT(l2,i);
+      // LISTDIN_ELMT(l3,i) = LISTDIN_ELMT(l1,i) - LISTDIN_ELMT(l2,i);
+      LISTDIN_ELMT(l3, i) = aritmeticOpsItem(LISTDIN_ELMT(l1,i), LISTDIN_ELMT(l2,i), false);
     }
   }
   return l3;
 }
+
+boolean isItemSame(Item i1, Item i2);
 
 /* ********** OPERATOR RELASIONAL ********** */
 /* *** Operasi pembandingan list : < =, > *** */
@@ -195,7 +201,8 @@ boolean isListEqual(ListDin l1, ListDin l2) {
     i=0;
     equal = true;
     while (i<LISTDIN_NEFF(l1) && equal) {
-      if (LISTDIN_ELMT(l1,i) != LISTDIN_ELMT(l2,i))
+      // if (LISTDIN_ELMT(l1,i) != LISTDIN_ELMT(l2,i))
+      if (isItemSame(LISTDIN_ELMT(l1,i), LISTDIN_ELMT(l2,i)))
         equal = false;
       else
         i++;
@@ -204,9 +211,11 @@ boolean isListEqual(ListDin l1, ListDin l2) {
   return equal;
 }
 
+boolean isItemSame(Item it, Item val);
+
 /* ********** SEARCHING ********** */
 /* ***  Perhatian : list boleh kosong!! *** */
-IdxType indexOf(ListDin l, ElType val){
+IdxType indexOf(ListDin l, Item val){
   /* Search apakah ada elemen List l yang bernilai val */
   /* Jika ada, menghasilkan indeks i terkecil, dengan elemen ke-i = val */
   /* Jika tidak ada, mengirimkan IDX_UNDEF */
@@ -221,7 +230,7 @@ IdxType indexOf(ListDin l, ElType val){
     i = IDX_UNDEF;
   else {
     i=0;
-    while (LISTDIN_ELMT(l,i) != val && i < LISTDIN_NEFF(l))
+    while (!isItemSame(LISTDIN_ELMT(l,i), val) && i < LISTDIN_NEFF(l))
       i++;
     if (i == LISTDIN_NEFF(l))
       i = IDX_UNDEF;
@@ -229,8 +238,10 @@ IdxType indexOf(ListDin l, ElType val){
   return i;
 }
 
+boolean isItemGreater(Item i1, Item i2);
+
 /* ********** NILAI EKSTREM ********** */
-void extremes(ListDin l, ElType *max, ElType *min) {
+void extremes(ListDin l, Item *max, Item *min) {
   /* I.S. List l tidak kosong */
   /* F.S. max berisi nilai maksimum l;
           min berisi nilai minimum l */
@@ -242,9 +253,11 @@ void extremes(ListDin l, ElType *max, ElType *min) {
   *max = LISTDIN_ELMT(l,0);
   *min = LISTDIN_ELMT(l,0);
   for (i=1;i<LISTDIN_NEFF(l);i++) {
-    if (LISTDIN_ELMT(l,i) > *max)
+    // if (LISTDIN_ELMT(l,i) > *max)
+    if (isItemGreater(LISTDIN_ELMT(l,i), *max))
       *max = LISTDIN_ELMT(l,i);
-    if (LISTDIN_ELMT(l,i) < *min)
+    // if (LISTDIN_ELMT(l,i) < *min)
+    if (isItemGreater(*min, LISTDIN_ELMT(l,i)))
       *min = LISTDIN_ELMT(l,i);
   }
 }
@@ -267,23 +280,27 @@ void copyList(ListDin lIn, ListDin *lOut) {
   }
 }
 
-ElType sumList(ListDin l) {
+void resetItem(Item * it);
+
+Item sumList(ListDin l) {
   /* Menghasilkan hasil penjumlahan semua elemen l */
   /* Jika l kosong menghasilkan 0 */
 
   // KAMUS
   IdxType i;
-  ElType sum;
+  Item sum;
 
   // ALGORITMA
-  sum = 0;
+  // sum = 0;
+  resetItem(&sum);
   for (i=0;i<LISTDIN_NEFF(l);i++) {
-    sum += LISTDIN_ELMT(l,i);
+    // sum += LISTDIN_ELMT(l,i);
+    sum = aritmeticOpsItem(sum, LISTDIN_ELMT(l,i), true);
   }
   return sum;
 }
 
-int countVal(ListDin l, ElType val) {
+int countVal(ListDin l, Item val) {
   /* Menghasilkan berapa banyak kemunculan val di l */
   /* Jika l kosong menghasilkan 0 */
 
@@ -294,11 +311,14 @@ int countVal(ListDin l, ElType val) {
   // ALGORITMA
   count = 0;
   for (i=0;i<LISTDIN_NEFF(l);i++) {
-    if (LISTDIN_ELMT(l,i) == val)
+    // if (LISTDIN_ELMT(l,i) == val)
+    if (isItemSame(LISTDIN_ELMT(l,i), val))
       count++;
   }
   return count;
 }
+
+boolean isEven(Item it);
 
 boolean isAllEven(ListDin l) {
   /* Menghailkan true jika semua elemen l genap. l boleh kosong */
@@ -312,7 +332,7 @@ boolean isAllEven(ListDin l) {
   i=0;
 
   while (allEven && i<LISTDIN_NEFF(l)) {
-    if (LISTDIN_ELMT(l,i) % 2 != 0)
+    if (!isEven(LISTDIN_ELMT(l,i)))
       allEven = false;
     else
       i++;
@@ -331,7 +351,7 @@ void sort(ListDin *l, boolean asc) {
   // KAMUS
   int len;
   IdxType i,j,swapIdx;
-  ElType temp;
+  Item temp;
   
   // ALGORITMA
   len = length(*l);
@@ -340,7 +360,8 @@ void sort(ListDin *l, boolean asc) {
       for (i=0;i<len-1;i++) {
         swapIdx = i;
         for (j=i+1;j<len;j++) {
-          if (LISTDIN_ELMT(*l,j) < LISTDIN_ELMT(*l,swapIdx))
+          // if (LISTDIN_ELMT(*l,j) < LISTDIN_ELMT(*l,swapIdx))
+          if (isItemGreater(LISTDIN_ELMT(*l,swapIdx), LISTDIN_ELMT(*l,j)))
             swapIdx = j;
         }
         temp = LISTDIN_ELMT(*l,swapIdx);
@@ -351,7 +372,8 @@ void sort(ListDin *l, boolean asc) {
       for (i=0;i<len-1;i++) {
         swapIdx = i;
         for (j=i+1;j<len;j++) {
-          if (LISTDIN_ELMT(*l,j) > LISTDIN_ELMT(*l,swapIdx))
+          // if (LISTDIN_ELMT(*l,j) > LISTDIN_ELMT(*l,swapIdx))
+          if (isItemGreater(LISTDIN_ELMT(*l,j), LISTDIN_ELMT(*l,swapIdx)))
             swapIdx = j;
         }
         temp = LISTDIN_ELMT(*l,swapIdx);
@@ -364,7 +386,7 @@ void sort(ListDin *l, boolean asc) {
 
 /* ********** MENAMBAH DAN MENGHAPUS ELEMEN DI AKHIR ********** */
 /* *** Menambahkan elemen terakhir *** */
-void insertLast(ListDin *l, ElType val) {
+void insertLast(ListDin *l, Item val) {
   /* Proses: Menambahkan val sebagai elemen terakhir list */
   /* I.S. List l boleh kosong, tetapi tidak penuh */
   /* F.S. val adalah elemen terakhir l yang baru */
@@ -375,7 +397,7 @@ void insertLast(ListDin *l, ElType val) {
 }
 
 /* ********** MENGHAPUS ELEMEN ********** */
-void deleteLast(ListDin *l, ElType *val) {
+void deleteLast(ListDin *l, Item *val) {
   /* Proses : Menghapus elemen terakhir list */
   /* I.S. List tidak kosong */
   /* F.S. val adalah nilai elemen terakhir l sebelum penghapusan, */
