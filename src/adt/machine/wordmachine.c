@@ -2,59 +2,63 @@
 #include "wordmachine.h"
 
 boolean endWord;
+boolean emptyTape;
 Word currentWord;
 
-void ignoreBlank() {
-/* Mengabaikan satu atau beberapa BLANK
-   I.S. : currentChar sembarang 
-   F.S. : currentChar ≠ BLANK atau currentChar = MARK */
-    while (currentChar == BLANK)
-        adv();
+void ignoreBlankWordM() {
+    while (isBlank(currentChar) && !eot)
+        advCharM();
 }
 
-void startWord(FILE* file) {
-/* I.S. : currentChar sembarang 
-   F.S. : endWord = true, dan currentChar = MARK; 
-          atau endWord = false, currentWord adalah kata yang sudah diakuisisi,
-          currentChar karakter pertama sesudah karakter terakhir kata */
-    start(file);
-    ignoreBlank();
-    if (currentChar == MARK) {
-        endWord = true;
-    } else {
-        endWord = false;
-        copyWord();
+void startWordM(FILE* file, FILE_MODE mode) {
+    startCharM(file, mode);
+    if (mode == READ) {
+        ignoreBlankWordM();
+        endWord = eot;
     }
 }
 
-void advWord() {
-/* I.S. : currentChar adalah karakter pertama kata yang akan diakuisisi 
-   F.S. : currentWord adalah kata terakhir yang sudah diakuisisi, 
-          currentChar adalah karakter pertama dari kata berikutnya, mungkin MARK
-          Jika currentChar = MARK, endWord = true.		  
-   Proses : Akuisisi kata menggunakan procedure copyWord */
-    ignoreBlank();
-    if (currentChar == MARK) {
+void advWordM() {
+    ignoreBlankWordM();
+    if (eot) {
         endWord = true;
+        emptyTape = true;
     } else {
-        copyWord();
-        ignoreBlank();
+        emptyTape = false;
+        copyWordM();
+        ignoreBlankWordM();
     }
 }
 
-void copyWord() {
-/* Mengakuisisi kata, menyimpan dalam currentWord
-   I.S. : currentChar adalah karakter pertama dari kata
-   F.S. : currentWord berisi kata yang sudah diakuisisi; 
-          currentChar = BLANK atau currentChar = MARK; 
-          currentChar adalah karakter sesudah karakter terakhir yang diakuisisi.
-          Jika panjang kata melebihi CAPACITY, maka sisa kata terpotong */
+void copyWordM() {
     currentWord.length = 0;
-    while (currentChar != BLANK && currentChar != MARK) {
-        if (currentWord.length < CAPACITY) { // jika lebih akan terpotong
+    while (!isBlank(currentChar) && !eot) {
+        if (currentWord.length < CHAR_CAP) { // jika lebih akan terpotong
             currentWord.contents[currentWord.length++] = currentChar;
-            adv();
-        } else
-            break;
+        }
+        advCharM();
     }
+    currentWord.contents[currentWord.length++] = '\0';
+}
+
+void writeWordM(char* word) {
+    // KAMUS LOKAL
+    int i;
+    char c;
+    // ALGORITMA
+    writeCharM(' ');
+    i = 0;
+    c = word[i];
+    currentWord.length = 0;
+    while (c != '\0') {
+        if (currentWord.length < CHAR_CAP) { // jika lebih akan terpotong
+            if (!isBlank(c)) {
+                currentWord.contents[currentWord.length++] = c;
+                writeCharM(c);
+            }
+            i++;
+            c = word[i];
+        }
+    }
+    currentWord.contents[currentWord.length++] = '\0';
 }
