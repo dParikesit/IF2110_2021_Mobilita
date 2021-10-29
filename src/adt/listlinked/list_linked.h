@@ -1,4 +1,4 @@
-/* File : ListLinked_linked.h */
+/* File : list_linked.h */
 /* contoh ADT ListLinked berkait dengan representasi fisik pointer  */
 /* Representasi Address dengan pointer */
 

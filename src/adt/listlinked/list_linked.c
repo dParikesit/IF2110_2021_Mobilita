@@ -1,3 +1,6 @@
+/* File : list_linked.c */
+// Implementasi listlinked
+
 #include "list_linked.h"
 
 #include <stdio.h>
