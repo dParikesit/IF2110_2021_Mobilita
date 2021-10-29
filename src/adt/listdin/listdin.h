@@ -9,6 +9,7 @@
 
 #include "../../include/boolean.h"
 #include "../../object/building/building.h"
+#include "../point/point.h"
 
 /*  Kamus Umum */
 #define IDX_UNDEF -1
@@ -46,37 +47,37 @@ void CreateListDin(ListDin *l, int capacity);
 /* I.S. l sembarang, capacity > 0 */
 /* F.S. Terbentuk list dinamis l kosong dengan kapasitas capacity */
 
-void dealocate(ListDin *l);
+void dealocateListDin(ListDin *l);
 /* I.S. l terdefinisi; */
 /* F.S. (l) dikembalikan ke system, LISTDIN_CAPACITY(l)=0; LISTDIN_NEFF(l)=0 */
 
 /* ********** SELEKTOR (TAMBAHAN) ********** */
 /* *** Banyaknya elemen *** */
-int length(ListDin l);
+int lengthListDin(ListDin l);
 /* Mengirimkan banyaknya elemen efektif list */
 /* Mengirimkan nol jika list l kosong */
 /* *** Daya tampung container *** */
 
 /* *** Selektor INDEKS *** */
-IdxType getLastIdx(ListDin l);
+IdxType getLastIdxListDin(ListDin l);
 /* Prekondisi : List l tidak kosong */
 /* Mengirimkan indeks elemen l terakhir */
 
 /* ********** Test Indeks yang valid ********** */
-boolean isIdxValid(ListDin l, int i);
+boolean isIdxValidListDin(ListDin l, int i);
 /* Mengirimkan true jika i adalah indeks yang valid utk kapasitas list l */
 
 /* yaitu antara indeks yang terdefinisi utk container*/
-boolean isIdxEff(ListDin l, IdxType i);
+boolean isIdxEffListDin(ListDin l, IdxType i);
 /* Mengirimkan true jika i adalah indeks yang terdefinisi utk list */
 /* yaitu antara 0..LISTDIN_NEFF(l) */
 
 /* ********** TEST KOSONG/PENUH ********** */
 /* *** Test list kosong *** */
-boolean isEmpty(ListDin l);
+boolean isEmptyListDin(ListDin l);
 /* Mengirimkan true jika list l kosong, mengirimkan false jika tidak */
 /* *** Test list penuh *** */
-boolean isFull(ListDin l);
+boolean isFullListDin(ListDin l);
 /* Mengirimkan true jika list l penuh, mengirimkan false jika tidak */
 
 /* ********** BACA dan TULIS dengan INPUT/OUTPUT device ********** */
@@ -85,7 +86,7 @@ void inputBuilding(Building * input);
 // F.S. atribut input diisi sesuai dengan input user
 // Proses: membaca input character dan 2 integer dari user dan mengassignnya ke dalam input
 
-void readList(ListDin *l);
+void readListDin(ListDin *l);
 /* I.S. l sembarang dan sudah dialokasikan sebelumnya */
 /* F.S. List l terdefinisi */
 /* Proses : membaca banyaknya elemen l dan mengisi nilainya */
@@ -98,13 +99,13 @@ void readList(ListDin *l);
 
 void displayPoint(Point p);
 // I.S. Point p terdefinisi
-// F.S. tertulis di layar Point p dalam format (p.absis,p.ordinat)
+// F.S. tertulis di layar Point p dalam format (p.Absis,p.Ordinat)
 
 void displayBuilding(Building elmt);
 // I.S. Building elmt terdefinisi
-// F.S. tertulis di layar Building elmt dalam format elmt.letter (elmt.pos.absis,elmt.pos.ordinat)
+// F.S. tertulis di layar Building elmt dalam format elmt.letter (elmt.pos.Absis,elmt.pos.Ordinat)
 
-void displayList(ListDin l);
+void displayListDin(ListDin l);
 /* Proses : Menuliskan isi list dengan traversal, list ditulis di antara kurung siku;
    antara dua elemen dipisahkan dengan separator "koma", tanpa tambahan karakter di depan,
    di tengah, atau di belakang, termasuk spasi dan enter */
@@ -116,38 +117,38 @@ void displayList(ListDin l);
 /* ********** OPERATOR RELASIONAL ********** */
 /* *** Operasi pembandingan list : < =, > *** */
 boolean isBuildingSame(Building i1, Building i2);
-// Mengirimkan true jika Building i1 dan i2 sama, yaitu ketika i1.letter == i2.letter dan i1.pos.absis == i2.pos.absis dan i1.pos.ordinat == i2.pos.ordinat
+// Mengirimkan true jika Building i1 dan i2 sama, yaitu ketika i1.letter == i2.letter dan i1.pos.Absis == i2.pos.Absis dan i1.pos.Ordinat == i2.pos.Ordinat
 
-boolean isListEqual(ListDin l1, ListDin l2);
+boolean isListDinEqual(ListDin l1, ListDin l2);
 /* Mengirimkan true jika l1 sama dengan l2 yaitu jika nEff l1 = l2 dan semua elemennya sama */
 
 /* ********** SEARCHING ********** */
 /* ***  Perhatian : list boleh kosong!! *** */
-IdxType indexOf(ListDin l, Building val);
+IdxType indexOfListDin(ListDin l, Building val);
 /* Search apakah ada elemen List l yang bernilai val */
 /* Jika ada, menghasilkan indeks i terkecil, dengan elemen ke-i = val */
 /* Jika tidak ada, mengirimkan IDX_UNDEF */
 /* Menghasilkan indeks tak terdefinisi (IDX_UNDEF) jika List l kosong */
 
 /* ********** OPERASI LAIN ********** */
-void copyList(ListDin lIn, ListDin *lOut);
+void copyListDin(ListDin lIn, ListDin *lOut);
 /* I.S. lIn terdefinisi tidak kosong, lOut sembarang */
 /* F.S. lOut berisi salinan dari lIn (identik, nEff dan capacity sama) */
 /* Proses : Menyalin isi lIn ke lOut */
 
-int countVal(ListDin l, Building val);
+int countValListDin(ListDin l, Building val);
 /* Menghasilkan berapa banyak kemunculan val di l */
 /* Jika l kosong menghasilkan 0 */
 
 /* ********** MENAMBAH DAN MENGHAPUS ELEMEN DI AKHIR ********** */
 /* *** Menambahkan elemen terakhir *** */
-void insertLast(ListDin *l, Building val);
+void insertLastListDin(ListDin *l, Building val);
 /* Proses: Menambahkan val sebagai elemen terakhir list */
 /* I.S. List l boleh kosong, tetapi tidak penuh */
 /* F.S. val adalah elemen terakhir l yang baru */
 
 /* ********** MENGHAPUS ELEMEN ********** */
-void deleteLast(ListDin *l, Building *val);
+void deleteLastListDin(ListDin *l, Building *val);
 /* Proses : Menghapus elemen terakhir list */
 /* I.S. List tidak kosong */
 /* F.S. val adalah nilai elemen terakhir l sebelum penghapusan, */
@@ -155,17 +156,17 @@ void deleteLast(ListDin *l, Building *val);
 /*      List l mungkin menjadi kosong */
 
 /* ********* MENGUBAH UKURAN ARRAY ********* */
-void growList(ListDin *l, int num);
+void growListDin(ListDin *l, int num);
 /* Proses : Menambahkan capacity l sebanyak num */
 /* I.S. List sudah terdefinisi */
 /* F.S. Ukuran list bertambah sebanyak num */
 
-void shrinkList(ListDin *l, int num);
+void shrinkListDin(ListDin *l, int num);
 /* Proses : Mengurangi capacity sebanyak num */
 /* I.S. List sudah terdefinisi, ukuran capacity > num, dan nEff < capacity - num. */
 /* F.S. Ukuran list berkurang sebanyak num. */
 
-void compactList(ListDin *l);
+void compactListDin(ListDin *l);
 /* Proses : Mengurangi capacity sehingga nEff = capacity */
 /* I.S. List lidak kosong */
 /* F.S. Ukuran nEff = capacity */

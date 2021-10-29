@@ -14,7 +14,7 @@ void CreateListDin(ListDin *l, int capacity) {
   LISTDIN_NEFF(*l) = 0;
 }
 
-void dealocate(ListDin *l) {
+void dealocateListDin(ListDin *l) {
   /* I.S. l terdefinisi; */
   /* F.S. (l) dikembalikan ke system, LISTDIN_CAPACITY(l)=0; LISTDIN_NEFF(l)=0 */
 
@@ -26,7 +26,7 @@ void dealocate(ListDin *l) {
 
 /* ********** SELEKTOR (TAMBAHAN) ********** */
 /* *** Banyaknya elemen *** */
-int length(ListDin l) {
+int lengthListDin(ListDin l) {
   /* Mengirimkan banyaknya elemen efektif list */
   /* Mengirimkan nol jika list l kosong */
   /* *** Daya tampung container *** */
@@ -36,7 +36,7 @@ int length(ListDin l) {
 }
 
 /* *** Selektor INDEKS *** */
-IdxType getLastIdx(ListDin l) {
+IdxType getLastIdxListDin(ListDin l) {
   /* Prekondisi : List l tidak kosong */
   /* Mengirimkan indeks elemen l terakhir */
 
@@ -45,14 +45,14 @@ IdxType getLastIdx(ListDin l) {
 }
 
 /* ********** Test Indeks yang valid ********** */
-boolean isIdxValid(ListDin l, int i) {
+boolean isIdxValidListDin(ListDin l, int i) {
   /* Mengirimkan true jika i adalah indeks yang valid utk kapasitas list l */
   /* yaitu antara indeks yang terdefinisi utk container*/
 
   // ALGORITMA
   return (i >= 0 && i < LISTDIN_CAPACITY(l));
 }
-boolean isIdxEff(ListDin l, IdxType i) {
+boolean isIdxEffListDin(ListDin l, IdxType i) {
   /* Mengirimkan true jika i adalah indeks yang terdefinisi utk list */
   /* yaitu antara 0..LISTDIN_NEFF(l) */
 
@@ -62,7 +62,7 @@ boolean isIdxEff(ListDin l, IdxType i) {
 
 /* ********** TEST KOSONG/PENUH ********** */
 /* *** Test list kosong *** */
-boolean isEmpty(ListDin l) {
+boolean isEmptyListDin(ListDin l) {
   /* Mengirimkan true jika list l kosong, mengirimkan false jika tidak */
 
   // ALGORITMA
@@ -70,7 +70,7 @@ boolean isEmpty(ListDin l) {
 }
 
 /* *** Test list penuh *** */
-boolean isFull(ListDin l){
+boolean isFullListDin(ListDin l){
   /* Mengirimkan true jika list l penuh, mengirimkan false jika tidak */
 
   // ALGORITMA
@@ -85,11 +85,11 @@ void inputBuilding(Building * input) {
 
   // ALGORITMA
   scanf(" %c", &(LETTER(*input))); //< INTENDED SPACE, SCANF IS DEPRECATED
-  scanf("%d", &(ABSIS(POS(*input))));
-  scanf("%d", &(ORDINAT(POS(*input))));
+  scanf("%d", &(Absis(POS(*input))));
+  scanf("%d", &(Ordinat(POS(*input))));
 }
 
-void readList(ListDin *l) {
+void readListDin(ListDin *l) {
   /* I.S. l sembarang dan sudah dialokasikan sebelumnya */
   /* F.S. List l terdefinisi */
   /* Proses : membaca banyaknya elemen l dan mengisi nilainya */
@@ -122,22 +122,22 @@ void readList(ListDin *l) {
 
 void displayPoint(Point p) {
   // I.S. Point p terdefinisi
-  // F.S. tertulis di layar Point p dalam format (p.absis,p.ordinat)
+  // F.S. tertulis di layar Point p dalam format (p.Absis,p.Ordinat)
   
   // ALGORITMA
-  printf("(%d,%d)", ABSIS(p), ORDINAT(p));
+  printf("(%d,%d)", Absis(p), Ordinat(p));
 }
 
 void displayBuilding(Building elmt){
   // I.S. Building elmt terdefinisi
-  // F.S. tertulis di layar Building elmt dalam format elmt.letter (elmt.pos.absis,elmt.pos.ordinat)
+  // F.S. tertulis di layar Building elmt dalam format elmt.letter (elmt.pos.Absis,elmt.pos.Ordinat)
 
   // ALGORITMA
   printf("%c ", LETTER(elmt));
   displayPoint(POS(elmt));
 }
 
-void displayList(ListDin l) {
+void displayListDin(ListDin l) {
   /* Proses : Menuliskan isi list dengan traversal, list ditulis di antara kurung siku;
     antara dua elemen dipisahkan dengan separator "koma", tanpa tambahan karakter di depan,
     di tengah, atau di belakang, termasuk spasi dan enter */
@@ -168,10 +168,10 @@ void displayList(ListDin l) {
 /* ********** OPERATOR RELASIONAL ********** */
 /* *** Operasi pembandingan list : < =, > *** */
 boolean isBuildingSame(Building i1, Building i2) { 
-  return (LETTER(i1) == LETTER(i2) && ABSIS(POS(i1)) == ABSIS(POS(i2)) && ORDINAT(POS(i1)) == ORDINAT(POS(i2)));
+  return (LETTER(i1) == LETTER(i2) && Absis(POS(i1)) == Absis(POS(i2)) && Ordinat(POS(i1)) == Ordinat(POS(i2)));
 }
 
-boolean isListEqual(ListDin l1, ListDin l2) {
+boolean isListDinEqual(ListDin l1, ListDin l2) {
   /* Mengirimkan true jika l1 sama dengan l2 yaitu jika nEff l1 = l2 dan semua elemennya sama */
 
   // KAMUS
@@ -195,7 +195,7 @@ boolean isListEqual(ListDin l1, ListDin l2) {
 
 /* ********** SEARCHING ********** */
 /* ***  Perhatian : list boleh kosong!! *** */
-IdxType indexOf(ListDin l, Building val){
+IdxType indexOfListDin(ListDin l, Building val){
   /* Search apakah ada elemen List l yang bernilai val */
   /* Jika ada, menghasilkan indeks i terkecil, dengan elemen ke-i = val */
   /* Jika tidak ada, mengirimkan IDX_UNDEF */
@@ -218,7 +218,7 @@ IdxType indexOf(ListDin l, Building val){
 }
 
 /* ********** OPERASI LAIN ********** */
-void copyList(ListDin lIn, ListDin *lOut) {
+void copyListDin(ListDin lIn, ListDin *lOut) {
   /* I.S. lIn terdefinisi tidak kosong, lOut sembarang */
   /* F.S. lOut berisi salinan dari lIn (identik, nEff dan capacity sama) */
   /* Proses : Menyalin isi lIn ke lOut */
@@ -235,7 +235,7 @@ void copyList(ListDin lIn, ListDin *lOut) {
   }
 }
 
-int countVal(ListDin l, Building val) {
+int countValListDin(ListDin l, Building val) {
   /* Menghasilkan berapa banyak kemunculan val di l */
   /* Jika l kosong menghasilkan 0 */
 
@@ -254,7 +254,7 @@ int countVal(ListDin l, Building val) {
 
 /* ********** MENAMBAH DAN MENGHAPUS ELEMEN DI AKHIR ********** */
 /* *** Menambahkan elemen terakhir *** */
-void insertLast(ListDin *l, Building val) {
+void insertLastListDin(ListDin *l, Building val) {
   /* Proses: Menambahkan val sebagai elemen terakhir list */
   /* I.S. List l boleh kosong, tetapi tidak penuh */
   /* F.S. val adalah elemen terakhir l yang baru */
@@ -265,7 +265,7 @@ void insertLast(ListDin *l, Building val) {
 }
 
 /* ********** MENGHAPUS ELEMEN ********** */
-void deleteLast(ListDin *l, Building *val) {
+void deleteLastListDin(ListDin *l, Building *val) {
   /* Proses : Menghapus elemen terakhir list */
   /* I.S. List tidak kosong */
   /* F.S. val adalah nilai elemen terakhir l sebelum penghapusan, */
@@ -278,7 +278,7 @@ void deleteLast(ListDin *l, Building *val) {
 }
 
 /* ********* MENGUBAH UKURAN ARRAY ********* */
-void growList(ListDin *l, int num) {
+void growListDin(ListDin *l, int num) {
   /* Proses : Menambahkan capacity l sebanyak num */
   /* I.S. List sudah terdefinisi */
   /* F.S. Ukuran list bertambah sebanyak num */
@@ -294,13 +294,13 @@ void growList(ListDin *l, int num) {
   for(i=0;i<LISTDIN_NEFF(tempList);i++) {
     LISTDIN_ELMT(tempList,i) = LISTDIN_ELMT(*l,i);
   }
-  dealocate(l);
+  dealocateListDin(l);
   LISTDIN_BUFFER(*l) = LISTDIN_BUFFER(tempList);
   LISTDIN_CAPACITY(*l) = LISTDIN_CAPACITY(tempList);
   LISTDIN_NEFF(*l) = LISTDIN_NEFF(tempList);
 }
 
-void shrinkList(ListDin *l, int num) {
+void shrinkListDin(ListDin *l, int num) {
   /* Proses : Mengurangi capacity sebanyak num */
   /* I.S. List sudah terdefinisi, ukuran capacity > num, dan nEff < capacity - num. */
   /* F.S. Ukuran list berkurang sebanyak num. */
@@ -316,13 +316,13 @@ void shrinkList(ListDin *l, int num) {
   for(i=0;i<LISTDIN_NEFF(tempList);i++) {
     LISTDIN_ELMT(tempList,i) = LISTDIN_ELMT(*l,i);
   }
-  dealocate(l);
+  dealocateListDin(l);
   LISTDIN_CAPACITY(*l) = LISTDIN_CAPACITY(tempList);
   LISTDIN_BUFFER(*l) = LISTDIN_BUFFER(tempList);
   LISTDIN_NEFF(*l) = LISTDIN_NEFF(tempList);
 }
 
-void compactList(ListDin *l) {
+void compactListDin(ListDin *l) {
   /* Proses : Mengurangi capacity sehingga nEff = capacity */
   /* I.S. List lidak kosong */
   /* F.S. Ukuran nEff = capacity */
@@ -338,7 +338,7 @@ void compactList(ListDin *l) {
   for(i=0;i<LISTDIN_NEFF(tempList);i++) {
     LISTDIN_ELMT(tempList,i) = LISTDIN_ELMT(*l,i);
   }
-  dealocate(l);
+  dealocateListDin(l);
   LISTDIN_BUFFER(*l) = LISTDIN_BUFFER(tempList);
   LISTDIN_CAPACITY(*l) = LISTDIN_CAPACITY(tempList);
   LISTDIN_NEFF(*l) = LISTDIN_NEFF(tempList);
