@@ -4,19 +4,19 @@
 #ifndef NODE_H
 #define NODE_H
 
-#include "../../object/item/item.h"
 #include <stdlib.h>
 
-typedef Item ElType;
+#include "../../object/item/item.h"
+
 typedef struct node *Address;
 typedef struct node {
-  ElType info;
+  Item info;
   Address next;
 } Node;
 
 #define INFO(p) (p)->info
 #define NEXT(p) (p)->next
 
-Address newNode(ElType val);
+Address newNode(Item val);
 
 #endif
