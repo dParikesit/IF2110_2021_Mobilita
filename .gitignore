@@ -1,9 +1,13 @@
 /bin
 /.vscode
 *.exe
+bool.txt
+bruh.txt
+test.txt
 *.o
 *.out
 
+/build
 CMakeLists.txt.user
 CMakeCache.txt
 CMakeFiles

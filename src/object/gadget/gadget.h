@@ -1,8 +1,10 @@
 #ifndef _GADGET_h
 #define _GADGET_h
-#include "../../include/wrapper.h"
 
-typedef enum {
+#include "../../include/boolean.h"
+
+typedef enum GadgetType {
+	NONE = -1,
 	KAIN_PEMBUNGKUS_WAKTU = 0,
 	SENTER_PEMBESAR = 1,
 	PINTU_KEMANA_SAJA = 2,

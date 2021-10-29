@@ -6,57 +6,49 @@
 
 char currentChar;
 boolean eot;
+FILE_MODE fileMode;
 
 static FILE * tape;
 static int retval;
 
-void start(FILE* file) {
-/* Mesin siap dioperasikan. Pita disiapkan untuk dibaca.
-   Karakter pertama yang ada pada pita posisinya adalah pada jendela.
-   I.S. : sembarang
-   F.S. : currentChar adalah karakter pertama pada pita
-          Jika currentChar != MARK maka EOP akan padam (false)
-          Jika currentChar = MARK maka EOP akan menyala (true) */
-
+void startCharM(FILE* file, FILE_MODE mode) {
 	/* Algoritma */
-       if (tape != file) { // Avoid set tape if file same
-              if (tape != NULL && tape != stdin) { // Close last stream if not null and not stdin
-                     close();
+       // Set tape only if file different or mode changed.
+       if (tape != file || fileMode != mode) {
+              // Close last stream if not null and not stdin
+              if (tape != NULL && tape != stdin) {
+                     closeCharM();
               }
+              fileMode = mode;
               tape = file;
-              adv();
+              eot = false;
+              if (mode == READ)
+                     advCharM();
        }
 }
 
-void startStdin() {
-       start(stdin);
-}
-
-void adv() {
-/* Pita dimajukan satu karakter. 
-   I.S. : Karakter pada jendela = currentChar, currentChar != MARK
-   F.S. : currentChar adalah karakter berikutnya dari currentChar yang lama, 
-          currentChar mungkin = MARK
-		      Jika  currentChar = MARK maka EOP akan menyala (true) */
+void advCharM() {
 	/* Algoritma */
 	retval = fscanf(tape,"%c",&currentChar);
-	eot = (currentChar == MARK);
+       if (fileMode == STDIN) {
+              eot = (currentChar == MARK);
+       } else {
+              eot = (retval == EOF);
+       }
 }
 
-void write(char c) {
-/* Pita menulis satu karakter. 
-   I.S. : Karakter pada jendela = currentChar, currentChar != MARK
-   F.S. : currentChar adalah karakter berikutnya dari currentChar yang lama, 
-          currentChar mungkin = MARK
-		      Jika  currentChar = MARK maka EOP akan menyala (true) */
+void writeCharM(char c) {
        /* Algoritma */
-	retval = fwrite(&c, sizeof(char), 1, tape);
-	eot = (currentChar == MARK);
+	fwrite(&c, sizeof(char), 1, tape);
+       currentChar = c;
 }
 
-void close() {
-/* Pita dikeluarkan dari mesin. */
+void closeCharM() {
        /* Algoritma */
+       if (fileMode == WRITE) {
+              writeCharM(MARK);
+       }
        fclose(tape);
        eot = true;
+       tape = NULL;
 }

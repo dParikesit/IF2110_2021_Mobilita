@@ -1,5 +1,2 @@
 #include "gadget.h"
-
-boolean isInventoryFull() {
-    return _gm.isPlaying;
-}
+#include "../../include/wrapper.h"
