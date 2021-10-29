@@ -26,19 +26,19 @@ void CreateListLinked(ListLinked *l);
 /* F.S. Terbentuk list kosong */
 
 /****************** TEST LIST KOSONG ******************/
-boolean isEmpty(ListLinked l);
+boolean isEmptyListLinked(ListLinked l);
 /* Mengirim true jika list kosong */
 
 /****************** GETTER SETTER ******************/
-ElType getElmt(ListLinked l, int idx);
-/* I.S. l terdefinisi, idx indeks yang valid dalam l, yaitu 0..length(l) */
+ElType getElmtListLinked(ListLinked l, int idx);
+/* I.S. l terdefinisi, idx indeks yang valid dalam l, yaitu 0..lengthListLinked(l) */
 /* F.S. Mengembalikan nilai elemen l pada indeks idx */
 
-void setElmt(ListLinked *l, int idx, ElType val);
-/* I.S. l terdefinisi, idx indeks yang valid dalam l, yaitu 0..length(l) */
+void setElmtListLinked(ListLinked *l, int idx, ElType val);
+/* I.S. l terdefinisi, idx indeks yang valid dalam l, yaitu 0..lengthListLinked(l) */
 /* F.S. Mengubah elemen l pada indeks ke-idx menjadi val */
 
-int indexOf(ListLinked l, ElType val);
+int indexOfListLinked(ListLinked l, ElType val);
 /* I.S. l, val terdefinisi */
 /* F.S. Mencari apakah ada elemen list l yang bernilai val */
 /* Jika ada, mengembalikan indeks elemen pertama l yang bernilai val */
@@ -46,36 +46,36 @@ int indexOf(ListLinked l, ElType val);
 
 /****************** PRIMITIF BERDASARKAN NILAI ******************/
 /*** PENAMBAHAN ELEMEN ***/
-void insertFirst(ListLinked *l, ElType val);
+void insertFirstListLinked(ListLinked *l, ElType val);
 /* I.S. l mungkin kosong */
 /* F.S. Melakukan alokasi sebuah elemen dan */
 /* menambahkan elemen pertama dengan nilai val jika alokasi berhasil. */
 /* Jika alokasi gagal: I.S.= F.S. */
 
-void insertLast(ListLinked *l, ElType val);
+void insertLastListLinked(ListLinked *l, ElType val);
 /* I.S. l mungkin kosong */
 /* F.S. Melakukan alokasi sebuah elemen dan */
 /* menambahkan elemen list di akhir: elemen terakhir yang baru */
 /* bernilai val jika alokasi berhasil. Jika alokasi gagal: I.S.= F.S. */
 
-void insertAt(ListLinked *l, ElType val, int idx);
-/* I.S. l tidak mungkin kosong, idx indeks yang valid dalam l, yaitu 0..length(l) */
+void insertAtListLinked(ListLinked *l, ElType val, int idx);
+/* I.S. l tidak mungkin kosong, idx indeks yang valid dalam l, yaitu 0..lengthListLinked(l) */
 /* F.S. Melakukan alokasi sebuah elemen dan */
 /* menyisipkan elemen dalam list pada indeks ke-idx (bukan menimpa elemen di i) */
 /* yang bernilai val jika alokasi berhasil. Jika alokasi gagal: I.S.= F.S. */
 
 /*** PENGHAPUSAN ELEMEN ***/
-void deleteFirst(ListLinked *l, ElType *val);
+void deleteFirstListLinked(ListLinked *l, ElType *val);
 /* I.S. ListLinked l tidak kosong  */
 /* F.S. Elemen pertama list dihapus: nilai info disimpan pada x */
 /*      dan alamat elemen pertama di-dealokasi */
-void deleteLast(ListLinked *l, ElType *val);
+void deleteLastListLinked(ListLinked *l, ElType *val);
 /* I.S. list tidak kosong */
 /* F.S. Elemen terakhir list dihapus: nilai info disimpan pada x */
 /*      dan alamat elemen terakhir di-dealokasi */
 
-void deleteAt(ListLinked *l, int idx, ElType *val);
-/* I.S. list tidak kosong, idx indeks yang valid dalam l, yaitu 0..length(l) */
+void deleteAtListLinked(ListLinked *l, int idx, ElType *val);
+/* I.S. list tidak kosong, idx indeks yang valid dalam l, yaitu 0..lengthListLinked(l) */
 /* F.S. val diset dengan elemen l pada indeks ke-idx. */
 /*      Elemen l pada indeks ke-idx dihapus dari l */
 
@@ -88,11 +88,11 @@ void displayListLinked(ListLinked l);
 /* Jika list kosong : menulis [] */
 /* Tidak ada tambahan karakter apa pun di awal, akhir, atau di tengah */
 
-int length(ListLinked l);
+int lengthListLinked(ListLinked l);
 /* Mengirimkan banyaknya elemen list; mengirimkan 0 jika list kosong */
 
 /****************** PROSES TERHADAP LIST ******************/
-ListLinked concat(ListLinked l1, ListLinked l2);
+ListLinked concatListLinked(ListLinked l1, ListLinked l2);
 /* I.S. l1 dan l2 sembarang */
 /* F.S. l1 dan l2 kosong, l3 adalah hasil konkatenasi l1 & l2 */
 /* Konkatenasi dua buah list : l1 dan l2    */
