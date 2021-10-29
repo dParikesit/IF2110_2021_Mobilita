@@ -112,7 +112,6 @@ void readList(ListDin *l) {
   } while (N<0 || N>LISTDIN_CAPACITY(*l));
 
   LISTDIN_NEFF(*l) = N;
-  printf("NEFFNYA: %d\n", LISTDIN_NEFF(*l));
   if (N!=0) {
     for (i=0; i < N; i++) {
       inputBuilding(&input);  
@@ -185,8 +184,7 @@ boolean isListEqual(ListDin l1, ListDin l2) {
     i=0;
     equal = true;
     while (i<LISTDIN_NEFF(l1) && equal) {
-      // if (LISTDIN_ELMT(l1,i) != LISTDIN_ELMT(l2,i))
-      if (isBuildingSame(LISTDIN_ELMT(l1,i), LISTDIN_ELMT(l2,i)))
+      if (!isBuildingSame(LISTDIN_ELMT(l1,i), LISTDIN_ELMT(l2,i)))
         equal = false;
       else
         i++;
