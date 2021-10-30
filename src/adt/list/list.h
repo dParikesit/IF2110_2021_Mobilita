@@ -8,6 +8,7 @@
 #define LIST_H
 
 #include "../../include/boolean.h"
+#include "../../object/gadget/gadget.h"
 
 /*  Kamus Umum */
 #define CAPACITY 100
