@@ -9,5 +9,7 @@
 #define BLD_CAP 26
 // Task capacity
 #define TASK_CAP 30
+// Index undefined constant
+#define IDX_UNDEF -1
 
 #endif

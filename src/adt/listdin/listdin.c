@@ -10,7 +10,7 @@ void CreateListDin(ListDin *l, int capacity) {
 
   // ALGORITMA
   LISTDIN_CAPACITY(*l) = capacity;
-  LISTDIN_BUFFER(*l) = (Building*)malloc(capacity * sizeof(Building));
+  LISTDIN_BUFFER(*l) = malloc(capacity * sizeof(ElTypeListDin));
   LISTDIN_NEFF(*l) = 0;
 }
 
@@ -36,7 +36,7 @@ int lengthListDin(ListDin l) {
 }
 
 /* *** Selektor INDEKS *** */
-IdxType getLastIdxListDin(ListDin l) {
+int getLastIdxListDin(ListDin l) {
   /* Prekondisi : List l tidak kosong */
   /* Mengirimkan indeks elemen l terakhir */
 
@@ -52,7 +52,7 @@ boolean isIdxValidListDin(ListDin l, int i) {
   // ALGORITMA
   return (i >= 0 && i < LISTDIN_CAPACITY(l));
 }
-boolean isIdxEffListDin(ListDin l, IdxType i) {
+boolean isIdxEffListDin(ListDin l, int i) {
   /* Mengirimkan true jika i adalah indeks yang terdefinisi utk list */
   /* yaitu antara 0..LISTDIN_NEFF(l) */
 
@@ -77,139 +77,23 @@ boolean isFullListDin(ListDin l){
   return (LISTDIN_NEFF(l) == LISTDIN_CAPACITY(l));
 }
 
-/* ********** BACA dan TULIS dengan INPUT/OUTPUT device ********** */
-void inputBuilding(Building * input) {
-  // I.S. input sembarang
-  // F.S. atribut input diisi sesuai dengan input user
-  // Proses: membaca input character dan 2 integer dari user dan mengassignnya ke dalam input
-
-  // ALGORITMA
-  scanf(" %c", &(LETTER(*input))); //< INTENDED SPACE, SCANF IS DEPRECATED
-  scanf("%d", &(Absis(POS(*input))));
-  scanf("%d", &(Ordinat(POS(*input))));
-}
-
-void readListDin(ListDin *l) {
-  /* I.S. l sembarang dan sudah dialokasikan sebelumnya */
-  /* F.S. List l terdefinisi */
-  /* Proses : membaca banyaknya elemen l dan mengisi nilainya */
-  /* 1. Baca banyaknya elemen diakhiri enter, misalnya N */
-  /*    Pembacaan diulangi sampai didapat N yang benar yaitu 0 <= N <= CAPACITY(l) */
-  /*    Jika N tidak valid, tidak diberikan pesan kesalahan */
-  /* 2. Jika 0 < N <= CAPACITY(l); Lakukan N kali: Baca elemen mulai dari indeks
-        0 satu per satu diakhiri enter */
-  /*    Jika N = 0; hanya terbentuk l kosong */
-
-  // KAMUS
-  int N;
-  IdxType i;
-  Building input;
-
-  // ALGORITMA
-  printf("masukkan neff dari list: \n");
-  do {
-    scanf("%d",&N);
-  } while (N<0 || N>LISTDIN_CAPACITY(*l));
-
-  LISTDIN_NEFF(*l) = N;
-  if (N!=0) {
-    for (i=0; i < N; i++) {
-      inputBuilding(&input);  
-      LISTDIN_ELMT(*l,i) = input;
-    }
-  }
-}
-
-void displayPoint(Point p) {
-  // I.S. Point p terdefinisi
-  // F.S. tertulis di layar Point p dalam format (p.Absis,p.Ordinat)
-  
-  // ALGORITMA
-  printf("(%d,%d)", Absis(p), Ordinat(p));
-}
-
-void displayBuilding(Building elmt){
-  // I.S. Building elmt terdefinisi
-  // F.S. tertulis di layar Building elmt dalam format elmt.letter (elmt.pos.Absis,elmt.pos.Ordinat)
-
-  // ALGORITMA
-  printf("%c ", LETTER(elmt));
-  displayPoint(POS(elmt));
-}
-
-void displayListDin(ListDin l) {
-  /* Proses : Menuliskan isi list dengan traversal, list ditulis di antara kurung siku;
-    antara dua elemen dipisahkan dengan separator "koma", tanpa tambahan karakter di depan,
-    di tengah, atau di belakang, termasuk spasi dan enter */
-  /* I.S. l boleh kosong */
-  /* F.S. Jika l tidak kosong: [e1,e2,...,en] */
-  /* Contoh : jika ada tiga elemen bernilai 1, 20, 30 akan dicetak: [1,20,30] */
-  /* Jika list kosong : menulis [] */
-
-  // KAMUS
-  IdxType i;
-  
-  // ALGORITMA
-  printf("[");
-  if (LISTDIN_NEFF(l) != 0) {
-    printf("{");
-    displayBuilding(LISTDIN_ELMT(l,0));
-    printf("}");
-    for (i=1;i<LISTDIN_NEFF(l);i++) {
-      printf(",");
-      printf("{");
-      displayBuilding(LISTDIN_ELMT(l,i));
-      printf("}");
-    }
-  }
-  printf("]");
-}
-
-/* ********** OPERATOR RELASIONAL ********** */
-/* *** Operasi pembandingan list : < =, > *** */
-boolean isBuildingSame(Building i1, Building i2) { 
-  return (LETTER(i1) == LETTER(i2) && Absis(POS(i1)) == Absis(POS(i2)) && Ordinat(POS(i1)) == Ordinat(POS(i2)));
-}
-
-boolean isListDinEqual(ListDin l1, ListDin l2) {
-  /* Mengirimkan true jika l1 sama dengan l2 yaitu jika nEff l1 = l2 dan semua elemennya sama */
-
-  // KAMUS
-  boolean equal;
-  IdxType i;
-
-  // ALGORITMA
-  equal = false;
-  if (LISTDIN_NEFF(l1) == LISTDIN_NEFF(l2)) {
-    i=0;
-    equal = true;
-    while (i<LISTDIN_NEFF(l1) && equal) {
-      if (!isBuildingSame(LISTDIN_ELMT(l1,i), LISTDIN_ELMT(l2,i)))
-        equal = false;
-      else
-        i++;
-    }
-  }
-  return equal;
-}
-
 /* ********** SEARCHING ********** */
 /* ***  Perhatian : list boleh kosong!! *** */
-IdxType indexOfListDin(ListDin l, Building val){
+int indexOfListDin(ListDin l, ElTypeListDin val){
   /* Search apakah ada elemen List l yang bernilai val */
   /* Jika ada, menghasilkan indeks i terkecil, dengan elemen ke-i = val */
   /* Jika tidak ada, mengirimkan IDX_UNDEF */
   /* Menghasilkan indeks tak terdefinisi (IDX_UNDEF) jika List l kosong */
 
   // KAMUS
-  IdxType i;
+  int i;
   
   // ALGORITMA
   if (LISTDIN_NEFF(l) == 0)
     i = IDX_UNDEF;
   else {
-    i=0;
-    while (!isBuildingSame(LISTDIN_ELMT(l,i), val) && i < LISTDIN_NEFF(l))
+    i = 0;
+    while (!(LISTDIN_ELMT(l, i) == val) && i < LISTDIN_NEFF(l))
       i++;
     if (i == LISTDIN_NEFF(l))
       i = IDX_UNDEF;
@@ -217,44 +101,9 @@ IdxType indexOfListDin(ListDin l, Building val){
   return i;
 }
 
-/* ********** OPERASI LAIN ********** */
-void copyListDin(ListDin lIn, ListDin *lOut) {
-  /* I.S. lIn terdefinisi tidak kosong, lOut sembarang */
-  /* F.S. lOut berisi salinan dari lIn (identik, nEff dan capacity sama) */
-  /* Proses : Menyalin isi lIn ke lOut */
-
-  // KAMUS
-  IdxType i;
-
-  // ALGORITMA
-  CreateListDin(lOut, LISTDIN_CAPACITY(lIn));
-  LISTDIN_NEFF(*lOut) = LISTDIN_NEFF(lIn);
-
-  for (i=0; i<LISTDIN_NEFF(lIn); i++){
-    LISTDIN_ELMT(*lOut,i) = LISTDIN_ELMT(lIn,i);
-  }
-}
-
-int countValListDin(ListDin l, Building val) {
-  /* Menghasilkan berapa banyak kemunculan val di l */
-  /* Jika l kosong menghasilkan 0 */
-
-  // KAMUS
-  int count;
-  IdxType i;
-
-  // ALGORITMA
-  count = 0;
-  for (i=0;i<LISTDIN_NEFF(l);i++) {
-    if (isBuildingSame(LISTDIN_ELMT(l,i), val))
-      count++;
-  }
-  return count;
-}
-
 /* ********** MENAMBAH DAN MENGHAPUS ELEMEN DI AKHIR ********** */
 /* *** Menambahkan elemen terakhir *** */
-void insertLastListDin(ListDin *l, Building val) {
+void insertLastListDin(ListDin *l, ElTypeListDin val) {
   /* Proses: Menambahkan val sebagai elemen terakhir list */
   /* I.S. List l boleh kosong, tetapi tidak penuh */
   /* F.S. val adalah elemen terakhir l yang baru */
@@ -265,7 +114,7 @@ void insertLastListDin(ListDin *l, Building val) {
 }
 
 /* ********** MENGHAPUS ELEMEN ********** */
-void deleteLastListDin(ListDin *l, Building *val) {
+void deleteLastListDin(ListDin *l, ElTypeListDin* val) {
   /* Proses : Menghapus elemen terakhir list */
   /* I.S. List tidak kosong */
   /* F.S. val adalah nilai elemen terakhir l sebelum penghapusan, */
@@ -273,8 +122,8 @@ void deleteLastListDin(ListDin *l, Building *val) {
   /*      List l mungkin menjadi kosong */
 
   // ALGORITMA
-  *val = LISTDIN_ELMT(*l,LISTDIN_NEFF(*l)-1);
   LISTDIN_NEFF(*l)--;
+  *val = LISTDIN_ELMT(*l, LISTDIN_NEFF(*l));
 }
 
 /* ********* MENGUBAH UKURAN ARRAY ********* */
@@ -284,7 +133,7 @@ void growListDin(ListDin *l, int num) {
   /* F.S. Ukuran list bertambah sebanyak num */
 
   // KAMUS
-  IdxType i;
+  int i;
   ListDin tempList;
 
   // ALGORITMA
@@ -306,7 +155,7 @@ void shrinkListDin(ListDin *l, int num) {
   /* F.S. Ukuran list berkurang sebanyak num. */
 
   // KAMUS
-  IdxType i;
+  int i;
   ListDin tempList;
 
   // ALGORITMA
@@ -328,7 +177,7 @@ void compactListDin(ListDin *l) {
   /* F.S. Ukuran nEff = capacity */
 
   // KAMUS
-  IdxType i;
+  int i;
   ListDin tempList;
 
   // ALGORITMA

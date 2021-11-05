@@ -1,5 +1,5 @@
 #!/bin/bash
-if [ $1 = "clean" ]; then
+if [ "$1" = "clean" ]; then
     echo [0] Deleting older cmake cache...
     rm CMakeFiles -rf
     rm cmake_install.cmake -f

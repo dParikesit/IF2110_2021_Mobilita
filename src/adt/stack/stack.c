@@ -1,9 +1,3 @@
-// NIM              : 13519032
-// Nama             : Muhammad Fahkry Malta
-// Tanggal          : 21 Oktober 2021
-// Topik praktikum  : Stack
-// Deskripsi        : Membuat ADT Stack
-
 #include <stdio.h>
 #include "stack.h"
 
@@ -24,26 +18,25 @@ boolean isEmpty(Stack s){
 
 boolean isFull(Stack s){
 /* Mengirim true jika tabel penampung nilai s stack penuh */
-    return(IDX_TOP(s) == CAPACITY - 1);
+    return(IDX_TOP(s) == STACK_CAPACITY - 1);
 }
 
 /* ************ Menambahkan sebuah elemen ke Stack ************ */
-void push(Stack *s, ElType val){
+void push(Stack *s, ElTypeStack* val){
 /* Menambahkan val sebagai elemen Stack s */
 /* I.S. s mungkin kosong, tabel penampung elemen stack TIDAK penuh */
 /* F.S. val menjadi TOP yang baru,IDX_TOP bertambah 1 */
     if (isEmpty(*s))
     {
         IDX_TOP(*s) = 0;
-    }
-    else{
+    } else {
         IDX_TOP(*s)++;
     }
     TOP(*s) = val;
 }
 
 /* ************ Menghapus sebuah elemen Stack ************ */
-void pop(Stack *s, ElType *val){
+void pop(Stack *s, ElTypeStack **val){
 /* Menghapus val dari Stack s */
 /* I.S. s tidak mungkin kosong */
 /* F.S. val adalah nilai elemen TOP yang lama, IDX_TOP berkurang 1 */

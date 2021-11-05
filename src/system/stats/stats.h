@@ -1,17 +1,20 @@
 #ifndef STATS_h
 #define STATS_h
 #include "../../include/boolean.h"
+#include "../../adt/stack/stack.h"
+#include "../../adt/listlinked/list_linked.h"
+#include "../../adt/list/list.h"
 
 /* Gameplay Status. */
 typedef struct Stats {
 	// Daftar gadget yang dipunyai oleh mobita.
-   //List inventory; 
+   List inventory; 
    // Daftar pesanan yang bisa di pick up mobita.
-   //ListLinked toDoList;
+   ListLinked toDoList;
    // Daftar pesanan yang sudah di pick up mobita.
-	//Stack bag;
+	Stack bag;
    // Daftar pesanan yang sudah di pick up mobita (seperti bag)
-	//ListLinked inProgressList;
+	ListLinked inProgressList;
 	// Uang mobita. Dimulai dengan 0.
    int money;
    // Banyaknya ability returnToSender yang dimiliki mobita.

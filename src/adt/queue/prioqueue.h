@@ -10,15 +10,14 @@
 #include <stdlib.h>
 
 /* Konstanta */
-#define IDX_UNDEF -1
 #define QUEUE_CAPACITY TASK_CAP
 
-/* Deklarasi ElType */
-typedef Item ElType;
+/* Deklarasi ElTypeQueue */
+typedef Item ElTypeQueue;
 
 /* Definisi PrioQueue */
 typedef struct PrioQueue {
-	ElType buffer[QUEUE_CAPACITY];
+	ElTypeQueue buffer[QUEUE_CAPACITY];
 	int idxHead;
 	int idxTail;
 } PrioQueue;
@@ -38,25 +37,25 @@ void CreatePrioQueue(PrioQueue *pq);
 /* - Index tail bernilai IDX_UNDEF */
 /* Proses : Melakukan alokasi, membuat sebuah pq kosong */
 
-boolean isEmpty(PrioQueue pq);
+boolean isEmptyQueue(PrioQueue pq);
 /* Mengirim true jika pq kosong: lihat definisi di atas */
 
-boolean isFull(PrioQueue pq);
+boolean isFullQueue(PrioQueue pq);
 /* Mengirim true jika tabel penampung elemen pq sudah penuh */
 /* yaitu jika index head bernilai 0 dan index tail bernilai QUEUE_CAPACITY-1 */
 
-int length(PrioQueue pq);
+int lengthQueue(PrioQueue pq);
 /* Mengirimkan banyaknya elemen queue. Mengirimkan 0 jika pq kosong. */
 
 /*** Primitif Add/Delete ***/
-void enqueue(PrioQueue *pq, ElType val);
+void enqueue(PrioQueue *pq, ElTypeQueue val);
 /* Proses: Menambahkan val pada pq dengan aturan FIFO */
 /* I.S. pq mungkin kosong, tabel penampung elemen pq TIDAK penuh */
 /* F.S. val menjadi QUEUE_TAIL yang baru, QUEUE_IDX_TAIL "mundur".
         Jika q penuh semu, maka perlu dilakukan aksi penggeseran "maju" elemen-elemen pq
         menjadi rata kiri untuk membuat ruang kosong bagi QUEUE_TAIL baru  */
 
-void dequeue(PrioQueue * pq, ElType *val);
+void dequeue(PrioQueue * pq, ElTypeQueue *val);
 /* Proses: Menghapus val pada q dengan aturan FIFO */
 /* I.S. pq tidak mungkin kosong */
 /* F.S. val = nilai elemen QUEUE_HEAD pd

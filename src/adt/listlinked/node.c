@@ -5,7 +5,7 @@
 
 #include <stdlib.h>
 
-Address newNode(Item val) {
+Address newNode(ElTypeListLinked val) {
   Address p = (Address)malloc(sizeof(Node));
   if (p != NULL) {
     INFO(p) = val;

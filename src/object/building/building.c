@@ -1,6 +1,11 @@
 #include "building.h"
 #include "../../include/wrapper.h"
 
+// Operator equal, mengembalikan true jika karakter building sama dan posisi sama
+boolean isEqualBuilding(Building b1, Building b2) {
+    return (b1.letter == b2.letter && EQPoint(b1.pos, b2.pos));
+}
+
 // Mendapatkan referensi bangunan dengan letter tertentu.
 Building* getLetterRefBuilding(char letter) {
     // TODO: get the building list from _gm.map.building, return to pointer
@@ -13,9 +18,8 @@ Building* getLetterRefBuilding(char letter) {
    F.S. Menuliskan building ke dalam stream. */
 void SerializeBuilding(Building* b) {
     writeChar(b->letter);
-    // TODO: uncomment this if pos declared.
-    //writeInt(b->pos.x);
-    //writeInt(b->pos.y);
+    writeInt(b->pos.X);
+    writeInt(b->pos.Y);
     writeMark();
 }
 
@@ -24,10 +28,5 @@ void SerializeBuilding(Building* b) {
    F.S. Menginisialisasi Building dengan data di stream. */
 void DeserializeBuilding(Building* b) {
     b->letter = readChar();
-    // TODO: uncomment this if pos declared.
-    //Point p;
-    //CreatePoint(p);
-    //p.x = readInt();
-    //p.y = readInt();
-    //b->pos = p;
+    b->pos = MakePoint(readInt(), readInt());
 }

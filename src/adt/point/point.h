@@ -5,7 +5,7 @@
 #define POINT_H
 
 #include "../../include/boolean.h"
-typedef struct {
+typedef struct Point {
   int X; /* absis   */
   int Y; /* ordinat */
 } Point;
@@ -41,8 +41,6 @@ void TulisPoint(Point P);
 /* *** Kelompok operasi relasional terhadap Point *** */
 boolean EQPoint(Point P1, Point P2);
 /* Mengirimkan true jika P1 = P2 : absis dan ordinatnya sama */
-boolean NEQPoint(Point P1, Point P2);
-/* Mengirimkan true jika P1 tidak sama dengan P2 */
 
 /* *** Kelompok menentukan di mana P berada *** */
 boolean IsOrigin(Point P);

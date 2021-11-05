@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "matrix.h"
-#include "boolean.h"
 
 void CreateMatrix(int nRow, int nCol, Matrix *m)
 /* Membentuk sebuah Matrix "kosong" yang siap diisi berukuran nRow x nCol di "ujung kiri" memori */

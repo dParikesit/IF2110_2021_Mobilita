@@ -24,6 +24,7 @@ void SerializeStats() {
     writeInt(_gm.stats.returnToSender);
     writeInt(_gm.stats.speedBoostDuration);
     writeInt(_gm.stats.bagCapEff);
+    writeMark();
 }
 
 void DeserializeStats() {

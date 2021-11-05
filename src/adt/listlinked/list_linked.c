@@ -22,7 +22,7 @@ boolean isEmptyListLinked(ListLinked l) {
 }
 
 /****************** GETTER SETTER ******************/
-Item getElmtListLinked(ListLinked l, int idx) {
+ElTypeListLinked getElmtListLinked(ListLinked l, int idx) {
   /* I.S. l terdefinisi, idx indeks yang valid dalam l, yaitu 0..lengthListLinked(l) */
   /* F.S. Mengembalikan nilai elemen l pada indeks idx */
   int i = 0;
@@ -34,7 +34,7 @@ Item getElmtListLinked(ListLinked l, int idx) {
   return INFO(p);
 }
 
-void setElmtListLinked(ListLinked *l, int idx, Item val) {
+void setElmtListLinked(ListLinked *l, int idx, ElTypeListLinked val) {
   /* I.S. l terdefinisi, idx indeks yang valid dalam l, yaitu 0..lengthListLinked(l) */
   /* F.S. Mengubah elemen l pada indeks ke-idx menjadi val */
   int i = 0;
@@ -46,11 +46,11 @@ void setElmtListLinked(ListLinked *l, int idx, Item val) {
   INFO(p) = val;
 }
 
-int indexOfListLinked(ListLinked l, Item val) {
+int indexOfListLinked(ListLinked l, ElTypeListLinked val) {
   /* I.S. l, val terdefinisi */
-  /* F.S. Mencari apakah ada elemen ListLinked l yang bernilai val */
+  /* F.S. Mencari apakah ada elemen ListLinked l yang bernilai val (menunjuk pada val yang sama) */
   /* Jika ada, mengembalikan indeks elemen pertama l yang bernilai val */
-  /* Mengembalikan IDX_UNDEF jika tidak ditemukan */
+  /* Mengembalikan IDX_UNDEF jika tidak dElTypeListLinkedukan */
   int idx = IDX_UNDEF;
   boolean found = false;
   int i = 0;
@@ -68,7 +68,7 @@ int indexOfListLinked(ListLinked l, Item val) {
 
 /****************** PRIMITIF BERDASARKAN NILAI ******************/
 /*** PENAMBAHAN ELEMEN ***/
-void insertFirstListLinked(ListLinked *l, Item val) {
+void insertFirstListLinked(ListLinked *l, ElTypeListLinked val) {
   /* I.S. l mungkin kosong */
   /* F.S. Melakukan alokasi sebuah elemen dan */
   /* menambahkan elemen pertama dengan nilai val jika alokasi berhasil. */
@@ -80,7 +80,7 @@ void insertFirstListLinked(ListLinked *l, Item val) {
   }
 }
 
-void insertLastListLinked(ListLinked *l, Item val) {
+void insertLastListLinked(ListLinked *l, ElTypeListLinked val) {
   /* I.S. l mungkin kosong */
   /* F.S. Melakukan alokasi sebuah elemen dan */
   /* menambahkan elemen ListLinked di akhir: elemen terakhir yang baru */
@@ -99,40 +99,8 @@ void insertLastListLinked(ListLinked *l, Item val) {
   }
 }
 
-void insertAtListLinked(ListLinked *l, Item val, int idx) {
-  /* I.S. l tidak mungkin kosong, idx indeks yang valid dalam l, yaitu 0..lengthListLinked(l) */
-  /* F.S. Melakukan alokasi sebuah elemen dan */
-  /* menyisipkan elemen dalam ListLinked pada indeks ke-idx (bukan menimpa elemen di i) */
-  /* yang bernilai val jika alokasi berhasil. Jika alokasi gagal: I.S.= F.S. */
-
-  /* ALGORITMA */
-  if (idx == 0) {
-    insertFirstListLinked(l, val);
-  } else {
-    Address p = newNode(val);
-    if (p != NULL) {
-      Address prev = FIRST(*l);
-      int i = 0;
-      while (i < (idx - 1)) {
-        i++;
-        prev = NEXT(prev);
-      }
-      NEXT(p) = NEXT(prev);
-      NEXT(prev) = p;
-    }
-  }
-}
-
 /*** PENGHAPUSAN ELEMEN ***/
-void deleteFirstListLinked(ListLinked *l, Item *val) {
-  /* I.S. ListLinked l tidak kosong  */
-  /* F.S. Elemen pertama ListLinked dihapus: nilai info disimpan pada x */
-  /*      dan alamat elemen pertama di-dealokasi */
-  Address p = FIRST(*l);
-  *val = INFO(p);
-  FIRST(*l) = NEXT(p);
-}
-void deleteLastListLinked(ListLinked *l, Item *val) {
+void deleteLastListLinked(ListLinked *l, ElTypeListLinked *val) {
   /* I.S. ListLinked tidak kosong */
   /* F.S. Elemen terakhir ListLinked dihapus: nilai info disimpan pada x */
   /*      dan alamat elemen terakhir di-dealokasi */
@@ -148,25 +116,6 @@ void deleteLastListLinked(ListLinked *l, Item *val) {
     NEXT(prev) = NULL;
   }
   *val = INFO(p);
-}
-
-void deleteAtListLinked(ListLinked *l, int idx, Item *val) {
-  /* I.S. ListLinked tidak kosong, idx indeks yang valid dalam l, yaitu 0..lengthListLinked(l) */
-  /* F.S. val diset dengan elemen l pada indeks ke-idx. */
-  /*      Elemen l pada indeks ke-idx dihapus dari l */
-  if (idx == 0) {
-    deleteFirstListLinked(l, val);
-  } else {
-    int i = 0;
-    Address prev = FIRST(*l);
-    while (i < (idx - 1)) {
-      i++;
-      prev = NEXT(prev);
-    }
-    Address p = NEXT(prev);
-    *val = INFO(p);
-    NEXT(prev) = NEXT(p);
-  }
 }
 
 /****************** PROSES SEMUA ELEMEN ListLinked ******************/

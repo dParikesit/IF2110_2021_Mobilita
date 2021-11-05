@@ -1,16 +1,21 @@
 // Run with:
-// gcc stream_driver.c stream.c ../../adt/machine/charmachine.c ../../adt/machine/wordmachine.c -o main
+// gcc stream_driver.c stream.c ../../adt/machine/charmachine.c ../../adt/machine/wordmachine.c ../../adt/point/point.c -o main
 #include "stream.h"
+#include "../../adt/point/point.h"
 
 int main() {
     // KAMUS LOKAL
     char* s;
     char c;
     FILE* f;
+    Point p;
     // ALGORITMA
     printf("BEGIN STDIN\n");
     initStdin();
-    printf("Siapa nama kamu? "); s = readLine();
+    printf("Masukkan titik [X] [Y]: ");
+    p = MakePoint(readInt(), readInt());
+    printf("Titik: "); TulisPoint(p);
+    printf("\nSiapa nama kamu? "); s = readLine();
     printf("Namamu: %s\n", s);
     printf("Compare 'c bad js good' dengan: "); s = readLine();
     printf("Masukan kamu %s dengan 'c bad js good'\n", (isEqualString(s, "c bad js good") ? "SAMA" : "BEDA"));

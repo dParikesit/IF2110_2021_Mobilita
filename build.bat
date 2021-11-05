@@ -1,7 +1,9 @@
 @echo off
-if "%~1"=="" goto MAIN
-else if %1%==clean goto CLEAN
-else goto MAIN
+if "%~1"=="clean" (
+    goto CLEAN
+) else (
+    goto MAIN
+)
 
 :CLEAN
 echo [0] Deleting older cmake cache...

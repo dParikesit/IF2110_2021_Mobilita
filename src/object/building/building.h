@@ -1,15 +1,19 @@
 #ifndef _BUILDING_h
 #define _BUILDING_h
 
+#include "../../adt/point/point.h"
+
 typedef struct Building {
+    // Posisi Bangunan
+    Point pos;
     // Karakter Bangunan
     char letter;
-    // Posisi Bangunan
-    // TODO: Uncomment this if Point declared.
-    //Point pos;
 } Building;
 
 void CreateBuilding(Building* b, char letter); // Create new building
+
+// Operator equal, mengembalikan true jika karakter building sama dan posisi sama
+boolean isEqualBuilding(Building b1, Building b2);
 
 // Mendapatkan referensi bangunan dengan letter tertentu.
 Building* getLetterRefBuilding(char letter);

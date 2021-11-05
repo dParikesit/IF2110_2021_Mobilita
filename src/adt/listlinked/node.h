@@ -8,15 +8,16 @@
 
 #include "../../object/item/item.h"
 
+typedef Item* ElTypeListLinked;
 typedef struct node *Address;
 typedef struct node {
-  Item info;
+  ElTypeListLinked info;
   Address next;
 } Node;
 
 #define INFO(p) (p)->info
 #define NEXT(p) (p)->next
 
-Address newNode(Item val);
+Address newNode(ElTypeListLinked val);
 
 #endif

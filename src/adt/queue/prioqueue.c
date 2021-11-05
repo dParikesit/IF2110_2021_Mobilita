@@ -32,14 +32,14 @@ int lengthQueue(PrioQueue pq) {
 }
 
 /*** Primitif Add/Delete ***/
-void enqueue(PrioQueue *pq, ElType val) {
+void enqueue(PrioQueue *pq, ElTypeQueue val) {
 /* Proses: Menambahkan val pada pq dengan aturan FIFO */
 /* I.S. pq mungkin kosong, tabel penampung elemen pq TIDAK penuh */
 /* F.S. val menjadi QUEUE_TAIL yang baru, QUEUE_IDX_TAIL "mundur".
         Jika q penuh semu, maka perlu dilakukan aksi penggeseran "maju" elemen-elemen pq
         menjadi rata kiri untuk membuat ruang kosong bagi QUEUE_TAIL baru  */
     int i, j;
-    ElType t;
+    ElTypeQueue t;
     boolean found;
     if (isEmptyQueue(*pq)) { // Add casually if empty
         QUEUE_IDX_HEAD(*pq) = QUEUE_IDX_TAIL(*pq) = 0;
@@ -75,7 +75,7 @@ void enqueue(PrioQueue *pq, ElType val) {
     }
 }
 
-void dequeue(PrioQueue * pq, ElType *val) {
+void dequeue(PrioQueue * pq, ElTypeQueue *val) {
 /* Proses: Menghapus val pada q dengan aturan FIFO */
 /* I.S. pq tidak mungkin kosong */
 /* F.S. val = nilai elemen QUEUE_HEAD pd

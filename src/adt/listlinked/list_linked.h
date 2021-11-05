@@ -5,12 +5,13 @@
 #ifndef ListLinked_LINKED_H
 #define ListLinked_LINKED_H
 
+#include "../../include/constants.h"
 #include "../../include/boolean.h"
 #include "node.h"
 
+#define LISTLINKED_CAPACITY TASK_CAP
 typedef Address ListLinked;
 
-#define IDX_UNDEF (-1)
 #define FIRST(l) (l)
 
 /* Definisi ListLinked : */
@@ -29,64 +30,41 @@ boolean isEmptyListLinked(ListLinked l);
 /* Mengirim true jika ListLinked kosong */
 
 /****************** GETTER SETTER ******************/
-Item getElmtListLinked(ListLinked l, int idx);
+ElTypeListLinked getElmtListLinked(ListLinked l, int idx);
 /* I.S. l terdefinisi, idx indeks yang valid dalam l, yaitu 0..lengthListLinked(l) */
 /* F.S. Mengembalikan nilai elemen l pada indeks idx */
 
-void setElmtListLinked(ListLinked *l, int idx, Item val);
+void setElmtListLinked(ListLinked *l, int idx, ElTypeListLinked val);
 /* I.S. l terdefinisi, idx indeks yang valid dalam l, yaitu 0..lengthListLinked(l) */
 /* F.S. Mengubah elemen l pada indeks ke-idx menjadi val */
 
-int indexOfListLinked(ListLinked l, Item val);
+int indexOfListLinked(ListLinked l, ElTypeListLinked val);
 /* I.S. l, val terdefinisi */
 /* F.S. Mencari apakah ada elemen ListLinked l yang bernilai val */
 /* Jika ada, mengembalikan indeks elemen pertama l yang bernilai val */
-/* Mengembalikan IDX_UNDEF jika tidak ditemukan */
+/* Mengembalikan IDX_UNDEF jika tidak dElTypeListLinkedukan */
 
 /****************** PRIMITIF BERDASARKAN NILAI ******************/
 /*** PENAMBAHAN ELEMEN ***/
-void insertFirstListLinked(ListLinked *l, Item val);
+void insertFirstListLinked(ListLinked *l, ElTypeListLinked val);
 /* I.S. l mungkin kosong */
 /* F.S. Melakukan alokasi sebuah elemen dan */
 /* menambahkan elemen pertama dengan nilai val jika alokasi berhasil. */
 /* Jika alokasi gagal: I.S.= F.S. */
 
-void insertLastListLinked(ListLinked *l, Item val);
+void insertLastListLinked(ListLinked *l, ElTypeListLinked val);
 /* I.S. l mungkin kosong */
 /* F.S. Melakukan alokasi sebuah elemen dan */
 /* menambahkan elemen ListLinked di akhir: elemen terakhir yang baru */
 /* bernilai val jika alokasi berhasil. Jika alokasi gagal: I.S.= F.S. */
 
-void insertAtListLinked(ListLinked *l, Item val, int idx);
-/* I.S. l tidak mungkin kosong, idx indeks yang valid dalam l, yaitu 0..lengthListLinked(l) */
-/* F.S. Melakukan alokasi sebuah elemen dan */
-/* menyisipkan elemen dalam ListLinked pada indeks ke-idx (bukan menimpa elemen di i) */
-/* yang bernilai val jika alokasi berhasil. Jika alokasi gagal: I.S.= F.S. */
-
 /*** PENGHAPUSAN ELEMEN ***/
-void deleteFirstListLinked(ListLinked *l, Item *val);
-/* I.S. ListLinked l tidak kosong  */
-/* F.S. Elemen pertama ListLinked dihapus: nilai info disimpan pada x */
-/*      dan alamat elemen pertama di-dealokasi */
-void deleteLastListLinked(ListLinked *l, Item *val);
+void deleteLastListLinked(ListLinked *l, ElTypeListLinked *val);
 /* I.S. ListLinked tidak kosong */
 /* F.S. Elemen terakhir ListLinked dihapus: nilai info disimpan pada x */
 /*      dan alamat elemen terakhir di-dealokasi */
 
-void deleteAtListLinked(ListLinked *l, int idx, Item *val);
-/* I.S. ListLinked tidak kosong, idx indeks yang valid dalam l, yaitu 0..lengthListLinked(l) */
-/* F.S. val diset dengan elemen l pada indeks ke-idx. */
-/*      Elemen l pada indeks ke-idx dihapus dari l */
-
 /****************** PROSES SEMUA ELEMEN ListLinked ******************/
-void displayListLinked(ListLinked l);
-// void printInfo(ListLinked l);
-/* I.S. ListLinked mungkin kosong */
-/* F.S. Jika ListLinked tidak kosong, iai ListLinked dicetak ke kanan: [e1,e2,...,en] */
-/* Contoh : jika ada tiga elemen bernilai 1, 20, 30 akan dicetak: [1,20,30] */
-/* Jika ListLinked kosong : menulis [] */
-/* Tidak ada tambahan karakter apa pun di awal, akhir, atau di tengah */
-
 int lengthListLinked(ListLinked l);
 /* Mengirimkan banyaknya elemen ListLinked; mengirimkan 0 jika ListLinked kosong */
 
