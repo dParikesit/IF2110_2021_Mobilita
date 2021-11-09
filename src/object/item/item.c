@@ -3,40 +3,39 @@
 #include "../../adt/listlinked/list_linked.h"
 #include "../../helper/stream/stream.h"
 #include "../../include/wrapper.h"
-#include "../../system/map/map.h"
 
 Item *getCurrentItem() {
   // Get a pointer Item on the top of the bag
-  return TOP(_gm.stats.bag);
+  return TOP(GSTATS.bag);
 }
 
 Item *getPickUpItem() {
   // Get a pointer to first item that can be picked up in current mobitaPos
-  return getElmtListLinked(_gm.stats.toDoList, indexOfPosLinkedList(_gm.stats.toDoList, MOBITAPOS));
+  return getElmtListLinked(GSTATS.toDoList, indexOfPosLinkedList(GSTATS.toDoList, MOBITAPOS));
 }
 
 boolean toDoListHas(ItemType type) {
   // Check if toDoList has given ItemType (for checking if there’s VIP Item or so)
-  return indexOfTypeLinkedList(_gm.stats.toDoList, type) != IDX_UNDEF;
+  return indexOfTypeLinkedList(GSTATS.toDoList, type) != IDX_UNDEF;
 }
 
 boolean inProgressListHas(ItemType type) {
   // Check if inProgressList has given ItemType (for checking if there’s Heavy Item or so)
-  return indexOfTypeLinkedList(_gm.stats.inProgressList, type) != IDX_UNDEF;
+  return indexOfTypeLinkedList(GSTATS.inProgressList, type) != IDX_UNDEF;
 }
 
 ElTypeListLinked getItemInProgressList(ItemType type) {
   // Get first item in progress list that has ItemType == type
   // Guaranteed has it
-  int idx = indexOfTypeLinkedList(_gm.stats.inProgressList, type);
-  return getElmtListLinked(_gm.stats.inProgressList, idx);
+  int idx = indexOfTypeLinkedList(GSTATS.inProgressList, type);
+  return getElmtListLinked(GSTATS.inProgressList, idx);
 }
 
 void updateItem() {
   // I.S. inProgressList terdefinisi
   // F.S. Semua PERISHABLE di inProgressList akan berkurang current duration nya
   boolean found = false;
-  Address p = FIRST(_gm.stats.inProgressList);
+  Address p = FIRST(GSTATS.inProgressList);
   int idx = -1;
   while (found == false) {
     while (NEXT(p) != NULL && found == false) {
@@ -50,22 +49,22 @@ void updateItem() {
 
     ElTypeListLinked tempListLinked;
     if (found == true) {
-      deleteAt(&_gm.stats.inProgressList, idx, &tempListLinked);
+      deleteAt(&GSTATS.inProgressList, idx, &tempListLinked);
 
       Stack tempStack;
       CreateStack(&tempStack);
 
       ElTypeStack *tempElStack;
-      while (IDX_TOP(_gm.stats.bag) > idx) {
-        pop(&_gm.stats.bag, &tempElStack);
+      while (IDX_TOP(GSTATS.bag) > idx) {
+        pop(&GSTATS.bag, &tempElStack);
         push(&tempStack, tempElStack);
       }
 
-      pop(&_gm.stats.bag, &tempElStack);
+      pop(&GSTATS.bag, &tempElStack);
 
-      while (!isEmpty(_gm.stats.bag)) {
+      while (!isEmpty(GSTATS.bag)) {
         pop(&tempStack, &tempElStack);
-        push(&_gm.stats.bag, tempElStack);
+        push(&GSTATS.bag, tempElStack);
       }
     }
 

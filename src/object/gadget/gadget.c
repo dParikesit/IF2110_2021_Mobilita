@@ -1,18 +1,16 @@
 #include "gadget.h"
 
 #include "../../include/wrapper.h"
-#include "../../system/map/map.h"
-#include "../../system/time/time.h"
 
 boolean isInventoryFull() {
   // Mengecek apakah inventory full, yaitu ketika panjang list==capacity
-  return lengthList(_gm.stats.inventory) == INV_CAP;
+  return lengthList(GSTATS.inventory) == INV_CAP;
 }
 void addGadget(GadgetType gadget) {
   // Add gadget to inventory
   // I.S. Inventory terdefinisi dan tidak penuh
   // F.S. gadget masuk ke inventory
-  insertList(&_gm.stats.inventory, gadget);
+  insertList(&GSTATS.inventory, gadget);
 }
 char *getGadgetName(GadgetType gadget) {
   // I.S. gadget terdefinisi tipe nya
@@ -54,41 +52,41 @@ void showAndUseGadget() {
   // F.S. print daftar inventory, kemudian memanggil apply gadget yang dipilih
   int command;
   for (int i = 0; i < INV_CAP; i++) {
-    printf("%d. %s\n", (i + 1), getGadgetName(LIST_ELMT(_gm.stats.inventory, i)));
+    printf("%d. %s\n", (i + 1), getGadgetName(LIST_ELMT(GSTATS.inventory, i)));
   }
   printf("Gadget mana yang ingin digunakan? (ketik 0 jika ingin kembali)\n\n");
   printf("ENTER COMMAND: ");  //Fungsi buat enter command apa ya?
   scanf("%d", &command);
 
-  applyGadget(LIST_ELMT(_gm.stats.inventory, command - 1));
-  deleteAtList(&_gm.stats.inventory, command-1);
+  applyGadget(LIST_ELMT(GSTATS.inventory, command - 1));
+  deleteAtList(&GSTATS.inventory, command - 1);
 }
 void applyGadget(GadgetType gadget) {
-  int x,y;
+  int x, y;
   // Apply effect of the selected gadget
   switch (gadget) {
     case KAIN_PEMBUNGKUS_WAKTU:
-      if(inProgressListHas(PERISHABLE)){
+      if (inProgressListHas(PERISHABLE)) {
         Item *perishableItem = getItemInProgressList(PERISHABLE);
         perishableItem->currentDuration = perishableItem->maxDuration;
       }
     case SENTER_PEMBESAR:
-      _gm.stats.bagCapEff *= 2;
-      if(_gm.stats.bagCapEff > BAG_CAP){
-        _gm.stats.bagCapEff = BAG_CAP;
+      GSTATS.bagCapEff *= 2;
+      if (GSTATS.bagCapEff > BAG_CAP) {
+        GSTATS.bagCapEff = BAG_CAP;
       }
     case PINTU_KEMANA_SAJA:
       navigateAndMoveMobita(true);
     case MESIN_WAKTU:
-      if(GTIME.currentTime < 50 ){
+      if (GTIME.currentTime < 50) {
         GTIME.currentTime = 0;
-      } else{
+      } else {
         GTIME.currentTime -= 50;
       }
       break;
     case SENTER_PENGECIL:
-      if (inProgressListHas(HEAVY)==true){
-        _gm.stats.senterPengecil = true;
+      if (inProgressListHas(HEAVY) == true) {
+        GSTATS.senterPengecil = true;
       }
       break;
     default:
@@ -98,10 +96,10 @@ void applyGadget(GadgetType gadget) {
 void buyGadget() {
   // I.S. Inventory terdefinisi, boleh penuh
   // F.S. Apabila uang cukup, uang akan berkurang dan gadget masuk ke inventory
-  if (isFullList(_gm.stats.inventory)) {
+  if (isFullList(GSTATS.inventory)) {
     printf("Inventory sudah penuh. Anda tidak dapat membeli gadget.\n");
   } else {
-    printf("Uang anda sekarang: %d Yen", _gm.stats.money);
+    printf("Uang anda sekarang: %d Yen", GSTATS.money);
     printf("Gadget yang tersedia:\n");
     printf("1. Kain Pembungkus Waktu (800 Yen)\n");
     printf("2. Senter Pembesar (1200 Yen)\n");
@@ -113,13 +111,13 @@ void buyGadget() {
     int command;
     scanf("%d", &command);
     if (command != 0) {
-      if (_gm.stats.money < getGadgetPrice(command - 1)) {
+      if (GSTATS.money < getGadgetPrice(command - 1)) {
         printf("Uang tidak cukup untuk membeli gadget!\n");
       } else {
-        insertList(&_gm.stats.inventory, command - 1);
-        _gm.stats.money -= getGadgetPrice(command - 1);
+        insertList(&GSTATS.inventory, command - 1);
+        GSTATS.money -= getGadgetPrice(command - 1);
         printf("%s berhasil dibeli!\n", getGadgetName(command - 1));
-        printf("Uang anda sekarang: %d Yen\n", _gm.stats.money);
+        printf("Uang anda sekarang: %d Yen\n", GSTATS.money);
       }
     }
   }
