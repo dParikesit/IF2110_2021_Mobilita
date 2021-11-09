@@ -17,22 +17,37 @@ typedef struct {
 	Point mobitaPos;
 } Map;
 
-#define HQ(map) (map).hq
-#define MOBITAPOS(map) (map).mobitaPos
-#define BUILDINGLIST(map) (map).buildingList
-#define LOC(map) (map).loc
-#define PATH(map) (map).path
-#define TEMP(map) (map).temp
+#define HQ MAP.hq
+#define MOBITAPOS MAP.mobitaPos
+#define BUILDINGLIST MAP.buildingList
+#define LOC MAP.loc
+#define PATH MAP.path
+#define TEMP MAP.temp
 
 boolean isInHQ();
 // Check if mobitaPos in hqPos
-void navigateAndMoveMobita();
-// Show reachable destination from current position and move player to desired destination.
-void displayMap(); // Display map to stdin
-void initMap(); // To be called after deserialization. Initialize map: compute loc, reset mobitaPos (to hq point).
-void SerializeMap(Map* s, FILE* inp);
-void DeserializeMap(Map* s, FILE* res); // loc should be computed 
 
-void displayReachableDestination();
+void navigateAndMoveMobita(boolean fromPintuKemanaSaja);
+// I.S. Map terdefinisi
+// F.S. Mobita berpindah tempat sesuai input user
+
+void displayMap();
+// I.S. Map terdefinisi
+// F.S. Map ditampilkan ke layar 
+
+void initMap(int rowInput, int colInput); // To be called after deserialization. Initialize map: compute loc, reset mobitaPos (to hq point).
+// I.S. sembarang
+// F.S. terdefinisi Map dengan ukuran sesuai input baris dan kolom
+
+void SerializeMap();
+// I.S. Map terdefinisi
+// F.S. Map dituliskan ke file sesuai dengan input user
+
+void DeserializeMap(); // loc should be computed 
+// I.S. Sembarang
+// F.S. Map dibaca dari input file konfigurasi
+
+int displayReachableDestination();
+// Mengembalikan banyaknya building yang dapat dicapai oleh mobita dan menampilaknnya ke layar
 
 #endif
