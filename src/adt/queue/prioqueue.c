@@ -60,7 +60,7 @@ void enqueue(PrioQueue *pq, ElTypeQueue val) {
         found = false;
         for (i = QUEUE_IDX_HEAD(*pq); i < QUEUE_IDX_TAIL(*pq); i++) {
             t = (*pq).buffer[i];
-            if (val.timePickUp < t.timePickUp) { // If i score < current score
+            if (val->timePickUp < t->timePickUp) { // If i score < current score
                 for (j = QUEUE_IDX_TAIL(*pq) - 1; j >= i; j--) { // move everything to right
                     (*pq).buffer[j+1] = (*pq).buffer[j];
                 }
@@ -94,10 +94,10 @@ void displayQueue(PrioQueue q) {
         int i;
         for (i = QUEUE_IDX_HEAD(q); i <= QUEUE_IDX_TAIL(q); i++) {
             printf("%d %c %c %c\n",
-                q.buffer[i].timePickUp,
-                q.buffer[i].pickUp->letter,
-                q.buffer[i].dropOff->letter,
-                q.buffer[i].type
+                q.buffer[i]->timePickUp,
+                q.buffer[i]->pickUp->letter,
+                q.buffer[i]->dropOff->letter,
+                q.buffer[i]->type
             );
         }
     }

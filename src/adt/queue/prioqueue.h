@@ -13,7 +13,7 @@
 #define QUEUE_CAPACITY TASK_CAP
 
 /* Deklarasi ElTypeQueue */
-typedef Item ElTypeQueue;
+typedef Item* ElTypeQueue;
 
 /* Definisi PrioQueue */
 typedef struct PrioQueue {

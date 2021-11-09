@@ -3,8 +3,8 @@
 
 #include "../../system/stats/stats.h"
 #include "../../system/map/map.h"
+#include "../../system/time/time.h"
 #include "../../adt/queue/prioqueue.h"
-#include "../time/time.h"
 
 typedef enum CommandType {
 	NEW_GAME = 0,

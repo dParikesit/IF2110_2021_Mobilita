@@ -7,7 +7,7 @@
 
 boolean isInventoryFull() {
   // Mengecek apakah inventory full, yaitu ketika panjang list==capacity
-  return length(_gm.stats.inventory) == INV_CAP;
+  return lengthList(_gm.stats.inventory) == INV_CAP;
 }
 void addGadget(GadgetType gadget) {
   // Add gadget to inventory
@@ -65,6 +65,7 @@ void showAndUseGadget() {
   deleteAtList(&_gm.stats.inventory, command-1);
 }
 void applyGadget(GadgetType gadget) {
+  int x,y;
   // Apply effect of the selected gadget
   switch (gadget) {
     case KAIN_PEMBUNGKUS_WAKTU:
@@ -78,24 +79,26 @@ void applyGadget(GadgetType gadget) {
         _gm.stats.bagCapEff = BAG_CAP;
       }
     case PINTU_KEMANA_SAJA:
-      int x,y;
       printf("Masukkan koordinat x: ");
       scanf("%d", &x);
       printf("Masukkan koordinat y: ");
       scanf("%d", &y);
 
       // TODO gimana cara pake fungsi ini???
-      navigateAndMoveMobita();
+      //navigateAndMoveMobita();
+      break;
     case MESIN_WAKTU:
-      if(time.currentTime < 50 ){
-        time.currentTime = 0;
+      if(GTIME.currentTime < 50 ){
+        GTIME.currentTime = 0;
       } else{
-        time.currentTime -= 50;
+        GTIME.currentTime -= 50;
       }
+      break;
     case SENTER_PENGECIL:
       if (inProgressListHas(HEAVY)==true){
         _gm.stats.senterPengecil = true;
       }
+      break;
     default:
       break;
   }
@@ -123,7 +126,7 @@ void buyGadget() {
       } else {
         insertList(&_gm.stats.inventory, command - 1);
         _gm.stats.money -= getGadgetPrice(command - 1);
-        printf("%s berhasil dibeli!\n", getGadgetName(command - 1););
+        printf("%s berhasil dibeli!\n", getGadgetName(command - 1));
         printf("Uang anda sekarang: %d Yen\n", _gm.stats.money);
       }
     }
