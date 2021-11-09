@@ -12,13 +12,29 @@ typedef enum GadgetType {
 	SENTER_PENGECIL = 4
 } GadgetType;
 
-boolean isInventoryFull(); // Check if inventory is full
-void addGadget(GadgetType gadget); // Add gadget to inventory
-void getGadgetName(GadgetType gadget);
-void getGadgetPrice(GadgetType gadget);
-void useGadget(); // Show command logic for using gadget, also call applyEffect
+boolean isInventoryFull();
+// Mengecek apakah inventory full, yaitu ketika panjang list==capacity
+
+void addGadget(GadgetType gadget);
+// Add gadget to inventory
+// I.S. Inventory terdefinisi dan tidak penuh
+// F.S. gadget masuk ke inventory
+
+char *getGadgetName(GadgetType gadget);
+// I.S. gadget terdefinisi tipe nya
+// F.S. print nama gadget tanpa diakhiri karakter apapun
+
+int getGadgetPrice(GadgetType gadget);
+// Return harga gadget
+
+void showAndUseGadget();
+// I.S. inventory terdefinisi
+// F.S. print daftar inventory, kemudian memanggil apply gadget yang dipilih
+
 void applyGadget(GadgetType gadget); // Apply effect of the selected gadget
+
 void buyGadget();
-void listGadget();
+// I.S. Inventory terdefinisi, boleh penuh
+// F.S. Apabila uang cukup, uang akan berkurang dan gadget masuk ke inventory
 
 #endif

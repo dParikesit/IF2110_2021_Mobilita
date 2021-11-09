@@ -31,18 +31,26 @@ boolean isEmptyListLinked(ListLinked l);
 
 /****************** GETTER SETTER ******************/
 ElTypeListLinked getElmtListLinked(ListLinked l, int idx);
-/* I.S. l terdefinisi, idx indeks yang valid dalam l, yaitu 0..lengthListLinked(l) */
-/* F.S. Mengembalikan nilai elemen l pada indeks idx */
+// Mengembalikan ElTypeListLinked yang diambil
 
 void setElmtListLinked(ListLinked *l, int idx, ElTypeListLinked val);
 /* I.S. l terdefinisi, idx indeks yang valid dalam l, yaitu 0..lengthListLinked(l) */
 /* F.S. Mengubah elemen l pada indeks ke-idx menjadi val */
 
 int indexOfListLinked(ListLinked l, ElTypeListLinked val);
-/* I.S. l, val terdefinisi */
-/* F.S. Mencari apakah ada elemen ListLinked l yang bernilai val */
+/* Mencari apakah ada elemen ListLinked l yang bernilai val */
 /* Jika ada, mengembalikan indeks elemen pertama l yang bernilai val */
-/* Mengembalikan IDX_UNDEF jika tidak dElTypeListLinkedukan */
+/* Mengembalikan IDX_UNDEF jika tidak ditemukan */
+
+int indexOfTypeLinkedList(ListLinked l, ItemType type);
+/* Mencari apakah ada elemen ListLinked l yang bernilai val */
+/* Jika ada, mengembalikan indeks elemen pertama l yang bernilai val */
+/* Mengembalikan IDX_UNDEF jika tidak ditemukan */
+
+int indexOfPosLinkedList(ListLinked l, Point pos);
+/* Mencari apakah ada elemen ListLinked l yang bernilai val */
+/* Jika ada, mengembalikan indeks elemen pertama l yang bernilai val */
+/* Mengembalikan IDX_UNDEF jika tidak ditemukan */
 
 /****************** PRIMITIF BERDASARKAN NILAI ******************/
 /*** PENAMBAHAN ELEMEN ***/
