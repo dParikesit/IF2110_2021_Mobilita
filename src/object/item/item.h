@@ -6,6 +6,7 @@
 
 #include "../../include/boolean.h"
 #include "../building/building.h"
+#include "../../adt/listlinked/list_linked.h"
 
 typedef enum ItemType {
 	NORMAL = 'N',
@@ -46,14 +47,16 @@ boolean toDoListHas(ItemType type);
 boolean inProgressListHas(ItemType type);
 // Check if inProgressList has given ItemType (for checking if there’s Heavy Item or so)
 
-void getItemInProgressList(ItemType type);
+ElTypeListLinked getItemInProgressList(ItemType type);
 // Get first item in progress list that has ItemType == type
+// Guaranteed has it
 
 void updateItem();
-// Update perishable count item
+// I.S. inProgressList terdefinisi
+// F.S. Semua PERISHABLE di inProgressList akan berkurang current duration nya
 
 boolean isEqualItem(Item item1, Item item2);
-// Compare two items and return whether both items are
+// Compare two items and return whether both items are equal
 
 /********** Serialization Guide **********/
 /* Format:

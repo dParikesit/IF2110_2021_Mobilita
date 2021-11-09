@@ -2,6 +2,7 @@
 // Implementasi listlinked
 
 #include "list_linked.h"
+#include "../point/point.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,8 +24,7 @@ boolean isEmptyListLinked(ListLinked l) {
 
 /****************** GETTER SETTER ******************/
 ElTypeListLinked getElmtListLinked(ListLinked l, int idx) {
-  /* I.S. l terdefinisi, idx indeks yang valid dalam l, yaitu 0..lengthListLinked(l) */
-  /* F.S. Mengembalikan nilai elemen l pada indeks idx */
+  // Mengembalikan ElTypeListLinked yang diambil
   int i = 0;
   Address p = FIRST(l);
   while (i < idx) {
@@ -47,10 +47,9 @@ void setElmtListLinked(ListLinked *l, int idx, ElTypeListLinked val) {
 }
 
 int indexOfListLinked(ListLinked l, ElTypeListLinked val) {
-  /* I.S. l, val terdefinisi */
-  /* F.S. Mencari apakah ada elemen ListLinked l yang bernilai val (menunjuk pada val yang sama) */
+  /* Mencari apakah ada elemen ListLinked l yang bernilai val */
   /* Jika ada, mengembalikan indeks elemen pertama l yang bernilai val */
-  /* Mengembalikan IDX_UNDEF jika tidak dElTypeListLinkedukan */
+  /* Mengembalikan IDX_UNDEF jika tidak ditemukan */
   int idx = IDX_UNDEF;
   boolean found = false;
   int i = 0;
@@ -65,7 +64,44 @@ int indexOfListLinked(ListLinked l, ElTypeListLinked val) {
   }
   return idx;
 }
+int indexOfTypeLinkedList(ListLinked l, ItemType type){
+  /* Mencari apakah ada elemen ListLinked l yang bernilai val */
+  /* Jika ada, mengembalikan indeks elemen pertama l yang bernilai val */
+  /* Mengembalikan IDX_UNDEF jika tidak ditemukan */
 
+  int idx = IDX_UNDEF;
+  boolean found = false;
+  int i = 0;
+  Address p = FIRST(l);
+  while (NEXT(p) != NULL && found == false) {
+    if (INFO(p)->type == type) {
+      idx = i;
+      found = true;
+    }
+    i++;
+    p = NEXT(p);
+  }
+  return idx;
+}
+int indexOfPosLinkedList(ListLinked l, Point pos){
+  /* Mencari apakah ada elemen ListLinked l yang bernilai val */
+  /* Jika ada, mengembalikan indeks elemen pertama l yang bernilai val */
+  /* Mengembalikan IDX_UNDEF jika tidak ditemukan */
+
+  int idx = IDX_UNDEF;
+  boolean found = false;
+  int i = 0;
+  Address p = FIRST(l);
+  while (NEXT(p) != NULL && found == false) {
+    if (EQPoint(INFO(p)->pickUp->pos, pos)) {
+      idx = i;
+      found = true;
+    }
+    i++;
+    p = NEXT(p);
+  }
+  return idx;
+}
 /****************** PRIMITIF BERDASARKAN NILAI ******************/
 /*** PENAMBAHAN ELEMEN ***/
 void insertFirstListLinked(ListLinked *l, ElTypeListLinked val) {
@@ -119,24 +155,6 @@ void deleteLastListLinked(ListLinked *l, ElTypeListLinked *val) {
 }
 
 /****************** PROSES SEMUA ELEMEN ListLinked ******************/
-void displayListLinked(ListLinked l) {
-  /* I.S. ListLinked mungkin kosong */
-  /* F.S. Jika ListLinked tidak kosong, iai ListLinked dicetak ke kanan: [e1,e2,...,en] */
-  /* Contoh : jika ada tiga elemen bernilai 1, 20, 30 akan dicetak: [1,20,30] */
-  /* Jika ListLinked kosong : menulis [] */
-  /* Tidak ada tambahan karakter apa pun di awal, akhir, atau di tengah */
-  printf("[");
-  Address p = FIRST(l);
-  while (p != NULL) {
-    printf("%d", INFO(p));
-    p = NEXT(p);
-    if (p != NULL) {
-      printf(",");
-    }
-  }
-  printf("]");
-}
-
 int lengthListLinked(ListLinked l) {
   /* Mengirimkan banyaknya elemen ListLinked; mengirimkan 0 jika ListLinked kosong */
   Address p = FIRST(l);
