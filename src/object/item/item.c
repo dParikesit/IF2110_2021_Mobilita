@@ -1,9 +1,9 @@
 #include "item.h"
 
+#include "../../adt/listlinked/list_linked.h"
 #include "../../helper/stream/stream.h"
 #include "../../include/wrapper.h"
 #include "../../system/map/map.h"
-#include "../../adt/listlinked/list_linked.h"
 
 Item *getCurrentItem() {
   // Get a pointer Item on the top of the bag
@@ -12,7 +12,7 @@ Item *getCurrentItem() {
 
 Item *getPickUpItem() {
   // Get a pointer to first item that can be picked up in current mobitaPos
-  return getElmtListLinked(_gm.stats.inProgressList, indexOfPosLinkedList(_gm.stats.inProgressList, MOBITAPOS(_gm.map)));
+  return getElmtListLinked(_gm.stats.toDoList, indexOfPosLinkedList(_gm.stats.toDoList, MOBITAPOS));
 }
 
 boolean toDoListHas(ItemType type) {
@@ -35,14 +35,43 @@ ElTypeListLinked getItemInProgressList(ItemType type) {
 void updateItem() {
   // I.S. inProgressList terdefinisi
   // F.S. Semua PERISHABLE di inProgressList akan berkurang current duration nya
-
-  // TODO Edge case kalo habis sebelum di top
+  boolean found = false;
   Address p = FIRST(_gm.stats.inProgressList);
-  while (NEXT(p) != NULL) {
-    if (INFO(p)->type==PERISHABLE) {
-      INFO(p)->currentDuration -= 1;
+  int idx = -1;
+  while (found == false) {
+    while (NEXT(p) != NULL && found == false) {
+      if (INFO(p)->type == PERISHABLE) {
+        INFO(p)->currentDuration -= 1;
+        found = true;
+      }
+      idx += 1;
+      p = NEXT(p);
     }
-    p = NEXT(p);
+
+    ElTypeListLinked tempListLinked;
+    if (found == true) {
+      deleteAt(&_gm.stats.inProgressList, idx, &tempListLinked);
+
+      Stack tempStack;
+      CreateStack(&tempStack);
+
+      ElTypeStack *tempElStack;
+      while (IDX_TOP(_gm.stats.bag) > idx) {
+        pop(&_gm.stats.bag, &tempElStack);
+        push(&tempStack, tempElStack);
+      }
+
+      pop(&_gm.stats.bag, &tempElStack);
+
+      while (!isEmpty(_gm.stats.bag)) {
+        pop(&tempStack, &tempElStack);
+        push(&_gm.stats.bag, tempElStack);
+      }
+    }
+
+    if (NEXT(p) != NULL) {
+      found = false;
+    }
   }
 }
 

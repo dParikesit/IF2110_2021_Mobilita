@@ -1,7 +1,6 @@
 #include "gadget.h"
 
 #include "../../include/wrapper.h"
-// TODO Careful import
 #include "../../system/map/map.h"
 #include "../../system/time/time.h"
 
@@ -79,14 +78,7 @@ void applyGadget(GadgetType gadget) {
         _gm.stats.bagCapEff = BAG_CAP;
       }
     case PINTU_KEMANA_SAJA:
-      printf("Masukkan koordinat x: ");
-      scanf("%d", &x);
-      printf("Masukkan koordinat y: ");
-      scanf("%d", &y);
-
-      // TODO gimana cara pake fungsi ini???
-      //navigateAndMoveMobita();
-      break;
+      navigateAndMoveMobita(true);
     case MESIN_WAKTU:
       if(GTIME.currentTime < 50 ){
         GTIME.currentTime = 0;

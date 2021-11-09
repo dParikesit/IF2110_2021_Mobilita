@@ -5,8 +5,8 @@
 #ifndef ListLinked_LINKED_H
 #define ListLinked_LINKED_H
 
-#include "../../include/constants.h"
 #include "../../include/boolean.h"
+#include "../../include/constants.h"
 #include "node.h"
 
 #define LISTLINKED_CAPACITY TASK_CAP
@@ -71,6 +71,11 @@ void deleteLastListLinked(ListLinked *l, ElTypeListLinked *val);
 /* I.S. ListLinked tidak kosong */
 /* F.S. Elemen terakhir ListLinked dihapus: nilai info disimpan pada x */
 /*      dan alamat elemen terakhir di-dealokasi */
+
+void deleteAt(ListLinked *l, int idx, ElTypeListLinked *val);
+/* I.S. list tidak kosong, idx indeks yang valid dalam l, yaitu 0..length(l) */
+/* F.S. val diset dengan elemen l pada indeks ke-idx. */
+/*      Elemen l pada indeks ke-idx dihapus dari l */
 
 /****************** PROSES SEMUA ELEMEN ListLinked ******************/
 int lengthListLinked(ListLinked l);

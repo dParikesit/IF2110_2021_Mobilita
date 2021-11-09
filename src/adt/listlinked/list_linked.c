@@ -154,6 +154,25 @@ void deleteLastListLinked(ListLinked *l, ElTypeListLinked *val) {
   *val = INFO(p);
 }
 
+void deleteAt(ListLinked *l, int idx, ElTypeListLinked *val) {
+  /* I.S. list tidak kosong, idx indeks yang valid dalam l, yaitu 0..length(l) */
+  /* F.S. val diset dengan elemen l pada indeks ke-idx. */
+  /*      Elemen l pada indeks ke-idx dihapus dari l */
+  if (idx == 0) {
+    deleteFirst(l, val);
+  } else {
+    int i = 0;
+    Address prev = FIRST(*l);
+    while (i < (idx - 1)) {
+      i++;
+      prev = NEXT(prev);
+    }
+    Address p = NEXT(prev);
+    *val = INFO(p);
+    NEXT(prev) = NEXT(p);
+  }
+}
+
 /****************** PROSES SEMUA ELEMEN ListLinked ******************/
 int lengthListLinked(ListLinked l) {
   /* Mengirimkan banyaknya elemen ListLinked; mengirimkan 0 jika ListLinked kosong */
