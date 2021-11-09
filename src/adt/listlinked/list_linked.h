@@ -67,12 +67,17 @@ void insertLastListLinked(ListLinked *l, ElTypeListLinked val);
 /* bernilai val jika alokasi berhasil. Jika alokasi gagal: I.S.= F.S. */
 
 /*** PENGHAPUSAN ELEMEN ***/
+void deleteFirstListLinked(ListLinked *l, ElTypeListLinked *val);
+/* I.S. ListLinked l tidak kosong  */
+/* F.S. Elemen pertama ListLinked dihapus: nilai info disimpan pada x */
+/*      dan alamat elemen pertama di-dealokasi */
+
 void deleteLastListLinked(ListLinked *l, ElTypeListLinked *val);
 /* I.S. ListLinked tidak kosong */
 /* F.S. Elemen terakhir ListLinked dihapus: nilai info disimpan pada x */
 /*      dan alamat elemen terakhir di-dealokasi */
 
-void deleteAt(ListLinked *l, int idx, ElTypeListLinked *val);
+void deleteAtListLinked(ListLinked *l, int idx, ElTypeListLinked *val);
 /* I.S. list tidak kosong, idx indeks yang valid dalam l, yaitu 0..length(l) */
 /* F.S. val diset dengan elemen l pada indeks ke-idx. */
 /*      Elemen l pada indeks ke-idx dihapus dari l */
