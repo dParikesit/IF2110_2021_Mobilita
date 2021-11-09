@@ -107,11 +107,61 @@ int main(){
                 printf("tidak simetris\n");
             }
         }
+        else if (option==10){
+            if (isIdentity(m1)){
+                printf("adalah matrix identitas\n");
+            }
+            else{
+                printf("bukan identitas\n");
+            }
+        }
+        else if (option==11){
+            if (isSparse(m1)){
+                printf("adalah matrix sparse\n");
+            }
+            else{
+                printf("bukan matrix sparse\n");
+            }
+        }
+        else if (option==12){
+            printf("determinan m1 adalah: %d\n", determinant(m1));
+        }
+        else if (option==13){
+            int idx;
+            printf("mesukkan indeks\n");
+            scanf("%d", &idx);
+            printf("%d\n", rowMean(m1, idx));
+        }
+        else if (option==14){
+            int idx;
+            printf("mesukkan indeks\n");
+            scanf("%d", &idx);
+            printf("%d\n", colMean(m1, idx));
+        }
+        else if (option==15){
+            int max, min, row;
+            printf("masukkan idx row: ");
+            scanf("%d", row);
+            printf("\n");
+            rowExtremes(m1, row, &max, &min);
+            printf("nilai maksimum adalah: %d\n", max);
+            printf("nilai minimum adalah: %d\n", min);
+        }
+        else if (option==16){
+            int max, min, col;
+            printf("masukkan idx row: ");
+            scanf("%d", col);
+            printf("\n");
+            colExtremes(m1, col, &max, &min);
+            printf("nilai maksimum adalah: %d\n", max);
+            printf("nilai minimum adalah: %d\n", min);
+        }
+        else if (option==17){
+            
+        }
         else if (option==21){
             ongoing = false;
         }
-
-        
     }
 
 }
