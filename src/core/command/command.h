@@ -24,7 +24,7 @@ typedef enum CommandType {
 	INVALID = 14
 } CommandType;
 
-static inline const char * const stringCommand[] = {
+static const char * const stringCommand[] = {
 	[NEW_GAME] = "NEW_GAME",
 	[EXIT] = "EXIT",
 	[LOAD_GAME] = "LOAD_GAME",
