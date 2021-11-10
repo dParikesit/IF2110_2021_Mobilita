@@ -56,7 +56,7 @@ void showAndUseGadget() {
   }
   printf("Gadget mana yang ingin digunakan? (ketik 0 jika ingin kembali)\n\n");
   printf("ENTER COMMAND: ");  //Fungsi buat enter command apa ya?
-  scanf("%d", &command);
+  command = readInt();
 
   applyGadget(LIST_ELMT(GSTATS.inventory, command - 1));
   deleteAtList(&GSTATS.inventory, command - 1);
@@ -70,13 +70,16 @@ void applyGadget(GadgetType gadget) {
         Item *perishableItem = getItemInProgressList(PERISHABLE);
         perishableItem->currentDuration = perishableItem->maxDuration;
       }
+      break;
     case SENTER_PEMBESAR:
       GSTATS.bagCapEff *= 2;
       if (GSTATS.bagCapEff > BAG_CAP) {
         GSTATS.bagCapEff = BAG_CAP;
       }
+      break;
     case PINTU_KEMANA_SAJA:
       navigateAndMoveMobita(true);
+      break;
     case MESIN_WAKTU:
       if (GTIME.currentTime < 50) {
         GTIME.currentTime = 0;
@@ -108,8 +111,7 @@ void buyGadget() {
     printf("5. Senter Pengecil (800 Yen)\n");
     printf("Gadget mana yang ingin kau beli? (ketik 0 jika ingin kembali)\n\n");
 
-    int command;
-    scanf("%d", &command);
+    int command = readInt();
     if (command != 0) {
       if (GSTATS.money < getGadgetPrice(command - 1)) {
         printf("Uang tidak cukup untuk membeli gadget!\n");

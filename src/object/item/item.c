@@ -49,12 +49,12 @@ void updateItem() {
 
     ElTypeListLinked tempListLinked;
     if (found == true) {
-      deleteAt(&GSTATS.inProgressList, idx, &tempListLinked);
+      deleteAtListLinked(&GSTATS.inProgressList, idx, &tempListLinked);
 
       Stack tempStack;
       CreateStack(&tempStack);
 
-      ElTypeStack *tempElStack;
+      ElTypeStack tempElStack;
       while (IDX_TOP(GSTATS.bag) > idx) {
         pop(&GSTATS.bag, &tempElStack);
         push(&tempStack, tempElStack);
@@ -94,28 +94,28 @@ char *getItemTypeName(ItemType type) {
   }
 }
 
-void SerializeItem(Item b) {
-  writeInt(b.timePickUp);
-  writeChar(b.pickUp->letter);
-  writeChar(b.dropOff->letter);
-  writeChar(b.type);
-  if (b.type == PERISHABLE) {
-    writeInt(b.maxDuration);
-    writeInt(b.currentDuration);
+void SerializeItem(Item* b) {
+  writeInt(b->timePickUp);
+  writeChar(b->pickUp->letter);
+  writeChar(b->dropOff->letter);
+  writeChar(b->type);
+  if (b->type == PERISHABLE) {
+      writeInt(b->maxDuration);
+      writeInt(b->currentDuration);
   }
   writeMark();
 }
 
-void DeserializeItem(Item *b, boolean extended) {
+void DeserializeItem(Item* b, boolean extended) {
   b->timePickUp = readInt();
   b->pickUp = getLetterRefBuilding(readChar());
   b->dropOff = getLetterRefBuilding(readChar());
   b->type = readChar();
   if (b->type == PERISHABLE) {
-    b->maxDuration = readInt();
-    if (extended)
-      b->currentDuration = readInt();
-    else
-      b->currentDuration = b->maxDuration;
+      b->maxDuration = readInt();
+      if (extended)
+          b->currentDuration = readInt();
+      else
+          b->currentDuration = b->maxDuration;
   }
 }

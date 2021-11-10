@@ -6,7 +6,6 @@
 
 #include "../../include/boolean.h"
 #include "../building/building.h"
-#include "../../adt/listlinked/list_linked.h"
 
 typedef enum ItemType {
 	NORMAL = 'N',
@@ -24,9 +23,9 @@ typedef struct Item {
 	// Waktu pick up item.
 	int timePickUp;
 	// Bangunan pick up item.
-	struct Building* pickUp;
+	Building* pickUp;
 	// Bangunan drop off item.
-	struct Building* dropOff;
+	Building* dropOff;
 	// Tipe item.
 	ItemType type;
 	// Durasi maksimum item (untuk perishable item).
@@ -47,7 +46,7 @@ boolean toDoListHas(ItemType type);
 boolean inProgressListHas(ItemType type);
 // Check if inProgressList has given ItemType (for checking if there’s Heavy Item or so)
 
-ElTypeListLinked getItemInProgressList(ItemType type);
+Item* getItemInProgressList(ItemType type);
 // Get first item in progress list that has ItemType == type
 // Guaranteed has it
 
@@ -67,7 +66,7 @@ boolean isEqualItem(Item item1, Item item2);
 	  -> if extended, currentDuration will be read too (if not, will set the same as maxDuration)
 */
 
-void SerializeItem(Item b);
+void SerializeItem(Item* b);
 /* Menuliskan item ke dalam stream.
    I.S. Item terdefinisi, stream terdefinisi, fileMode = WRITE.
    F.S. Menuliskan item ke dalam stream. */
