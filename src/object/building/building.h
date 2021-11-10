@@ -10,6 +10,9 @@ typedef struct Building {
     char letter;
 } Building;
 
+#define LETTER(build) (build).letter
+#define POS(build) (build).pos
+
 void CreateBuilding(Building* b, char letter); // Create new building
 
 // Operator equal, mengembalikan true jika karakter building sama dan posisi sama
@@ -31,5 +34,7 @@ void SerializeBuilding(Building* b);
    I.S. Building sembarang, stream terdefinisi, fileMode = WRITE.
    F.S. Menginisialisasi Building dengan data di stream. */
 void DeserializeBuilding(Building* b);
+
+void displayBuilding(Building* b);
 
 #endif

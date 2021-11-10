@@ -93,13 +93,10 @@ void displayMatrix(Matrix m)
     Index i,j;
     for (i=0 ; i<ROWS(m); i++){
         for (j=0 ; j<COLS(m); j++){
-            if (j!=COLS(m)-1) printf("%d ", ELMT(m,i,j));
-            else printf("%d", ELMT(m,i,j));
+            printf("%c", ELMT(m,i,j));
             
         }
-        if(i!= getLastIdxRow(m)) printf("\n");
-        
-       
+        if(i!= getLastIdxRow(m)) printf("\n"); 
     }
 }
 /* ********** KELOMPOK OPERASI ARITMATIKA TERHADAP TYPE ********** */

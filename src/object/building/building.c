@@ -27,6 +27,14 @@ void SerializeBuilding(Building* b) {
    I.S. Building sembarang, stream terdefinisi, fileMode = WRITE.
    F.S. Menginisialisasi Building dengan data di stream. */
 void DeserializeBuilding(Building* b) {
-    b->letter = readChar();
-    b->pos = MakePoint(readInt(), readInt());
+    char let = readChar();
+    int x = readInt();
+    int y = readInt();
+
+    b->letter = let;
+    b->pos = MakePoint(x,y);
+}
+void displayBuilding(Building* elmt){
+    printf("%c ", LETTER(*elmt));
+    TulisPoint(POS(*elmt));
 }
