@@ -5,7 +5,6 @@
 #include "../../adt/listdin/listdin.h"
 #include "../../include/boolean.h"
 #include "../../object/building/building.h"
-#include "../gamemanager/gamemanager.h"
 #include <stdio.h>
 
 typedef struct {
@@ -14,15 +13,15 @@ typedef struct {
 	ListDin buildingList;
 	ListDin temp;
 	Building hq; // Headquarter building. Should have letter ‘8’.
-	Point mobitaPos;
+	Building* mobitaPos;
 } Map;
 
-#define HQ MAP.hq
-#define MOBITAPOS MAP.mobitaPos
-#define BUILDINGLIST MAP.buildingList
-#define LOC MAP.loc
-#define PATH MAP.path
-#define TEMP MAP.temp
+#define HQ GMAP.hq
+#define MOBITAPOS GMAP.mobitaPos
+#define BUILDINGLIST GMAP.buildingList
+#define LOC GMAP.loc
+#define PATH GMAP.path
+#define TEMP GMAP.temp
 
 boolean isInHQ();
 // Check if mobitaPos in hqPos
@@ -49,5 +48,7 @@ void DeserializeMap(); // loc should be computed
 
 int displayReachableDestination();
 // Mengembalikan banyaknya building yang dapat dicapai oleh mobita dan menampilaknnya ke layar
+
+void addBuildingToLoc(Building* elmt);
 
 #endif
