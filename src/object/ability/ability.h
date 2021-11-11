@@ -4,6 +4,7 @@
 #define ABILITY_H
 
 #include "../item/item.h"
+#include "../../include/wrapper.h"
 
 typedef enum abilitytype {
     SPEED_BOOST = 0,
