@@ -1,26 +1,29 @@
 #include "time.h"
+#include "../gamemanager/gamemanager.h"
+#include "../../include/boolean.h"
+#include "../../core/gameplay/gameplay.h"
 
-void advanceTime(Time *t, int addedTime)
+void advanceTime()
 //advance currentTime by addedTime
 {
-    cTime(*t) = cTime(*t) + addedTime;
+    cTime(GTIME) += countTimeAddition();
 }
 
-boolean isTimeRunning(Time t)
+boolean isTimeRunning()
 /*
 mengembalikan true jika Time tidak dipause dan dihalt
 */
 {
-    return (!isPaused(t) && !t.isHalt);
+    return (!isPaused(GTIME) && !isHalt(GTIME));
 }
-void initTime(Time *t)
+void initTime()
 /* 
 I.S. Sembarang
 F.S Terinisialisasi sebuah Time t dengan kondisi sbb:
 -currentTime = 0
--isPaused = false
+-isHalted = false
 */
 {
-    cTime(*t) = 0;
-    isPaused(*t)  = false;
+    cTime(GTIME) = 0;
+    isHalt(GTIME) = false;
 }

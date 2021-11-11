@@ -6,22 +6,24 @@
 typedef struct Time
 {
     int currentTime;
+    int deltaTime;
     boolean isPaused;
     boolean isHalt;
 } Time;
 
 #define cTime(t) (t).currentTime
 #define isPaused(t) (t).isPaused
-#define isHalt(t) (t).isHalt;
+#define isHalt(t) (t).isHalt
+#define deltaTime(t) (t).deltaTime
 
-void advanceTime(Time *t, int addedTime);
+void advanceTime();
 //advance currentTime by addedTime
 
-boolean isTimeRunning(Time t);
+boolean isTimeRunning();
 /*
 mengembalikan true jika Time tidak dipause dan dihalt
 */
-void initTime(Time *t);
+void initTime();
 /* 
 I.S. Sembarang
 F.S Terinisialisasi sebuah Time t dengan kondisi sbb:
