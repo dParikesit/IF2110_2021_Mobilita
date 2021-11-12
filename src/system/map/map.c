@@ -50,6 +50,7 @@ void navigateAndMoveMobita(boolean fromPintuKemanaSaja) {
     printf("Posisi yang dipilih tidak ada\n");
   } else if (input <= countReachableBuildings && input > 0) {
     MOBITAPOS = LISTDIN_ELMT(TEMP, input-1);
+    updateReachable();
   }
   printf("Mobita sekarang berada di titik ");
   displayBuilding(LISTDIN_ELMT(TEMP, input-1));
@@ -163,6 +164,7 @@ void DeserializeMap() {
       ELMT(PATH, i, j) = readInt();
     }
   }
+  updateReachable();
 }
 // loc should be computed 
 
@@ -170,11 +172,11 @@ void addBuildingToLoc(Building* elmt) {
   ELMT(LOC, Absis(POS(*elmt)), Ordinat(POS(*elmt))) = LETTER(*elmt);
 }
 
-int displayReachableDestination() {
+void updateReachable() {
   int i, j, counter;
   boolean found;
   
-  CreateListDin(&(TEMP), ROWS(PATH));
+  // CreateListDin(&(TEMP), ROWS(PATH));
   found = false;
   i=0;
   while (!found && i < LISTDIN_NEFF(BUILDINGLIST)) {
@@ -189,13 +191,35 @@ int displayReachableDestination() {
   counter = 0;
   for (j=0; j < LISTDIN_NEFF(BUILDINGLIST); j++) {
     if (ELMT(PATH, i, j)) {
-      counter++;
-      printf("%d. ", counter);
-      displayBuilding(LISTDIN_ELMT(BUILDINGLIST, j));
-      printf("\n");
-
       insertLastListDin(&(TEMP), LISTDIN_ELMT(BUILDINGLIST, j));
     }
   }
-  return counter;
+}
+
+int displayReachableDestination() {
+  for (int i=0; i< LISTDIN_NEFF(TEMP); i++) {
+    printf("%d. ", i+1);
+    displayBuilding(LISTDIN_ELMT(TEMP, i));
+    printf("\n");
+  }
+
+  return LISTDIN_NEFF(TEMP);
+}
+
+boolean isLetterInReachable(char letter) {
+  boolean found;
+  int i;
+
+  found = false;
+  i=0;
+  while (!found && i < LISTDIN_NEFF(TEMP)) {
+    // displayBuilding(LISTDIN_ELMT(TEMP, i));
+    if (letter == LETTER(*LISTDIN_ELMT(TEMP, i))) {
+      found = true;
+    } else {
+      i++;
+    }
+  }
+  // printf("%d", found);
+  return found;
 }

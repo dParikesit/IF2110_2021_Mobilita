@@ -51,4 +51,10 @@ int displayReachableDestination();
 
 void addBuildingToLoc(Building* elmt);
 
+boolean isMobitaThere(Building* elmt);
+
+boolean isLetterInReachable(char letter);
+
+void updateReachable();
+
 #endif
