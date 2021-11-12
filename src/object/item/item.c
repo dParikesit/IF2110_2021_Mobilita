@@ -29,6 +29,10 @@ boolean isLetterInPickUpToDoList(char letter) {
   return indexOfLetterLinkedList(GSTATS.toDoList, letter) != IDX_UNDEF;
 }
 
+boolean isLetterTopDropOffItem(char letter) {
+  return !isEmpty(GSTATS.bag) && LETTER(*(getCurrentItem()->dropOff)) == letter;
+}
+
 ElTypeListLinked getItemInProgressList(ItemType type) {
   // Get first item in progress list that has ItemType == type
   // Guaranteed has it

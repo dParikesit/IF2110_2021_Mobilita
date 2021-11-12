@@ -48,6 +48,11 @@ boolean inProgressListHas(ItemType type);
 
 boolean isLetterInPickUpToDoList(char letter);
 // Cek apakah letter/nama building ada pada todolist
+// Return true jika benar, false jika salah
+
+boolean isLetterTopDropOffItem(char letter);
+// Cek apakah top of bag memiliki building letter sesuai parameter
+// Return true jika benar, false jika salah
 
 Item* getItemInProgressList(ItemType type);
 // Get first item in progress list that has ItemType == type
