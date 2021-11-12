@@ -4,6 +4,7 @@
 #define ABILITY_H
 
 #include "../item/item.h"
+#include "../../adt/listlinked/list_linked.h"
 #include "../../include/wrapper.h"
 
 typedef enum abilitytype {
@@ -13,5 +14,6 @@ typedef enum abilitytype {
 } AbilityType;
 void addAbility(AbilityType ability); // Add ability to stats for durated ability
 void applyAbility(AbilityType ability); // Apply effect of the selected ability
+void retAbility(); // Return to sender ability implementation
 
 #endif
