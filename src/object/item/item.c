@@ -11,7 +11,7 @@ Item *getCurrentItem() {
 
 Item *getPickUpItem() {
   // Get a pointer to first item that can be picked up in current mobitaPos
-  return getElmtListLinked(GSTATS.toDoList, indexOfPosLinkedList(GSTATS.toDoList, MOBITAPOS));
+  return getElmtListLinked(GSTATS.toDoList, indexOfPosLinkedList(GSTATS.toDoList, (MOBITAPOS)->pos));
 }
 
 boolean toDoListHas(ItemType type) {
@@ -22,6 +22,11 @@ boolean toDoListHas(ItemType type) {
 boolean inProgressListHas(ItemType type) {
   // Check if inProgressList has given ItemType (for checking if there’s Heavy Item or so)
   return indexOfTypeLinkedList(GSTATS.inProgressList, type) != IDX_UNDEF;
+}
+
+boolean isLetterInPickUpToDoList(char letter) {
+  // Cek apakah letter/nama building ada pada todolist
+  return indexOfLetterLinkedList(GSTATS.toDoList, letter) != IDX_UNDEF;
 }
 
 ElTypeListLinked getItemInProgressList(ItemType type) {
@@ -94,28 +99,28 @@ char *getItemTypeName(ItemType type) {
   }
 }
 
-void SerializeItem(Item* b) {
+void SerializeItem(Item *b) {
   writeInt(b->timePickUp);
   writeChar(b->pickUp->letter);
   writeChar(b->dropOff->letter);
   writeChar(b->type);
   if (b->type == PERISHABLE) {
-      writeInt(b->maxDuration);
-      writeInt(b->currentDuration);
+    writeInt(b->maxDuration);
+    writeInt(b->currentDuration);
   }
   writeMark();
 }
 
-void DeserializeItem(Item* b, boolean extended) {
+void DeserializeItem(Item *b, boolean extended) {
   b->timePickUp = readInt();
   b->pickUp = getLetterRefBuilding(readChar());
   b->dropOff = getLetterRefBuilding(readChar());
   b->type = readChar();
   if (b->type == PERISHABLE) {
-      b->maxDuration = readInt();
-      if (extended)
-          b->currentDuration = readInt();
-      else
-          b->currentDuration = b->maxDuration;
+    b->maxDuration = readInt();
+    if (extended)
+      b->currentDuration = readInt();
+    else
+      b->currentDuration = b->maxDuration;
   }
 }

@@ -102,6 +102,25 @@ int indexOfPosLinkedList(ListLinked l, Point pos){
   }
   return idx;
 }
+int indexOfLetterLinkedList(ListLinked l, char letter) {
+  /* Mencari apakah ada elemen ListLinked l yang memiliki letter building letter */
+  /* Jika ada, mengembalikan indeks elemen pertama l yang benar */
+  /* Mengembalikan IDX_UNDEF jika tidak ditemukan */
+
+  int idx = IDX_UNDEF;
+  boolean found = false;
+  int i = 0;
+  Address p = FIRST(l);
+  while (NEXT(p) != NULL && found == false) {
+    if (INFO(p)->pickUp->letter == letter) {
+      idx = i;
+      found = true;
+    }
+    i++;
+    p = NEXT(p);
+  }
+  return idx;
+}
 /****************** PRIMITIF BERDASARKAN NILAI ******************/
 /*** PENAMBAHAN ELEMEN ***/
 void insertFirstListLinked(ListLinked *l, ElTypeListLinked val) {

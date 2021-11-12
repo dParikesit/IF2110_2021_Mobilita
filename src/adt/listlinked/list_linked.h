@@ -52,6 +52,11 @@ int indexOfPosLinkedList(ListLinked l, Point pos);
 /* Jika ada, mengembalikan indeks elemen pertama l yang bernilai val */
 /* Mengembalikan IDX_UNDEF jika tidak ditemukan */
 
+int indexOfLetterLinkedList(ListLinked l, char letter);
+/* Mencari apakah ada elemen ListLinked l yang memiliki letter building letter */
+/* Jika ada, mengembalikan indeks elemen pertama l yang benar */
+/* Mengembalikan IDX_UNDEF jika tidak ditemukan */
+
 /****************** PRIMITIF BERDASARKAN NILAI ******************/
 /*** PENAMBAHAN ELEMEN ***/
 void insertFirstListLinked(ListLinked *l, ElTypeListLinked val);

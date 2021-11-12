@@ -46,6 +46,9 @@ boolean toDoListHas(ItemType type);
 boolean inProgressListHas(ItemType type);
 // Check if inProgressList has given ItemType (for checking if there’s Heavy Item or so)
 
+boolean isLetterInPickUpToDoList(char letter);
+// Cek apakah letter/nama building ada pada todolist
+
 Item* getItemInProgressList(ItemType type);
 // Get first item in progress list that has ItemType == type
 // Guaranteed has it
