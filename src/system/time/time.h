@@ -7,14 +7,8 @@ typedef struct Time
 {
     int currentTime;
     int deltaTime;
-    boolean isPaused;
     boolean isHalt;
 } Time;
-
-#define cTime(t) (t).currentTime
-#define isPaused(t) (t).isPaused
-#define isHalt(t) (t).isHalt
-#define deltaTime(t) (t).deltaTime
 
 void advanceTime();
 //advance currentTime by addedTime
@@ -30,7 +24,7 @@ F.S Terinisialisasi sebuah Time t dengan kondisi sbb:
 -currentTime = 0
 -isPaused = false
 */
-void SerializeTime(Time *t);
-void DeserializeTime(Time *t);
+void SerializeTime();
+void DeserializeTime();
 
 #endif

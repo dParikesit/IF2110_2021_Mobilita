@@ -9,22 +9,22 @@
 typedef enum CommandType {
 	NEW_GAME = 0,
 	EXIT = 1,
-	LOAD_GAME = 2,
-	MOVE = 3,
-	PICK_UP = 4,
-	DROP_OFF = 5,
-	MAP = 6,
-	TO_DO = 7,
-	IN_PROGRESS = 8,
-	BUY = 9,
-	INVENTORY = 10,
-	HELP = 11,
+	HELP = 2,
+	LOAD_GAME = 3,
+	MOVE = 4,
+	PICK_UP = 5,
+	DROP_OFF = 6,
+	MAP = 7,
+	TO_DO = 8,
+	IN_PROGRESS = 9,
+	BUY = 10,
+	INVENTORY = 11,
 	SAVE_GAME = 12,
 	RETURN = 13,
 	INVALID = 14
 } CommandType;
 
-static const char * const stringCommand[] = {
+static char* stringCommand[] = {
 	[NEW_GAME] = "NEW_GAME",
 	[EXIT] = "EXIT",
 	[LOAD_GAME] = "LOAD_GAME",

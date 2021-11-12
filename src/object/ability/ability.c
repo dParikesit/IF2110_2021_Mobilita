@@ -9,6 +9,7 @@ void addAbility(AbilityType ability){
     {
     case SPEED_BOOST:
         GSTATS.speedBoostDuration = 5;
+        GTIME.isHalt = true;
         break;
 
     case RETURN_TO_SENDER:
@@ -38,6 +39,17 @@ void applyAbility(AbilityType ability){
     }
 }
 
+void removeAbility(AbilityType ability) {
+    // Remove ability from stats for durated ability
+    switch (ability) {
+        case SPEED_BOOST:
+            GSTATS.speedBoostDuration = 0;
+            GTIME.isHalt = false;
+            printf("Ability speed boost hilang karena ada heavy item di bag\n");
+            break;
+    }
+}
+
 void retAbility(){
     Item* now;
     now = getCurrentItem();
@@ -53,10 +65,10 @@ void retAbility(){
         }
         else{
             if (now->type == PERISHABLE)
-                {
-                    now->currentDuration = now->maxDuration;
-                }
-            insertLastLinkedList(&GSTATS.toDoList, now);
+            {
+                now->currentDuration = now->maxDuration;
+            }
+            insertLastListLinked(&GSTATS.toDoList, now);
             pop(&GSTATS.bag, &now);
         
             if (GSTATS.senterPengecil) {

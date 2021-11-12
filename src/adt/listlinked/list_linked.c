@@ -54,7 +54,7 @@ int indexOfListLinked(ListLinked l, ElTypeListLinked val) {
   boolean found = false;
   int i = 0;
   Address p = FIRST(l);
-  while (NEXT(p) != NULL && found == false) {
+  while (p != NULL && found == false) {
     if (INFO(p) == val) {
       idx = i;
       found = true;
@@ -92,8 +92,8 @@ int indexOfPosLinkedList(ListLinked l, Point pos){
   boolean found = false;
   int i = 0;
   Address p = FIRST(l);
-  while (NEXT(p) != NULL && found == false) {
-    if (EQPoint(INFO(p)->pickUp->pos, pos)) {
+  while (p != NULL) {
+    if (EQPoint(INFO(p)->pickUp->pos, pos) && (INFO(p)->type == VIP || !found)) {
       idx = i;
       found = true;
     }
@@ -111,7 +111,7 @@ int indexOfLetterLinkedList(ListLinked l, char letter) {
   boolean found = false;
   int i = 0;
   Address p = FIRST(l);
-  while (NEXT(p) != NULL && found == false) {
+  while (p != NULL && found == false) {
     if (INFO(p)->pickUp->letter == letter) {
       idx = i;
       found = true;

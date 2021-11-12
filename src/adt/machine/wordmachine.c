@@ -3,6 +3,7 @@
 
 boolean endWord;
 boolean emptyTape;
+boolean startMark;
 Word currentWord;
 
 void ignoreBlankWordM() {
@@ -12,6 +13,7 @@ void ignoreBlankWordM() {
 
 void startWordM(FILE* file, FILE_MODE mode) {
     startCharM(file, mode);
+    startMark = true;
     if (mode == READ) {
         ignoreBlankWordM();
         endWord = eot;
@@ -46,7 +48,10 @@ void writeWordM(char* word) {
     int i;
     char c;
     // ALGORITMA
-    writeCharM(' ');
+    if (startMark)
+        startMark = false;
+    else
+        writeCharM(' ');
     i = 0;
     c = word[i];
     currentWord.length = 0;

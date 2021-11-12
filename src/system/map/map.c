@@ -27,37 +27,30 @@ int displayAllDestination() {
   return LISTDIN_NEFF(BUILDINGLIST)-1;
 }
 
-// Check if mobitaPos in hqPos
-void navigateAndMoveMobita(boolean fromPintuKemanaSaja) {
+boolean navigateAndMoveMobita(boolean fromPintuKemanaSaja) {
   int countReachableBuildings, input;
 
   printf("Posisi yang dapat dicapai: \n");
   if (!fromPintuKemanaSaja)
     countReachableBuildings = displayReachableDestination();
-  else {
+  else
     countReachableBuildings = displayAllDestination();
-  }
   printf("Posisi yang dipilih? (ketik 0 jika ingin kembali)\n\n");
   
-  initStdin();
   printf("ENTER COMMAND: ");
-  
   input = readInt();
-  printf("INPUT FIRST : %d\n", input);
-  input = readInt();
-  printf("INPUT: %d\n", input);
-  if (input > countReachableBuildings || input < 0) {
-    printf("Posisi yang dipilih tidak ada\n");
+  if (input > countReachableBuildings || input <= 0) {
+    if (input != 0)
+      printf("Input tidak valid. Membatalkan...\n");
+    return false;
   } else if (input <= countReachableBuildings && input > 0) {
     MOBITAPOS = LISTDIN_ELMT(TEMP, input-1);
+    printf("Mobita sekarang berada di titik ");
+    displayBuilding(LISTDIN_ELMT(TEMP, input-1));
+    printf("\n");
     updateReachable();
+    return true;
   }
-  printf("Mobita sekarang berada di titik ");
-  displayBuilding(LISTDIN_ELMT(TEMP, input-1));
-  printf("\n");
-
-  int cTime = 10;
-  printf("Waktu: %d\n", cTime);
 }
 // Show reachable destination from current position and move player to desired destination.
 void displayMap() {
@@ -130,7 +123,6 @@ void DeserializeMap() {
   int adjacencyMatSize;
   int i, j;
   Building hq;
-  Building inputBuilding;
 
   rowsMap = readInt();
   colsMap = readInt();
@@ -152,10 +144,10 @@ void DeserializeMap() {
   insertLastListDin(&BUILDINGLIST, &HQ);
   addBuildingToLoc(&HQ);
   for (i = 1; i <= adjacencyMatSize; i++) {
-    Building* new = malloc(sizeof(Building));
-    DeserializeBuilding(new);
-    insertLastListDin(&BUILDINGLIST, new);
-    addBuildingToLoc(new);
+    Building* newb = (Building*) malloc(sizeof(Building));
+    DeserializeBuilding(newb);
+    insertLastListDin(&BUILDINGLIST, newb);
+    addBuildingToLoc(newb);
   }
   LISTDIN_NEFF(BUILDINGLIST) = adjacencyMatSize+1;
 

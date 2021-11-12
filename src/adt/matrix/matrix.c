@@ -112,7 +112,7 @@ void displayMatrix(Matrix m)
         for (j=0 ; j<COLS(m); j++){
             printElmtMap(ELMT(m,i,j));
         }
-        if(i!= getLastIdxRow(m)) printf("\n"); 
+        printf("\n"); 
     }
 }
 

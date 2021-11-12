@@ -15,5 +15,5 @@ typedef enum abilitytype {
 void addAbility(AbilityType ability); // Add ability to stats for durated ability
 void applyAbility(AbilityType ability); // Apply effect of the selected ability
 void retAbility(); // Return to sender ability implementation
-
+void removeAbility(AbilityType ability); // Remove ability from stats for durated ability
 #endif

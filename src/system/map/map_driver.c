@@ -12,7 +12,7 @@ int main() {
     printf("file not found\n");
   } else {
     initStream(fin, READ);
-    DeserializeMap(&MAP(_gm), fin);
+    DeserializeMap();
     displayMap();printf("\n");
     printf("reachable: \n");
     displayReachableDestination();
@@ -22,7 +22,7 @@ int main() {
     } else {
       printf("writing\n");
       initStream(fout, WRITE);
-      SerializeMap(&MAP(_gm), fout);
+      SerializeMap();
     }
   }
 

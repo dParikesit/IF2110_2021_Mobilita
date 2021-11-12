@@ -26,7 +26,7 @@ typedef struct {
 boolean isInHQ();
 // Check if mobitaPos in hqPos
 
-void navigateAndMoveMobita(boolean fromPintuKemanaSaja);
+boolean navigateAndMoveMobita(boolean fromPintuKemanaSaja);
 // I.S. Map terdefinisi
 // F.S. Mobita berpindah tempat sesuai input user
 

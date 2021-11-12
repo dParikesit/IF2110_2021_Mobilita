@@ -11,7 +11,11 @@ Item *getCurrentItem() {
 
 Item *getPickUpItem() {
   // Get a pointer to first item that can be picked up in current mobitaPos
-  return getElmtListLinked(GSTATS.toDoList, indexOfPosLinkedList(GSTATS.toDoList, (MOBITAPOS)->pos));
+  int idx = indexOfPosLinkedList(GSTATS.toDoList, MOBITAPOS->pos);
+  if (idx == -1) {
+    return NULL;
+  }
+  return getElmtListLinked(GSTATS.toDoList, idx);
 }
 
 boolean toDoListHas(ItemType type) {
@@ -44,42 +48,42 @@ void updateItem() {
   // I.S. inProgressList terdefinisi
   // F.S. Semua PERISHABLE di inProgressList akan berkurang current duration nya
   boolean found = false;
-  Address p = FIRST(GSTATS.inProgressList);
   int idx = -1;
-  while (found == false) {
-    while (NEXT(p) != NULL && found == false) {
-      if (INFO(p)->type == PERISHABLE) {
-        INFO(p)->currentDuration -= 1;
-        found = true;
+  int total = 0;
+  Stack tempStack;
+  CreateStack(&tempStack);
+  Address p = FIRST(GSTATS.inProgressList);
+  Address ptemp;
+  Item* current;
+  while (p != NULL) {
+    idx += 1;
+    if (INFO(p)->type == PERISHABLE) {
+      ptemp = NEXT(p);
+      INFO(p)->currentDuration -= GTIME.deltaTime;
+      if (INFO(p)->currentDuration <= 0) {
+        current = INFO(p);
+        Item* temp;
+        deleteAtListLinked(&GSTATS.inProgressList, idx, &temp);
+        while(IDX_TOP(GSTATS.bag) > idx) {
+          pop(&GSTATS.bag, &temp);
+          push(&tempStack, temp);
+        }
+        pop(&GSTATS.bag, &temp);
+        while (!isEmpty(tempStack)) {
+          pop(&tempStack, &temp);
+          push(&GSTATS.bag, temp);
+        }
+        total++;
+        free(current);
       }
-      idx += 1;
+      p = ptemp;
+    } else {
       p = NEXT(p);
     }
-
-    ElTypeListLinked tempListLinked;
-    if (found == true) {
-      deleteAtListLinked(&GSTATS.inProgressList, idx, &tempListLinked);
-
-      Stack tempStack;
-      CreateStack(&tempStack);
-
-      ElTypeStack tempElStack;
-      while (IDX_TOP(GSTATS.bag) > idx) {
-        pop(&GSTATS.bag, &tempElStack);
-        push(&tempStack, tempElStack);
-      }
-
-      pop(&GSTATS.bag, &tempElStack);
-
-      while (!isEmpty(GSTATS.bag)) {
-        pop(&tempStack, &tempElStack);
-        push(&GSTATS.bag, tempElStack);
-      }
-    }
-
-    if (NEXT(p) != NULL) {
-      found = false;
-    }
+  }
+  if (total > 0) {
+    GSTATS.totalFailedItem += total;
+    printf("Ada %d item perishable kamu yang sudah habis!", total);
   }
 }
 

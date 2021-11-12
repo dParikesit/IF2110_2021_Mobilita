@@ -22,6 +22,8 @@ typedef struct GameManager {
 	boolean isPlaying;
 	// Apakah game sudah selesai?
 	boolean isFinished;
+	// Total pesanan yang dapat diambil Mobita
+	int totalTask;
 } GameManager;
 
 // Instansi utama GameManager yang bisa diakses secara global
@@ -75,7 +77,7 @@ void newGame();
 /*  Memuat konfigurasi level permainan untuk inisialisasi permainan baru.
 	I.S. _gm terdefinisi, isPlaying = false.
 	F.S. Memuat konfigurasi level ke game manager. */
-void loadLevel();
+void loadLevel(boolean isLoadGame);
 /*	Keluar dari permainan.
 	I.S. _gm sembarang.
 	F.S. Keluar dari permainan. */

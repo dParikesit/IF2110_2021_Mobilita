@@ -28,6 +28,10 @@ typedef struct Stats {
    // Apakah senter pengecil aktif?
    // Jika true, efek heavy item di top stack akan hilang hingga drop off/return.
 	boolean senterPengecil;
+   // Total item yang berhasil mobita kirim.
+   int totalDeliveredItem;
+   // Total item yang gagal mobita kirim.
+   int totalFailedItem;
 } Stats;
 
 // NOTE: Instance Stats yang dipakai akan selalu menggunakan _gm.stats
@@ -82,7 +86,7 @@ void initStats();
    Deserialization Note: Also deserialize bag within this data.
 
    4. Leftover Properties.
-   "<money> <senterPengecil> <returnToSender> <speedBoostDuration> <bagCapEff>\n"
+   "<money> <senterPengecil> <returnToSender> <speedBoostDuration> <bagCapEff> <totalDeliveredItem> <totalFailedItem>\n"
 */
 
 /* Menuliskan stats ke dalam stream.
@@ -91,7 +95,7 @@ void initStats();
 void SerializeStats();
 
 /* Membaca stream dan parse ke instance Stats.
-   I.S. Stats sembarang, stream terdefinisi, fileMode = WRITE.
+   I.S. Stats sembarang, stream terdefinisi, fileMode = READ.
    F.S. Menginisialisasi Stats dengan data di stream. */
 void DeserializeStats();
 

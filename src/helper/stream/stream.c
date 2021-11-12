@@ -117,7 +117,16 @@ int readInt() {
     int res;
     // ALGORITMA
     _advUntilWord();
-    sscanf(currentWord.contents, "%d", &res);
+    if (fileMode == STDIN) {
+        while (sscanf(currentWord.contents, "%d", &res) < 1) {
+            printf("Masukan kamu salah, silahkan masukkan angka yang valid: ");
+            _advUntilWord();
+        }
+    } else {
+        if (sscanf(currentWord.contents, "%d", &res) < 1) {
+            printf("Something is wrong with content: %s. Can't convert into int.\n", currentWord.contents);
+        }
+    }
     return res;
 }
 
@@ -127,12 +136,20 @@ boolean readBoolean() {
     boolean res;
     // ALGORITMA
     _advUntilWord();
+    if (fileMode == STDIN) {
+        while (currentWord.contents[0] != 'Y' && currentWord.contents[0] != 'N' && fileMode == STDIN) {
+            printf("Masukan kamu salah, silahkan masukkan (Y/N): ");
+            _advUntilWord();
+        }
+    } else {
+        if (currentWord.contents[0] != 'Y' && currentWord.contents[0] != 'N') {
+            printf("Something is wrong with content: %s. Can't convert into boolean.\n", currentWord.contents);
+        }
+    }
     if (currentWord.contents[0] == 'Y') {
         res = true;
     } else if (currentWord.contents[0] == 'N') {
         res = false;
-    } else {
-        res = 2;
     }
     return res;
 }
@@ -159,9 +176,10 @@ void writeChar(char value) {
 
 /* Menuliskan MARK ke stream.
    I.S. : endWord = false dan fileMode = WRITE
-   F.S. : Menuliskan karakter MARK ke stream */
+   F.S. : Menuliskan karakter MARK ke stream, startMark = true */
 void writeMark() {
     writeCharM(MARK);
+    startMark = true;
 }
 
 /* Menuliskan integer ke stream.

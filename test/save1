@@ -38,12 +38,18 @@ Q 10 3
 0 1 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0
 10
 1 G N N
-3 G N H
-2 B M N
 1 M B H
+2 B M N
+3 G N H
 5 C D N
 5 F E N
-10 P Q P 20
-5 G N P 10
+5 G N P 10 10
 8 O P V
 8 Q L V
+10 P Q P 20 20
+-1 -1 -1 -1 -1
+0
+0
+0 N 0 0 3 0 0
+0 0 N
+Y N 10 8

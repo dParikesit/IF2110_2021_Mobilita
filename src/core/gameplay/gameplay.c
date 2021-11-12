@@ -1,126 +1,128 @@
 #include "gameplay.h"
-#include "../../system/gamemanager/gamemanager.h"
-#include "../../system/map/map.h"
+#include "../../include/wrapper.h"
+#include "../../object/ability/ability.h"
 
 
-void doMoveplayer()
+void doMovePlayer()
 {
-    //check apakah mobita punya pintu kemana saja
-    int checkPintu = indexOfList(GSTATS.inventory, PINTU_KEMANA_SAJA);
-    //jika mobita tidak punya pintu kemana saja maka check pintu akan bernilai IDX_UNDEF 
-    navigateAndMoveMobita(checkPintu!=IDX_UNDEF);
-    advanceTime();
-    updateGame();
-
+    if (navigateAndMoveMobita(false)) {
+        advanceTime();
+        updateGame();
+        // Move every item that has pickup time larger than current time.
+        // Do it after updateGame() to make sure item perishable is updated correctly.
+        Item* temp;
+        while (!isEmptyQueue(GTASK) && (QUEUE_HEAD(GTASK)->timePickUp <= GTIME.currentTime)) {
+            dequeue(&GTASK, &temp);
+            // It's possible that deltaTime was larger, so we need to properly update this
+            if (temp->type == PERISHABLE) {
+                temp->currentDuration -= GTIME.currentTime - temp->timePickUp;
+            }
+            insertLastListLinked(&GSTATS.toDoList, temp);
+        }
+    }
 }
+
 void doPickUp()
 // Put getPickUpItem into the bag
 {
-    //jika punya vip item maka harus pickup vip item dulu
-    if (toDoListHas(VIP)){
-        //cari item vip di todolist
-        int idxVIP = indexOfTypeLinkedList(GSTATS.toDoList, VIP);
-        Item* item = getElmtListLinked(GSTATS.toDoList, idxVIP);
-        //cek apakah lokasi mobita == lokasi pickup vip item
-        if (MOBITAPOS != item->pickUp){
-            printf("Ambil item VIP dulu!\n");
-        }
-        else{
-            //pickup vip item dan masukkan ke bag
+    Item *item = getPickUpItem(), *temp;
+    if (item == NULL) {
+        printf("Tidak ada pesanan yang dapat diambil pada bangunan ini.\n");
+    } else {
+        if (lengthListLinked(GSTATS.inProgressList) == GSTATS.bagCapEff) {
+            printf("Tas sudah penuh, silahkan drop off barang terlebih dahulu\n");
+        } else if (toDoListHas(VIP) && item->type != VIP) {
+            printf("Ambil item VIP terlebih dahulu!\n");
+        } else {
             push(&GSTATS.bag, item);
             insertLastListLinked(&GSTATS.inProgressList, item);
-            printf("Pesanan berupa VIP Item berhasil diambil!\nTujuan Pesanan: %c\n", item->dropOff->letter);
-        }
-        
-    }
-    else{
-        Item* item = getPickUpItem();
-        //cek apakah posisi mobita == posisi barang
-        if(item->pickUp == MOBITAPOS){
-            if (item->type==NORMAL){
-                push(&GSTATS.bag, item);
-                insertLastListLinked(&GSTATS.inProgressList, item);
-                printf("Pesanan berupa Normal Item berhasil diambil!\nTujuan Pesanan: %c\n", item->dropOff->letter);
-            }
-            else if (item->type==HEAVY){
-                push(&GSTATS.bag, item);
-                insertLastListLinked(&GSTATS.inProgressList, item);
-                printf("Pesanan berupa Heavy Item berhasil diambil!\nTujuan Pesanan: %c\n", item->dropOff->letter);
-            }
-            else if (item->type==PERISHABLE){
-                push(&GSTATS.bag, item);
-                insertLastListLinked(&GSTATS.inProgressList, item);
-                printf("Pesanan berupa Perishable Item berhasil diambil!\nTujuan Pesanan: %c\n", item->dropOff->letter);
-            }
-        }
-        else{
-            printf("Pesanan tidak ditemukan!\n");
+            printf(
+                "Pesanan berupa %s berhasil diambil!\nTujuan Pesanan: %c\n",
+                getItemTypeName(item->type),
+                item->dropOff->letter
+            );
+            if (GSTATS.speedBoostDuration > 0 && item->type == HEAVY)
+                removeAbility(SPEED_BOOST);
+            int idx = indexOfListLinked(GSTATS.toDoList, item);
+            deleteAtListLinked(&GSTATS.toDoList, idx, &temp);
         }
     }
 }
-void doDropOff(boolean hasVIPItem) 
+void doDropOff() 
 // Pop bag and remove currentItem in progress list
 {
-    //jika didalam bag ada vip item
-    if (hasVIPItem){
-        if(getCurrentItem()->type == VIP){
-            ElTypeStack currentItem;
-            ElTypeListLinked currentItemlist;
-            //delete dari bag dan inProgressList
-            int idxCurrentItem = indexOfListLinked(GSTATS.inProgressList, getCurrentItem());
-            pop(&GSTATS.bag, &currentItem);
-            deleteAt(&GSTATS.inProgressList, idxCurrentItem, &currentItemlist);
-            //tambahkan uang dan beri output ke layar
-            GSTATS.money += 600;
-            printf("Pesanan VIP Item berhasil diantarkan\nUang yang didapatkan: 600 Yen\nMendapatkan ability RETURN TO SENDER!\n");
-
+    Item *item = getCurrentItem(), *temp;
+    if (item == NULL) {
+        printf("Tidak ada item pada bag.\n");
+    } else if (item->dropOff == MOBITAPOS){
+        pop(&GSTATS.bag, &temp);
+        deleteLastListLinked(&GSTATS.inProgressList, &temp);
+        if (GSTATS.senterPengecil) {
+            GSTATS.senterPengecil = false;
+            printf("Senter pengecil habis karena item sudah di drop off.\n");
         }
-        else {
-            printf("Tidak dapat pesanan yang dapat diantarkan!\nAntar VIP item  terlebih dahulu!\n");
-        }
-    }
-    else{
-        if (getCurrentItem()->dropOff ==  MOBITAPOS){
-            ElTypeStack currentItem;
-            ElTypeListLinked currentItemlist;
-            int idxCurrentItem = indexOfListLinked(GSTATS.inProgressList, getCurrentItem());
-            pop(&GSTATS.bag, &currentItem);
-            deleteAt(&GSTATS.inProgressList, idxCurrentItem, &currentItemlist);
-            if (currentItem->type == NORMAL){
+        GSTATS.totalDeliveredItem++;
+        switch(item->type) {
+            case NORMAL:
                 GSTATS.money += 200;
                 printf("Pesanan Normal Item berhasil diantarkan\nUang yang didapatkan: 200 Yen\n");
-            }
-            else if (currentItem->type == HEAVY){
+                break;
+            case HEAVY:
                 GSTATS.money += 400;
-                printf("Pesanan Heavy Item berhasil diantarkan\nUang yang didapatkan: 400 Yen\nMendapatkan ability SPEED BOOST!\n");
-            }
-            else if (currentItem->type == PERISHABLE){
+                printf("Pesanan Heavy Item berhasil diantarkan\nUang yang didapatkan: 400 Yen\n");
+                if (inProgressListHas(HEAVY)) {
+                    printf("Ability SPEED BOOST gagal diaktifkan karena ada HEAVY item di tas mobita.\n");
+                } else {
+                    addAbility(SPEED_BOOST);
+                    printf("Mendapatkan ability SPEED BOOST!\n");
+                }
+                break;
+            case PERISHABLE:
                 GSTATS.money += 400;
-                printf("Pesanan Perishable Item berhasil diantarkan\nUang yang didapatkan: 400 Yen\nMendapatkan Increase Capacity pada bag\n");
-            } 
-        } else{
-            printf("Tidak dapat pesanan yang dapat diantarkan!\n");
+                printf("Pesanan Perishable Item berhasil diantarkan\nUang yang didapatkan: 400 Yen\n");
+                if (GSTATS.bagCapEff >= BAG_CAP) {
+                    printf("Bag capacity boost gagal diaktifkan karena tas sudah penuh.\n");
+                } else {
+                    applyAbility(INCREASE_CAPACITY);
+                    printf("Mendapatkan Increase Capacity pada bag.\n");
+                }
+                break;
+            case VIP:
+                GSTATS.money += 600;
+                printf("Pesanan VIP Item berhasil diantarkan\nUang yang didapatkan: 600 Yen\nMendapatkan ability RETURN TO SENDER!\n");
+                addAbility(RETURN_TO_SENDER);
+                break;
         }
+        free(item);
+    } else {
+        printf("Tidak ada pesanan yang dapat diantarkan di bangunan ini!\n");
     }
 }
 
 int countTimeAddition(){
-    if (!isTimeRunning()){
-        return 0;
+    int count = 1;
+    // Traversal heavy item di inProgressList
+    Item *item = getCurrentItem();
+    Address p = FIRST(GSTATS.inProgressList);
+    while (p != NULL){
+        if (INFO(p)->type == HEAVY)
+            if ((GSTATS.senterPengecil && INFO(p) != item) || !GSTATS.senterPengecil)
+                count++;
+        p = NEXT(p);
     }
-    else{
-        int count = 1;
-        //check apakah mobita sedang membawa heavy item
-        if (!isEmptyListLinked(GSTATS.inProgressList)){
-            //mencari heavy item di inProgressList
-            Address p = GSTATS.inProgressList;
-            while (p->next != NULL){
-                if (p->info->type == HEAVY ){
-                    count++;
-                }
-                p = NEXT(p);
-            }
-        }
-        return count;  
+    return count;
+}
+
+void checkEndGame() {
+    if (GSTATS.totalDeliveredItem + GSTATS.totalFailedItem == GAME.totalTask) {
+        printf("Kamu berhasil, Mobita!\n");
+        printf("XXXX== Statistik Permainan ==XXXX\n");
+        printf("Total item yang berhasil Mobita kirim: %d\n", GSTATS.totalDeliveredItem);
+        printf("Total item yang gagal Mobita kirim: %d\n", GSTATS.totalFailedItem);
+        printf("Total item yang dapat dikerjakan Mobita: %d\n", GAME.totalTask);
+        printf("Total waktu yang dibutuhkan Mobita: %d\n", GTIME.currentTime);
+        printf("=================================\n");
+        printf("Terimakasih telah bermain ^o^\n");
+        exit(0);
     }
-} 
+}

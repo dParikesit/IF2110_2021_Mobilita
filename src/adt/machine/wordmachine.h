@@ -19,6 +19,7 @@ typedef struct Word {
 /* Word Engine State */
 extern boolean emptyTape;
 extern boolean endWord;
+extern boolean startMark;
 extern Word currentWord;
 
 /* Mengabaikan satu atau beberapa BLANK

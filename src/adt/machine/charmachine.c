@@ -48,6 +48,7 @@ void closeCharM() {
        if (fileMode == WRITE) {
               writeCharM(MARK);
        }
+       currentChar = '\0';
        fclose(tape);
        eot = true;
        tape = NULL;

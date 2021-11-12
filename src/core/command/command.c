@@ -1,5 +1,7 @@
 #include "command.h"
-#include "../../system/gamemanager/gamemanager.h"
+#include "../../include/wrapper.h"
+#include "../../object/ability/ability.h"
+#include "../gameplay/gameplay.h"
 
 void showMainMenu() {
     printf("1. NEW_GAME -> Untuk memulai permainan dengan membuat state game baru\n");
@@ -27,87 +29,78 @@ void invalidCommandMsg() {
 
 CommandType parseCommand() {
     char* command;
-    int i, ret;
+    int i;
+    CommandType ret;
 
-    printf("ENTER COMMAND: ");
+    printf("\nENTER COMMAND: ");
     command = readLine();
-
-    if (!(_gm.isPlaying)) {
-        i=NEW_GAME;
-        while (i<=LOAD_GAME && command != stringCommand[i]) {
-            i++;
-        }
-        if (i > LOAD_GAME) {
-            ret = INVALID;
-        } else {
-            // runCommand(i);
-            ret = i;
-        }
+    i = NEW_GAME;
+    while (i <= RETURN && !isEqualString(command, stringCommand[i]))
+        i++;
+    if (i > RETURN) {
+        ret = INVALID;
     } else {
-        i=MOVE;
-        while (i<= RETURN && command != stringCommand[i]) {
-            i++;
-        }
-        if (i > RETURN) {
-            ret = INVALID;
-        } else {
-            ret = i;
-        }
+        ret = (CommandType)i;
     }
     return ret;
 }
-// Read and parse command from stdin.
-
-// DELETE THIS LATER
-void doMovePlayer(){}
-void doPickUp(){}
-void doDropOff(){}
-void displayToDo(){}
-void displayInProgress(){}
-void useGadget(){}
-void saveGame(){}
-void applyAbility(){}
-
 
 boolean isCommandAvailable(CommandType cmdType) {
-    // boolean res;
+    boolean res;
+    char* err = "None";
     
-    // switch (cmdType) {
-    //     case NEW_GAME:
-    //         res = !_gm.isPlaying;
-    //         break;
-    //     case EXIT:
-    //         res = _gm.isPlaying;
-    //         break;
-    //     case LOAD_GAME:
-    //         res = !_gm.isPlaying;
-    //         break;
-    //     case PICK_UP:
-    //         res = isThereAnyPickUpItem();
-    //         break;
-    //     case DROP_OFF:
-    //         res = isThereAnyDropOffItem();
-    //         break;
-    //     case BUY:
-    //         res = isInHQ();
-    //         break;
-    //     case SAVE_GAME:
-    //         res = _gm.isPlaying;
-    //         break;
-    //     case RETURN:
-    //         res = hasReturnAbility();
-    //         break;
-    //     default:
-    //         res = true;
-    //         break;
-    // }
-    // return res;
-    return true;
+    switch (cmdType) {
+        case NEW_GAME:
+        case LOAD_GAME:
+            res = !GAME.isPlaying;
+            break;
+        case BUY:
+            res = isInHQ();
+            if (!res)
+                err = "Mobita tidak berada di HQ\n";
+            break;
+        case RETURN:
+            res = GSTATS.returnToSender > 0;
+            if (!res)
+                err = "Mobita tidak punya ability Return to Sender\n";
+            break;
+        case INVALID:
+            printf("Command %s tidak valid.\n", stringCommand[cmdType]);
+            res = false;
+            break;
+        default:
+            res = true;
+            break;
+    }
+    if (cmdType > LOAD_GAME) {
+        if (GAME.isPlaying)  {
+            if (!res && cmdType < INVALID)
+                printf(err);
+        } else if (cmdType < INVALID) {
+            printf("Kamu belum memulai permainan!\n");
+            res = false;
+        }
+    } else if (cmdType != EXIT && cmdType != HELP) {
+        if (GAME.isPlaying) {
+            printf("Kamu sudah memulai permainan!\n");
+            res = false;
+        }
+    }
+    return res;
 }
 // Check if command can be run
 
 void runCommand(CommandType cmdType) {
     switch (cmdType) {
+        case NEW_GAME:
+            newGame();
+            break;
+        case EXIT:
+            exitGame();
+            break;
+        case LOAD_GAME:
+            loadGame();
+            break;
         case MOVE:
             doMovePlayer();
             break;
@@ -130,19 +123,23 @@ void runCommand(CommandType cmdType) {
             buyGadget();
             break;
         case INVENTORY:
-            useGadget();
+            showAndUseGadget();
             break;
         case HELP:
-            showListCommand();
+            if (GAME.isPlaying) {
+                showListCommand();
+            } else {
+                showMainMenu();
+            }
             break;
         case SAVE_GAME:
             saveGame();
             break;
         case RETURN:
-            applyAbility();
+            applyAbility(RETURN_TO_SENDER);
             break;
         default:
-            printf("wrong input\n");
+            printf("Command %s not implemented yet.\n", stringCommand[cmdType]);
             break;
     }
 } 

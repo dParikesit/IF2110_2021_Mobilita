@@ -10,6 +10,13 @@ boolean isEqualBuilding(Building b1, Building b2) {
 Building* getLetterRefBuilding(char letter) {
     // TODO: get the building list from _gm.map.building, return to pointer
     //       of a building where building.letter = letter.
+    int i = 0;
+    int len = lengthListDin(GMAP.buildingList);
+    for (i = 0; i < len; i++) {
+        if (LISTDIN_ELMT(GMAP.buildingList, i)->letter == letter) {
+            return LISTDIN_ELMT(GMAP.buildingList, i);
+        }
+    }
     return NULL;
 }
 
