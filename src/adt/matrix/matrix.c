@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "matrix.h"
+#include "../../helper/pcolor/pcolor.h"
+#include "../../system/gamemanager/gamemanager.h"
 
 void CreateMatrix(int nRow, int nCol, Matrix *m)
 /* Membentuk sebuah Matrix "kosong" yang siap diisi berukuran nRow x nCol di "ujung kiri" memori */
@@ -79,6 +81,21 @@ void readMatrix(Matrix *m, int nRow, int nCol)
 		}
 	}
 }
+void printElmtMap(char letter) {
+    if (LETTER(*MOBITAPOS) == letter) {
+        print_yellow(letter);
+    } else if (isLetterTopDropOffItem(letter)) {
+        print_blue(letter);
+    } else if (isLetterInPickUpToDoList(letter)) {
+        print_red(letter);
+    } else if (isLetterInPickUpToDoList(letter)) {
+        print_blue(letter);
+    } else if (isLetterInReachable(letter)) {
+        print_green(letter);
+    } else {
+        printf("%c", letter);
+    }
+}
 void displayMatrix(Matrix m)
 /* I.S. m terdefinisi */
 /* F.S. Nilai m(i,j) ditulis ke layar per baris per kolom, masing-masing elemen per baris 
@@ -93,12 +110,12 @@ void displayMatrix(Matrix m)
     Index i,j;
     for (i=0 ; i<ROWS(m); i++){
         for (j=0 ; j<COLS(m); j++){
-            printf("%c", ELMT(m,i,j));
-            
+            printElmtMap(ELMT(m,i,j));
         }
         if(i!= getLastIdxRow(m)) printf("\n"); 
     }
 }
+
 /* ********** KELOMPOK OPERASI ARITMATIKA TERHADAP TYPE ********** */
 Matrix addMatrix(Matrix m1, Matrix m2)
 /* Prekondisi : m1 berukuran sama dengan m2 */
