@@ -42,10 +42,19 @@ static char* stringCommand[] = {
 	[INVALID] = "INVALID"
 };
 
-void showMainMenu(); // Show main menu command
-void showListCommand(); // Show available command list (HELP)
+void showMainMenu(); 
+// I.S. sembarang
+// F.S. ditampilkan ke layar main menu dari program ketika game belum dimulai
+
+void showListCommand(); 
+// I.S. sembarang
+// F.S. ditampilkan ke layar menu command dari program ketika game sudah dimulai
+
+// Show available command list (HELP)
 CommandType parseCommand(); // Read and parse command from stdin.
 boolean isCommandAvailable(CommandType cmdType); // Check if command can be run
 void runCommand(CommandType cmdType); // Run command
+
+void invalidCommandMsg();
 
 #endif

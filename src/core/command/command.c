@@ -6,7 +6,8 @@
 void showMainMenu() {
     printf("1. NEW_GAME -> Untuk memulai permainan dengan membuat state game baru\n");
     printf("2. EXIT -> Untuk menutup program\n");
-    printf("3. LOAD_GAME -> Untuk memuat state game sebelumnya\n");  
+    printf("3. LOAD_GAME -> Untuk memuat state game sebelumnya\n");
+    printf("4. HELP -> menampilkan list command yang dapat dijalankan\n");
 }
 void showListCommand() {
     printf("1. MOVE -> Untuk berpindah ke lokasi selanjutnya\n");
@@ -20,6 +21,7 @@ void showListCommand() {
     printf("9. HELP -> Untuk mengeluarkan list command dan kegunaannya\n");
     printf("10. SAVE_GAME -> Untuk melakukan save state dari permainan yang sedang dijalankan\n");
     printf("11. RETURN -> Untuk mengembalikan item di tumpukan teratas pada tas kembali ke lokasi pick up jika Mobita memiliki ability Return To Sender\n");
+    printf("12. EXIT -> Untuk menutup program\n");
 } 
 // Show available command list (HELP)
 
@@ -65,7 +67,7 @@ boolean isCommandAvailable(CommandType cmdType) {
                 err = "Mobita tidak punya ability Return to Sender\n";
             break;
         case INVALID:
-            printf("Command %s tidak valid.\n", stringCommand[cmdType]);
+            printf("Command masukan tidak valid.\n");
             res = false;
             break;
         default:
@@ -75,7 +77,7 @@ boolean isCommandAvailable(CommandType cmdType) {
     if (cmdType > LOAD_GAME) {
         if (GAME.isPlaying)  {
             if (!res && cmdType < INVALID)
-                printf(err);
+                printf("%s\n", err);
         } else if (cmdType < INVALID) {
             printf("Kamu belum memulai permainan!\n");
             res = false;
@@ -137,9 +139,6 @@ void runCommand(CommandType cmdType) {
             break;
         case RETURN:
             applyAbility(RETURN_TO_SENDER);
-            break;
-        default:
-            printf("Command %s not implemented yet.\n", stringCommand[cmdType]);
             break;
     }
 } 
