@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "gamemanager.h"
+#include "../../helper/pcolor/pcolor.h"
 
 /*  Inisialisasi game manager
 	I.S. _gm sembarang
@@ -16,9 +17,104 @@ void initGame() {
 
 /*  Tampilkan header berisi status permainan.
 	I.S. _gm terdefinisi
-	F.S. Menampilkan waktu. */
+	F.S. Menampilkan status permainan */
 void displayStatus() {
-	printf("\nWaktu: %d\nUang: %d\n", GTIME.currentTime, GSTATS.money);
+	int ability = 0;
+	printf("\nXXX===  Status\n");
+	// Time and it's status
+	printf("Waktu: %d (+%d)", GTIME.currentTime, GTIME.deltaTime);
+	if (GTIME.isHalt) {
+		printf(" %s[HALTED]%s", YELLOW, NEUTRAL);
+	}
+	// Money and it's status
+	printf("\nUang: %d\n", GSTATS.money);
+	if (GSTATS.money >= 800) {
+		printf("%sINFO%s - Uang kamu cukup untuk membeli gadget.\n", GREEN, NEUTRAL);
+	}
+	// Pesanan Status
+	printf("Pesanan: ");
+	printf("%sBerhasil (%d)%s | ", GREEN, GSTATS.totalDeliveredItem, NEUTRAL);
+	printf("%sGagal (%d)%s | ", RED, GSTATS.totalFailedItem, NEUTRAL);
+	printf("%sSisa (%d)%s | ", YELLOW, GAME.totalTask - (GSTATS.totalDeliveredItem + GSTATS.totalFailedItem), NEUTRAL);
+	printf("%sTotal (%d)%s\n", BLUE, GAME.totalTask, NEUTRAL);
+	// Mobita position and HQ info
+	printf("Mobita Pos: %c (%d, %d)\n", MOBITAPOS->letter, MOBITAPOS->pos.X, MOBITAPOS->pos.Y);
+	if (MOBITAPOS == &HQ) {
+		printf("%sINFO%s - Mobita di HQ\n", BLUE, NEUTRAL);
+	}
+	printf("\nXXX=== Items Info\n");
+	printf("To Do: %d item(s)\n", lengthListLinked(GSTATS.toDoList));
+	printf("In Progress: %d current / %d max item(s) [%d space left]\n",
+		(GSTATS.bag.idxTop+1),
+		GSTATS.bagCapEff,
+		GSTATS.bagCapEff - (GSTATS.bag.idxTop+1)
+	);
+	// Special item warning
+	Item* itemv = getItemInProgressList(VIP);
+	if (itemv != NULL) {
+		printf(
+			"%sWARNING!%s - Ada pesanan VIP di tas kamu! (Dropoff: %s%c%s)\n",
+			YELLOW, NEUTRAL,
+			BLUE, itemv->dropOff->letter, NEUTRAL
+		);
+	}
+	Item* itemvt = getItemInToDoList(VIP);
+	if (itemvt != NULL) {
+		printf(
+			"%sWARNING!%s - Ada pesanan VIP di to do list! (Pickup: %s%c%s)\n",
+			YELLOW, NEUTRAL,
+			RED, itemvt->pickUp->letter, NEUTRAL
+		);
+	}
+	Item* itemp = getItemInProgressList(PERISHABLE);
+	if (itemp != NULL){
+		printf("%sWARNING!%s - Ada pesanan PERISHABLE di tas kamu!\n", YELLOW, NEUTRAL);
+	}
+	Item* itemh = getItemInProgressList(HEAVY);
+	if (itemh != NULL){
+		printf("%sWARNING!%s - Ada pesanan HEAVY di tas kamu!\n", YELLOW, NEUTRAL);
+	}
+	// Dropoff/Pickup item urgent info
+	Item* itemct = getCurrentItem();
+	if (itemct != NULL && itemct->dropOff == MOBITAPOS) {
+		printf("%sURGENT!%s - ", RED, NEUTRAL);
+		printf("%s%s di atas bag bisa di drop off disini!%s\n", GREEN, getItemTypeName(itemct->type), NEUTRAL);
+	}
+	Item* itempk = getPickUpItem();
+	if (itempk != NULL) {
+		if (itempk->type != VIP && (itemvt != NULL || itemv != NULL)) {
+			printf("%sURGENT!%s - ", RED, NEUTRAL);
+			printf("%s%s ada disini namun kamu punya VIP item di ", YELLOW, getItemTypeName(itempk->type));
+			if (itemvt != NULL) {
+				printf("%sto do list%s", RED, YELLOW);
+				if (itemv != NULL)
+					printf(" dan ");
+			}
+			if (itemv != NULL)
+				printf("%stas%s", BLUE, YELLOW);
+			printf(" kamu.%s\n", NEUTRAL);
+		} else {
+			printf("%sURGENT!%s - ", RED, NEUTRAL);
+			printf("%sAda %s yang bisa di pickup disini!%s\n", GREEN, getItemTypeName(itempk->type), NEUTRAL);
+		}
+	}
+	printf("\nXXX=== Efek/Ability %sAktif%s/%sTersisa%s\n", GREEN, NEUTRAL, YELLOW, NEUTRAL);
+	if (GSTATS.speedBoostDuration > 0) {
+		printf("Speed Boost %s(%ds)%s\n", GREEN, GSTATS.speedBoostDuration, NEUTRAL);
+		ability++;
+	}
+	if (GSTATS.returnToSender > 0) {
+		printf("Return to Sender %s(%dx)%s\n", YELLOW, GSTATS.returnToSender, NEUTRAL);
+		ability++;
+	}
+	if (GSTATS.senterPengecil) {
+		printf("Senter Pengecil %s(Aktif)%s\n", GREEN, NEUTRAL);
+		ability++;
+	}
+	if (ability == 0) {
+		printf("Tidak ada efek/ability yang aktif/tersisa.\n");
+	}
+	printf("==================================\n");
 }
 
 /*  Simpan status permainan ke file.
@@ -44,7 +140,7 @@ void saveGame() {
 		writeInt(N);
 		writeMark();
 		for (i = 0; i < N; i++) {
-			SerializeItem(GTASK.buffer[i]);
+			SerializeItem(GTASK.buffer[i], false);
 		}
 		// Section Stats
 		SerializeStats();
@@ -75,7 +171,7 @@ void loadGame() {
 		printf("Memuat state permainan dari file '%s'...\n", filename);
 		initStream(file, READ);
 		// Section Map and Task
-		loadLevel(true);
+		loadLevel();
 		// Section Stats
 		DeserializeStats();
 		// Section Time
@@ -88,6 +184,7 @@ void loadGame() {
 		updateReachable();
 		initStdin();
 		printf("Berhasil memuat save game. Permainan dimulai!\n");
+		displayStatus();
 	}
 }
 
@@ -105,18 +202,19 @@ void newGame() {
 	} else {
 		printf("Memuat level dari file %s...\n", filename);
 		initStream(file, READ);
-		loadLevel(false);
+		loadLevel();
 		initStdin();
-		printf("Berhasil memuat level. Permainan dimulai!\n");
 		GAME.isPlaying = true;
 		GAME.totalTask = lengthQueue(GTASK);
+		printf("Berhasil memuat level. Permainan dimulai!\n");
+		displayStatus();
 	}
 }
 
 /*  Memuat konfigurasi level permainan untuk inisialisasi permainan baru.
 	I.S. _gm terdefinisi, isPlaying = false, stream terinisialisasi, fileMode = READ
 	F.S. Memuat konfigurasi level ke game manager. */
-void loadLevel(boolean isLoadGame) {
+void loadLevel() {
 	int i, N;
 	// Section Map
     DeserializeMap();
@@ -124,7 +222,7 @@ void loadLevel(boolean isLoadGame) {
 	N = readInt();
     for (i = 0; i < N; i++) {
         Item* item = malloc(sizeof(Item));
-        DeserializeItem(item, isLoadGame);
+        DeserializeItem(item, false);
 		enqueue(&GTASK, item);
     }
 }

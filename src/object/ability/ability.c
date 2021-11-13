@@ -31,7 +31,6 @@ void applyAbility(AbilityType ability){
 
     case RETURN_TO_SENDER:
         retAbility();
-        GSTATS.returnToSender -= 1;
         break;
 
     default:
@@ -55,25 +54,24 @@ void retAbility(){
     now = getCurrentItem();
     if (now == NULL)
     {
-        printf("Tidak ada barang yang bisa di return");
+        printf("Tidak ada barang yang bisa di return.\n");
     }
     else if (now != NULL)
     {
         if (now->type == VIP)
         {
-            printf("Ability ini tidak dapat diaktifkan untuk pesanan VIP Item.");
-        }
-        else{
+            printf("Ability ini tidak dapat diaktifkan untuk pesanan VIP Item.\n");
+        } else {
+            GSTATS.returnToSender -= 1;
             if (now->type == PERISHABLE)
-            {
                 now->currentDuration = now->maxDuration;
-            }
+            printf("Berhasil mengembalikan %s!\n", getItemTypeName(now->type));
             insertLastListLinked(&GSTATS.toDoList, now);
+            deleteLastListLinked(&GSTATS.inProgressList, &now);
             pop(&GSTATS.bag, &now);
-        
             if (GSTATS.senterPengecil) {
                 GSTATS.senterPengecil = false;
-                printf("Senter pengecil habis karena item sudah di return.");
+                printf("Senter pengecil habis karena item sudah di return.\n");
             }
         }
     }

@@ -6,6 +6,8 @@
 
 Item *getCurrentItem() {
   // Get a pointer Item on the top of the bag
+  if (isEmpty(GSTATS.bag))
+    return NULL;
   return TOP(GSTATS.bag);
 }
 
@@ -16,16 +18,6 @@ Item *getPickUpItem() {
     return NULL;
   }
   return getElmtListLinked(GSTATS.toDoList, idx);
-}
-
-boolean toDoListHas(ItemType type) {
-  // Check if toDoList has given ItemType (for checking if there’s VIP Item or so)
-  return indexOfTypeLinkedList(GSTATS.toDoList, type) != IDX_UNDEF;
-}
-
-boolean inProgressListHas(ItemType type) {
-  // Check if inProgressList has given ItemType (for checking if there’s Heavy Item or so)
-  return indexOfTypeLinkedList(GSTATS.inProgressList, type) != IDX_UNDEF;
 }
 
 boolean isLetterInPickUpToDoList(char letter) {
@@ -39,9 +31,28 @@ boolean isLetterTopDropOffItem(char letter) {
 
 ElTypeListLinked getItemInProgressList(ItemType type) {
   // Get first item in progress list that has ItemType == type
-  // Guaranteed has it
   int idx = indexOfTypeLinkedList(GSTATS.inProgressList, type);
+  if (idx == -1)
+    return NULL;
   return getElmtListLinked(GSTATS.inProgressList, idx);
+}
+
+ElTypeListLinked getItemInToDoList(ItemType type) {
+  // Get first item in to do list that has ItemType == type
+  int idx = indexOfTypeLinkedList(GSTATS.toDoList, type);
+  if (idx == -1)
+    return NULL;
+  return getElmtListLinked(GSTATS.toDoList, idx);
+}
+
+boolean inProgressListHas(ItemType type) {
+  // Check if inProgressList has given ItemType (for checking if there’s Heavy Item or so)
+  return indexOfTypeLinkedList(GSTATS.inProgressList, type) != IDX_UNDEF;
+}
+
+boolean toDoListHas(ItemType type) {
+  // Check if toDoList has given ItemType (for checking if there’s VIP Item or so)
+  return indexOfTypeLinkedList(GSTATS.toDoList, type) != IDX_UNDEF;
 }
 
 void updateItem() {
@@ -107,14 +118,15 @@ char *getItemTypeName(ItemType type) {
   }
 }
 
-void SerializeItem(Item *b) {
+void SerializeItem(Item *b, boolean extended) {
   writeInt(b->timePickUp);
   writeChar(b->pickUp->letter);
   writeChar(b->dropOff->letter);
   writeChar(b->type);
   if (b->type == PERISHABLE) {
     writeInt(b->maxDuration);
-    writeInt(b->currentDuration);
+    if (extended)
+      writeInt(b->currentDuration);
   }
   writeMark();
 }

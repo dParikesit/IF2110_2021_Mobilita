@@ -65,9 +65,22 @@ void showAndUseGadget() {
 
   if (command == 0)
     return;
+  
+  if (command > 5 || command < 0) {
+    printf("Input tidak valid. Membatalkan...\n");
+    return;
+  }
 
-  applyGadget(LIST_ELMT(GSTATS.inventory, command - 1));
-  deleteAtList(&GSTATS.inventory, command - 1);
+  GadgetType gadget = LIST_ELMT(GSTATS.inventory, command - 1);
+
+  if (gadget == NONE) {
+    printf("Tidak ada gadget pada slot %d. Membatalkan...\n", command);
+    return;
+  } else {
+    applyGadget(gadget);
+    deleteAtList(&GSTATS.inventory, command - 1);
+  }
+
 }
 void applyGadget(GadgetType gadget) {
   int x, y;
@@ -75,9 +88,12 @@ void applyGadget(GadgetType gadget) {
   // Apply effect of the selected gadget
   switch (gadget) {
     case KAIN_PEMBUNGKUS_WAKTU:
-      if (inProgressListHas(PERISHABLE)) {
-        Item *perishableItem = getItemInProgressList(PERISHABLE);
-        perishableItem->currentDuration = perishableItem->maxDuration;
+      item = getCurrentItem();
+      if (item != NULL && item->type == PERISHABLE) {
+        item->currentDuration = item->maxDuration;
+        printf("Berhasil mengubah durasi item perishable ke semula!\n");
+      } else {
+        printf("Selamat, Mobita menggunakan kain pembungkus waktunya dengan sia-sia :)\n");
       }
       break;
     case SENTER_PEMBESAR:
@@ -86,7 +102,7 @@ void applyGadget(GadgetType gadget) {
         GSTATS.bagCapEff = BAG_CAP;
       }
       printf(
-        "Berhasil menggunakan senter pembesar! Tas kamu sekarang berukuran %d",
+        "Berhasil menggunakan senter pembesar! Tas kamu sekarang berukuran %d\n",
         GSTATS.bagCapEff
       );
       break;
@@ -105,15 +121,14 @@ void applyGadget(GadgetType gadget) {
       } else {
         GTIME.currentTime -= 50;
       }
-      printf("Berhasil menggunakan mesin waktu!\n");
+      printf("Berhasil menggunakan mesin waktu! Waktu sekarang: %d\n", GTIME.currentTime);
       break;
     case SENTER_PENGECIL:
       item = getCurrentItem();
-      if (item == NULL) {
-        printf("Senter pengecil kamu sia-sia karena tidak ada barang di tas kamu\n");
-      } else if (item->type != HEAVY) {
-        printf("Senter pengecil kamu sia-sia karena item teratas tas bukan Heavy Item\n");
+      if (item != NULL && item->type != HEAVY) {
+        printf("Selamat, Mobita menggunakan senter pengecilnya dengan sia-sia :)\n");
       } else {
+        printf("Berhasil mengaktifkan efek Senter Pengecil!\n");
         GSTATS.senterPengecil = true;
       }
       break;
@@ -125,29 +140,31 @@ void buyGadget() {
   // I.S. Inventory terdefinisi, boleh penuh
   // F.S. Apabila uang cukup, uang akan berkurang dan gadget masuk ke inventory
   if (isFullList(GSTATS.inventory)) {
-    printf("Inventory sudah penuh. Anda tidak dapat membeli gadget.\n");
+    printf("Inventory sudah penuh. Mobita tidak dapat membeli gadget.\n");
   } else if (GSTATS.money < 800) {
     printf("Mobita tidak punya uang cukup untuk membeli gadget apapun (min. 800 Yen).\n");
   } else {
-    printf("Uang anda sekarang: %d Yen\n", GSTATS.money);
+    printf("Uang Mobita sekarang: %d Yen\n", GSTATS.money);
     printf("Gadget yang tersedia:\n");
     printf("1. Kain Pembungkus Waktu (800 Yen)\n");
     printf("2. Senter Pembesar (1200 Yen)\n");
     printf("3. Pintu Kemana Saja (1500 Yen)\n");
     printf("4. Mesin Waktu (3000 Yen)\n");
     printf("5. Senter Pengecil (800 Yen)\n");
-    printf("Gadget mana yang ingin kau beli? (ketik angka 1~5, 0 jika ingin kembali)\n");
+    printf("Gadget mana yang ingin Mobita beli? (ketik angka 1~5, 0 jika ingin kembali)\n");
 
     int command = readInt();
     if (command > 0 && command <= 5) {
       if (GSTATS.money < getGadgetPrice(command - 1)) {
-        printf("Uang tidak cukup untuk membeli gadget!\n");
+        printf("Uang tidak cukup untuk membeli gadget tersebut! Membatalkan...\n");
       } else {
         insertList(&GSTATS.inventory, command - 1);
         GSTATS.money -= getGadgetPrice(command - 1);
         printf("%s berhasil dibeli!\n", getGadgetName(command - 1));
-        printf("Uang anda sekarang: %d Yen\n", GSTATS.money);
+        printf("Uang Mobita sekarang: %d Yen\n", GSTATS.money);
       }
+    } else if (command > 5) {
+      printf("Tidak ada gadget dengan nomor tersebut! Membatalkan...\n");
     }
   }
 }

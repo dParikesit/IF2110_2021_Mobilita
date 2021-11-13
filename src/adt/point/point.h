@@ -42,34 +42,4 @@ void TulisPoint(Point P);
 boolean EQPoint(Point P1, Point P2);
 /* Mengirimkan true jika P1 = P2 : absis dan ordinatnya sama */
 
-/* *** Kelompok menentukan di mana P berada *** */
-boolean IsOrigin(Point P);
-/* Menghasilkan true jika P adalah titik origin */
-boolean IsOnSbX(Point P);
-/* Menghasilkan true jika P terletak Pada sumbu X */
-boolean IsOnSbY(Point P);
-/* Menghasilkan true jika P terletak pada sumbu Y */
-
-/* *** KELOMPOK OPERASI LAIN TERHADAP TYPE *** */
-Point NextX(Point P);
-/* Mengirim salinan P dengan absis ditambah satu */
-Point NextY(Point P);
-/* Mengirim salinan P dengan ordinat ditambah satu */
-Point PlusDelta(Point P, int deltaX, int deltaY);
-/* Mengirim salinan P yang absisnya adalah Absis(P) + deltaX dan ordinatnya
- * adalah Ordinat(P) + deltaY */
-void Geser(Point *P, int deltaX, int deltaY);
-/* I.S. P terdefinisi */
-/* F.S. P digeser, absisnya sebesar deltaX dan ordinatnya sebesar deltaY */
-void GeserKeSbX(Point *P);
-/* I.S. P terdefinisi */
-/* F.S. P berada pada sumbu X dengan absis sama dengan absis semula. */
-/* Proses : P digeser ke sumbu X. */
-/* Contoh : Jika koordinat semula (9,9), maka menjadi (9,0) */
-void GeserKeSbY(Point *P);
-/* I.S. P terdefinisi*/
-/* F.S. P berada pada sumbu Y dengan ordinat yang sama dengan semula. */
-/* Proses : P digeser ke sumbu Y. */
-/* Contoh : Jika koordinat semula (9,9), maka menjadi (0,9) */
-
 #endif

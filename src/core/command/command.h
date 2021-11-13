@@ -21,7 +21,8 @@ typedef enum CommandType {
 	INVENTORY = 11,
 	SAVE_GAME = 12,
 	RETURN = 13,
-	INVALID = 14
+	STATUS = 14,
+	INVALID = 15
 } CommandType;
 
 static char* stringCommand[] = {
@@ -39,6 +40,7 @@ static char* stringCommand[] = {
 	[HELP] = "HELP",
 	[SAVE_GAME] = "SAVE_GAME",
 	[RETURN] = "RETURN",
+	[STATUS] = "STATUS",
 	[INVALID] = "INVALID"
 };
 

@@ -73,7 +73,7 @@ int indexOfTypeLinkedList(ListLinked l, ItemType type){
   boolean found = false;
   int i = 0;
   Address p = FIRST(l);
-  while (NEXT(p) != NULL && found == false) {
+  while (p != NULL && found == false) {
     if (INFO(p)->type == type) {
       idx = i;
       found = true;

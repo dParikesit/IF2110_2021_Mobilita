@@ -11,9 +11,8 @@ void updateStats() {
     if (GSTATS.speedBoostDuration > 0) {
         GSTATS.speedBoostDuration -= GTIME.deltaTime;
     }
-    if (MOBITAPOS == &HQ) {
-        checkEndGame();
-    }
+    checkEndGame();
+    displayStatus();
 }
 
 /* Tampilkan to do ke layar.
@@ -63,11 +62,15 @@ void displayInProgress() {
         do {
             item = INFO(p);
             printf(
-                "%d. %s (Tujuan: %c)\n",
+                "%d. %s (Tujuan: %c)",
                 ++i,
                 getItemTypeName(item->type),
                 item->dropOff->letter
             );
+            if (item->type == PERISHABLE) {
+                printf(" [%ds current/%ds max]", item->currentDuration, item->maxDuration);
+            }
+            printf("\n");
             p = NEXT(p);
         } while (p != NULL);
     }
@@ -107,7 +110,7 @@ void SerializeStats() {
     Address p = FIRST(list);
     while (p != NULL) {
         item = INFO(p);
-        SerializeItem(item);
+        SerializeItem(item, false);
         p = NEXT(p);
     }
     // 3. In Progress List.
@@ -117,7 +120,7 @@ void SerializeStats() {
     p = FIRST(list);
     while (p != NULL) {
         item = INFO(p);
-        SerializeItem(item);
+        SerializeItem(item, true);
         p = NEXT(p);
     }
     // 4. Leftover Properties.
@@ -144,7 +147,7 @@ void DeserializeStats() {
     N = readInt();
     for (i = 0; i < N; i++) {
         Item* item = malloc(sizeof(Item));
-        DeserializeItem(item, true);
+        DeserializeItem(item, false);
         insertLastListLinked(&GSTATS.toDoList, item);
     }
     // 3. In Progress List.

@@ -21,7 +21,8 @@ void showListCommand() {
     printf("9. HELP -> Untuk mengeluarkan list command dan kegunaannya\n");
     printf("10. SAVE_GAME -> Untuk melakukan save state dari permainan yang sedang dijalankan\n");
     printf("11. RETURN -> Untuk mengembalikan item di tumpukan teratas pada tas kembali ke lokasi pick up jika Mobita memiliki ability Return To Sender\n");
-    printf("12. EXIT -> Untuk menutup program\n");
+    printf("12. STATUS -> Untuk menampilkan status permainan secara ringkas\n");
+    printf("13. EXIT -> Untuk menutup program\n");
 } 
 // Show available command list (HELP)
 
@@ -37,9 +38,9 @@ CommandType parseCommand() {
     printf("\nENTER COMMAND: ");
     command = readLine();
     i = NEW_GAME;
-    while (i <= RETURN && !isEqualString(command, stringCommand[i]))
+    while (i < INVALID && !isEqualString(command, stringCommand[i]))
         i++;
-    if (i > RETURN) {
+    if (i >= INVALID) {
         ret = INVALID;
     } else {
         ret = (CommandType)i;
@@ -59,15 +60,16 @@ boolean isCommandAvailable(CommandType cmdType) {
         case BUY:
             res = isInHQ();
             if (!res)
-                err = "Mobita tidak berada di HQ\n";
+                err = "Mobita tidak berada di HQ";
             break;
         case RETURN:
             res = GSTATS.returnToSender > 0;
             if (!res)
-                err = "Mobita tidak punya ability Return to Sender\n";
+                err = "Mobita tidak punya ability Return to Sender";
             break;
         case INVALID:
             printf("Command masukan tidak valid.\n");
+            printf("Masukkan HELP untuk mendapatkan daftar command.\n");
             res = false;
             break;
         default:
@@ -140,6 +142,8 @@ void runCommand(CommandType cmdType) {
         case RETURN:
             applyAbility(RETURN_TO_SENDER);
             break;
+        case STATUS:
+            displayStatus();
+            break;
     }
 } 
-// Run command

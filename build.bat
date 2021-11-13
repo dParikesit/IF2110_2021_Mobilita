@@ -7,17 +7,17 @@ if "%~1"=="clean" (
 
 :CLEAN
 echo [0] Deleting older cmake cache...
-@rd /s /q CMakeFiles
-del cmake_install.cmake /q
-del CMakeCache.txt /q
-del Makefile /q
+@rd /s /q build
+@rd /s /q bin
 
 :MAIN
 echo [1] Building Makefiles...
-@cmake.exe -G "MinGW Makefiles" -H. -B.
+@cmake.exe -G "MinGW Makefiles" -H. -B./build
 echo [2] Running Make...
+@cd build
 @make.exe
 goto END
 
 :END
-echo [3] Done building binary in bin/main.exe
+@cd ..
+echo [3] Done!

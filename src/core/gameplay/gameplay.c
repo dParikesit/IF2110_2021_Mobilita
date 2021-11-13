@@ -13,10 +13,6 @@ void doMovePlayer()
         Item* temp;
         while (!isEmptyQueue(GTASK) && (QUEUE_HEAD(GTASK)->timePickUp <= GTIME.currentTime)) {
             dequeue(&GTASK, &temp);
-            // It's possible that deltaTime was larger, so we need to properly update this
-            if (temp->type == PERISHABLE) {
-                temp->currentDuration -= GTIME.currentTime - temp->timePickUp;
-            }
             insertLastListLinked(&GSTATS.toDoList, temp);
         }
     }
@@ -32,7 +28,9 @@ void doPickUp()
         if (lengthListLinked(GSTATS.inProgressList) == GSTATS.bagCapEff) {
             printf("Tas sudah penuh, silahkan drop off barang terlebih dahulu\n");
         } else if (toDoListHas(VIP) && item->type != VIP) {
-            printf("Ambil item VIP terlebih dahulu!\n");
+            printf("Ambil VIP Item terlebih dahulu!\n");
+        } else if (inProgressListHas(VIP)) {
+            printf("Antar VIP Item terlebih dahulu!");
         } else {
             push(&GSTATS.bag, item);
             insertLastListLinked(&GSTATS.inProgressList, item);
@@ -115,14 +113,18 @@ int countTimeAddition(){
 
 void checkEndGame() {
     if (GSTATS.totalDeliveredItem + GSTATS.totalFailedItem == GAME.totalTask) {
-        printf("Kamu berhasil, Mobita!\n");
-        printf("XXXX== Statistik Permainan ==XXXX\n");
-        printf("Total item yang berhasil Mobita kirim: %d\n", GSTATS.totalDeliveredItem);
-        printf("Total item yang gagal Mobita kirim: %d\n", GSTATS.totalFailedItem);
-        printf("Total item yang dapat dikerjakan Mobita: %d\n", GAME.totalTask);
-        printf("Total waktu yang dibutuhkan Mobita: %d\n", GTIME.currentTime);
-        printf("=================================\n");
-        printf("Terimakasih telah bermain ^o^\n");
-        exit(0);
+        if (MOBITAPOS != &HQ) {
+            printf("Semua item sudah habis, kembali ke HQ untuk mengakhiri permainan.\n");
+        } else {
+            printf("Kamu berhasil, Mobita!\n\n");
+            printf("XXXX== Statistik Permainan ==XXXX\n");
+            printf("Total item yang berhasil Mobita kirim: %d\n", GSTATS.totalDeliveredItem);
+            printf("Total item yang gagal Mobita kirim: %d\n", GSTATS.totalFailedItem);
+            printf("Total item yang dapat dikerjakan Mobita: %d\n", GAME.totalTask);
+            printf("Total waktu yang dibutuhkan Mobita: %d\n", GTIME.currentTime);
+            printf("=================================\n\n");
+            printf("Terimakasih telah bermain ^o^\n");
+            exit(0);
+        }
     }
 }

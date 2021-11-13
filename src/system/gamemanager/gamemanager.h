@@ -59,7 +59,7 @@ void displayStatus();
 	<task item not extended>
 	<stats>
 	<time>
-	<isPlaying> <isFinished>
+	<isPlaying> <isFinished> <totalTask> <mobitaPos_letter>
 */
 
 /*  Simpan status permainan ke file.
@@ -77,7 +77,7 @@ void newGame();
 /*  Memuat konfigurasi level permainan untuk inisialisasi permainan baru.
 	I.S. _gm terdefinisi, isPlaying = false.
 	F.S. Memuat konfigurasi level ke game manager. */
-void loadLevel(boolean isLoadGame);
+void loadLevel();
 /*	Keluar dari permainan.
 	I.S. _gm sembarang.
 	F.S. Keluar dari permainan. */

@@ -6,11 +6,7 @@ int main() {
     printf("Please say something, i will get the first word and echo it back.\n");
     startWordM(stdin, STDIN);
     advWordM();
-    printf("Fantastic, here's the word echo: ");
-    printf("%s.\nOne more: ", currentWord.contents);
-    advWordM();
-    printf("Nice, here's the word echo: ");
-    printf("%s", currentWord.contents);
+    printf("Fantastic, here's the word echo: %s", currentWord.contents);
     printf("\nEnd of STDIN (newline).\nBEGIN FILE WRITE\n");
     FILE *f = fopen("test.txt", "w");
     startWordM(f, WRITE);

@@ -56,7 +56,9 @@ boolean isLetterTopDropOffItem(char letter);
 
 Item* getItemInProgressList(ItemType type);
 // Get first item in progress list that has ItemType == type
-// Guaranteed has it
+
+Item* getItemInToDoList(ItemType type);
+// Get first item in to do list that has ItemType == type
 
 void updateItem();
 // I.S. inProgressList terdefinisi
@@ -69,12 +71,13 @@ boolean isEqualItem(Item item1, Item item2);
 /* Format:
    "<timePickUp> <pickUp.letter> <dropOff.letter> <type> <maxDuration> <currentDuration>\n"
 	NB:
-	- In serialization, maxDuration and currentDuration will only be written if type = PERISHABLE
+	- In serialization, maxDuration will only be written if type = PERISHABLE
+	  -> if extended, currentDuration will be written too (if not, will set the same as maxDuration)
 	- In deserialization, maxDuration will be read if type = PERISHABLE
 	  -> if extended, currentDuration will be read too (if not, will set the same as maxDuration)
 */
 
-void SerializeItem(Item* b);
+void SerializeItem(Item* b, boolean extended);
 /* Menuliskan item ke dalam stream.
    I.S. Item terdefinisi, stream terdefinisi, fileMode = WRITE.
    F.S. Menuliskan item ke dalam stream. */
