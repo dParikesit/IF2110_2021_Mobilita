@@ -3,7 +3,6 @@
 
 #include "point.h"
 
-#include <math.h>
 #include <stdio.h>
 
 /* *** DEFINISI PROTOTIPE PRIMITIF *** */
@@ -82,20 +81,6 @@ Point PlusDelta(Point P, int deltaX, int deltaY) {
   Pnew = MakePoint(Absis(P) + deltaX, Ordinat(P) + deltaY);
 
   return Pnew;
-}
-float Jarak0(Point P) {
-  /* Menghitung jarak P ke (0,0) */
-  return sqrtf(pow(Absis(P), 2) + pow(Ordinat(P), 2));
-}
-float Panjang(Point P1, Point P2) {
-  /* Menghitung panjang garis yang dibentuk P1 dan P2 */
-  /* Perhatikanlah bahwa di sini spec fungsi kurang baik sebab menyangkut ADT
-   * Garis. */
-  double x, y;
-  x = fabs(Absis(P1) - Absis(P2));
-  y = fabs(Ordinat(P1) - Ordinat(P2));
-
-  return sqrt(pow(x, 2) + pow(y, 2));
 }
 void Geser(Point *P, int deltaX, int deltaY) {
   /* I.S. P terdefinisi */
