@@ -97,15 +97,15 @@ void applyGadget(GadgetType gadget) {
       }
       break;
     case SENTER_PEMBESAR:
-      GSTATS.bagCapEff *= 2;
-      if (GSTATS.bagCapEff > BAG_CAP) {
-        GSTATS.bagCapEff = BAG_CAP;
+      if (GSTATS.bagCapEff == BAG_CAP){
+        printf("Tas sudah berukuran maksimal. Selamat, Mobita menggunakan senter pembesar dengan sia-sia :)\n");
+      } else{
+        GSTATS.bagCapEff *= 2;
+        if (GSTATS.bagCapEff > BAG_CAP) {
+          GSTATS.bagCapEff = BAG_CAP;
+        }
+        printf("Berhasil menggunakan senter pembesar! Tas kamu sekarang berukuran %d\n", GSTATS.bagCapEff);
       }
-      printf(
-        "Berhasil menggunakan senter pembesar! Tas kamu sekarang berukuran %d\n",
-        GSTATS.bagCapEff
-      );
-      break;
     case PINTU_KEMANA_SAJA:
       printf("Menggunakan pintu kemana saja...\n");
       if (navigateAndMoveMobita(true)) {
@@ -116,22 +116,24 @@ void applyGadget(GadgetType gadget) {
       }
       break;
     case MESIN_WAKTU:
-      if (GTIME.currentTime < 50) {
-        GTIME.currentTime = 0;
-      } else {
-        GTIME.currentTime -= 50;
+      if(GTIME.currentTime == 0){
+        printf("Selamat, Mobita menggunakan mesin waktu dengan sia-sia :)\n");
+      } else{
+        if (GTIME.currentTime < 50) {
+          GTIME.currentTime = 0;
+        } else {
+          GTIME.currentTime -= 50;
+        }
+        printf("Berhasil menggunakan mesin waktu! Waktu sekarang: %d\n", GTIME.currentTime);
       }
-      printf("Berhasil menggunakan mesin waktu! Waktu sekarang: %d\n", GTIME.currentTime);
-      break;
     case SENTER_PENGECIL:
       item = getCurrentItem();
-      if (item != NULL && item->type != HEAVY) {
-        printf("Selamat, Mobita menggunakan senter pengecilnya dengan sia-sia :)\n");
-      } else {
+      if (item != NULL && item->type == HEAVY) {
         printf("Berhasil mengaktifkan efek Senter Pengecil!\n");
         GSTATS.senterPengecil = true;
+      } else {
+        printf("Selamat, Mobita menggunakan senter pengecilnya dengan sia-sia :)\n");
       }
-      break;
     default:
       break;
   }

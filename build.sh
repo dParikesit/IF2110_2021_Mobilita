@@ -9,6 +9,7 @@ echo [1] Building Makefiles...
 cmake -G "Unix Makefiles" -H. -B./build
 
 echo [2] Running Make...
+cd build
 make
 
 echo [3] Done!
