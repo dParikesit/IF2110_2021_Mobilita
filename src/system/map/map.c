@@ -10,18 +10,20 @@ boolean isMobitaThere(Building * elmt) {
 }
 
 int displayAllDestination() {
-  int i, j;
+  int i, counter;
 
   dealocateListDin(&(TEMP));
   CreateListDin(&(TEMP), ROWS(PATH));
 
+  counter = 1;
   for (i=0;i<LISTDIN_NEFF(BUILDINGLIST);i++) {
     if (!isMobitaThere(LISTDIN_ELMT(BUILDINGLIST, i))) {
-      printf("%d. ", i+1);
+      printf("%d. ", counter);
       displayBuilding(LISTDIN_ELMT(BUILDINGLIST, i));
       printf("\n");
 
       insertLastListDin(&TEMP, LISTDIN_ELMT(BUILDINGLIST, i));
+      counter++;
     }
   }
   return LISTDIN_NEFF(BUILDINGLIST)-1;
@@ -42,6 +44,7 @@ boolean navigateAndMoveMobita(boolean fromPintuKemanaSaja) {
   if (input > countReachableBuildings || input <= 0) {
     if (input != 0)
       printf("Input tidak valid. Membatalkan...\n");
+    updateReachable();
     return false;
   } else if (input <= countReachableBuildings && input > 0) {
     MOBITAPOS = LISTDIN_ELMT(TEMP, input-1);
