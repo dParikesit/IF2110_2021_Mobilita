@@ -106,6 +106,7 @@ void applyGadget(GadgetType gadget) {
         }
         printf("Berhasil menggunakan senter pembesar! Tas kamu sekarang berukuran %d\n", GSTATS.bagCapEff);
       }
+      break;
     case PINTU_KEMANA_SAJA:
       printf("Menggunakan pintu kemana saja...\n");
       if (navigateAndMoveMobita(true)) {
@@ -126,6 +127,7 @@ void applyGadget(GadgetType gadget) {
         }
         printf("Berhasil menggunakan mesin waktu! Waktu sekarang: %d\n", GTIME.currentTime);
       }
+      break;
     case SENTER_PENGECIL:
       item = getCurrentItem();
       if (item != NULL && item->type == HEAVY) {
@@ -134,6 +136,7 @@ void applyGadget(GadgetType gadget) {
       } else {
         printf("Selamat, Mobita menggunakan senter pengecilnya dengan sia-sia :)\n");
       }
+      break;
     default:
       break;
   }
