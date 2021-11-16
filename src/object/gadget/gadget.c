@@ -77,8 +77,8 @@ void showAndUseGadget() {
     printf("Tidak ada gadget pada slot %d. Membatalkan...\n", command);
     return;
   } else {
-    applyGadget(gadget);
     deleteAtList(&GSTATS.inventory, command - 1);
+    applyGadget(gadget);
   }
 
 }
