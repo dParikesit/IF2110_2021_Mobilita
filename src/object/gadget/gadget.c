@@ -60,7 +60,7 @@ void showAndUseGadget() {
     printf("%d. %s\n", (i + 1), getGadgetName(LIST_ELMT(GSTATS.inventory, i)));
   }
   printf("Gadget mana yang ingin digunakan? (ketik 0 jika ingin kembali)\n\n");
-  printf("ENTER COMMAND: ");
+  printf("INPUT NOMOR SLOT (1~5): ");
   command = readInt();
 
   if (command == 0)

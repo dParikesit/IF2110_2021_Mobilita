@@ -10,6 +10,7 @@ void addAbility(AbilityType ability){
     case SPEED_BOOST:
         GSTATS.speedBoostDuration = 5;
         GTIME.isHalt = true;
+        GTIME.deltaTime = 1;
         break;
 
     case RETURN_TO_SENDER:
@@ -56,7 +57,7 @@ void retAbility(){
     {
         printf("Tidak ada barang yang bisa di return.\n");
     }
-    else if (now != NULL)
+    else
     {
         if (now->type == VIP)
         {

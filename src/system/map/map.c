@@ -39,7 +39,7 @@ boolean navigateAndMoveMobita(boolean fromPintuKemanaSaja) {
     countReachableBuildings = displayAllDestination();
   printf("Posisi yang dipilih? (ketik 0 jika ingin kembali)\n\n");
   
-  printf("ENTER COMMAND: ");
+  printf("INPUT NOMOR BANGUNAN (1~%d): ", countReachableBuildings);
   input = readInt();
   if (input > countReachableBuildings || input <= 0) {
     if (input != 0)

@@ -8,13 +8,6 @@ void doMovePlayer()
     if (navigateAndMoveMobita(false)) {
         advanceTime();
         updateGame();
-        // Move every item that has pickup time larger than current time.
-        // Do it after updateGame() to make sure item perishable is updated correctly.
-        Item* temp;
-        while (!isEmptyQueue(GTASK) && (QUEUE_HEAD(GTASK)->timePickUp <= GTIME.currentTime)) {
-            dequeue(&GTASK, &temp);
-            insertLastListLinked(&GSTATS.toDoList, temp);
-        }
     }
 }
 

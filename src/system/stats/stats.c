@@ -8,11 +8,7 @@
    F.S. Update durasi perishable dan speed boost. Periksa end game. */
 void updateStats() {
     updateItem();
-    if (GSTATS.speedBoostDuration > 0) {
-        GSTATS.speedBoostDuration -= GTIME.deltaTime;
-    }
     checkEndGame();
-    displayStatus();
 }
 
 /* Tampilkan to do ke layar.
@@ -70,8 +66,10 @@ void displayInProgress() {
             if (item->type == PERISHABLE) {
                 printf(" [%ds current/%ds max]", item->currentDuration, item->maxDuration);
             }
-            printf("\n");
             p = NEXT(p);
+            if (p == NULL)
+                printf(" (TOP)");
+            printf("\n");
         } while (p != NULL);
     }
 }

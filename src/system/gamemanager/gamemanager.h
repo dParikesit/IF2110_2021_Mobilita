@@ -43,7 +43,7 @@ extern GameManager _gm;
 void initGame(); 
 /*  Tampilkan header berisi status permainan.
 	I.S. _gm terdefinisi
-	F.S. Menampilkan waktu. */
+	F.S. Menampilkan status permainan. */
 void displayStatus();
 
 /*	SAVE GAME FORMAT: <filename>.strkdat

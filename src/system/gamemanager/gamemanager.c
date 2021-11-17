@@ -22,9 +22,11 @@ void displayStatus() {
 	int ability = 0;
 	printf("\nXXX===  Status\n");
 	// Time and it's status
-	printf("Waktu: %d (+%d)", GTIME.currentTime, GTIME.deltaTime);
-	if (GTIME.isHalt) {
+	printf("Waktu: %d", GTIME.currentTime);
+	if (!GTIME.isHalt && GSTATS.speedBoostDuration > 0) {
 		printf(" %s[HALTED]%s", YELLOW, NEUTRAL);
+	} else {
+		printf(" (+%d)", GTIME.deltaTime);
 	}
 	// Money and it's status
 	printf("\nUang: %d\n", GSTATS.money);
@@ -125,7 +127,7 @@ void saveGame() {
     char* name;
 	int i, N;
     printf("Masukkan nama save file: ");
-    name = readWord();
+    name = readLine();
 	file = fopen(name, "w");
 	if (file == NULL) {
 		printf("Tidak dapat membuat file. Gagal menyimpan state permainan.\n");
@@ -194,8 +196,7 @@ void loadGame() {
 void newGame() {
 	FILE* file;
 	printf("Masukkan nama file konfigurasi level permainan: ");
-	char* filename = readWord();
-	printf("Nama file: %s\n", filename);
+	char* filename = readLine();
 	file = fopen(filename, "r");
 	if (file == NULL) {
 		printf("File tak dapat diakses atau ditemukan. Gagal memulai permainan baru.\n");
@@ -244,7 +245,15 @@ void exitGame() {
 	I.S. _gm terdefinisi, isPlaying = true.
 	F.S. Memperbarui status yang diperlukan pada game (core update loop). */
 void updateGame() {
-	// TODO: Update time
 	// Update stats
 	updateStats();
+	// Move every item that has pickup time larger than current time.
+	// Do it after updateStats()
+	Item* temp;
+	while (!isEmptyQueue(GTASK) && (QUEUE_HEAD(GTASK)->timePickUp <= GTIME.currentTime)) {
+		dequeue(&GTASK, &temp);
+		insertLastListLinked(&GSTATS.toDoList, temp);
+	}
+	// Display current status
+    displayStatus();
 }

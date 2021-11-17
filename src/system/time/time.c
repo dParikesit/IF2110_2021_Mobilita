@@ -10,6 +10,7 @@ void advanceTime()
     } else {
         if (GSTATS.speedBoostDuration > 0) {
             GTIME.isHalt = true;
+            GSTATS.speedBoostDuration -= GTIME.deltaTime;
         }
         GTIME.deltaTime = countTimeAddition();
         GTIME.currentTime += GTIME.deltaTime;
