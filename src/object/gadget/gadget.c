@@ -65,7 +65,7 @@ void showAndUseGadget() {
 
   if (command == 0)
     return;
-  
+
   if (command > 5 || command < 0) {
     printf("Input tidak valid. Membatalkan...\n");
     return;
@@ -80,16 +80,15 @@ void showAndUseGadget() {
     deleteAtList(&GSTATS.inventory, command - 1);
     applyGadget(gadget);
   }
-
 }
 void applyGadget(GadgetType gadget) {
   int x, y;
-  Item* item;
+  Item *item;
   // Apply effect of the selected gadget
   switch (gadget) {
     case KAIN_PEMBUNGKUS_WAKTU:
       item = getCurrentItem();
-      if (item != NULL && item->type == PERISHABLE) {
+      if (item != NULL && item->type == PERISHABLE && item->currentDuration != item->maxDuration) {
         item->currentDuration = item->maxDuration;
         printf("Berhasil mengubah durasi item perishable ke semula!\n");
       } else {
@@ -97,9 +96,9 @@ void applyGadget(GadgetType gadget) {
       }
       break;
     case SENTER_PEMBESAR:
-      if (GSTATS.bagCapEff == BAG_CAP){
+      if (GSTATS.bagCapEff == BAG_CAP) {
         printf("Tas sudah berukuran maksimal. Selamat, Mobita menggunakan senter pembesar dengan sia-sia :)\n");
-      } else{
+      } else {
         GSTATS.bagCapEff *= 2;
         if (GSTATS.bagCapEff > BAG_CAP) {
           GSTATS.bagCapEff = BAG_CAP;
@@ -117,9 +116,9 @@ void applyGadget(GadgetType gadget) {
       }
       break;
     case MESIN_WAKTU:
-      if(GTIME.currentTime == 0){
+      if (GTIME.currentTime == 0) {
         printf("Selamat, Mobita menggunakan mesin waktu dengan sia-sia :)\n");
-      } else{
+      } else {
         if (GTIME.currentTime < 50) {
           GTIME.currentTime = 0;
         } else {
@@ -130,7 +129,7 @@ void applyGadget(GadgetType gadget) {
       break;
     case SENTER_PENGECIL:
       item = getCurrentItem();
-      if (item != NULL && item->type == HEAVY) {
+      if (item != NULL && item->type == HEAVY && GSTATS.senterPengecil == false) {
         printf("Berhasil mengaktifkan efek Senter Pengecil!\n");
         GSTATS.senterPengecil = true;
       } else {
